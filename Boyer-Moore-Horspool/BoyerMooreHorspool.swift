@@ -7,6 +7,7 @@
 */
 extension String {
     func index(of pattern: String, usingHorspoolImprovement: Bool = false) -> Index? {
+		print(">>> Entering index(pattern=\(pattern),usingHorspoolImprovement=\(usingHorspoolImprovement))")
         // Cache the length of the search pattern because we're going to
         // use it a few times and it's expensive to calculate.
         let patternLength = pattern.count
@@ -16,12 +17,14 @@ extension String {
         // when a character from the pattern is found.
         var skipTable = [Character: Int]()
         for (i, c) in pattern.enumerated() {
+		print("index(pattern=\(pattern),usingHorspoolImprovement=\(usingHorspoolImprovement)): skipTable → \(skipTable)")
             skipTable[c] = patternLength - i - 1
         }
 
         // This points at the last character in the pattern.
         let p = pattern.index(before: pattern.endIndex)
         let lastChar = pattern[p]
+		print("index(pattern=\(pattern),usingHorspoolImprovement=\(usingHorspoolImprovement)): p → \(p)")
 
         // The pattern is scanned right-to-left, so skip ahead in the string by
         // the length of the pattern. (Minus 1 because startIndex already points
@@ -32,6 +35,7 @@ extension String {
         // until we find a character that doesn’t match, or until we’ve reached
         // the beginning of the pattern.
         func backwards() -> Index? {
+			print(">>> Entering backwards()")
             var q = p
             var j = i
             while q > pattern.startIndex {
@@ -39,6 +43,7 @@ extension String {
                 q = index(before: q)
                 if self[j] != pattern[q] { return nil }
             }
+			print("<<< Exiting backwards()")
             return j
         }
 
@@ -70,6 +75,7 @@ extension String {
                 i = index(i, offsetBy: skipTable[c] ?? patternLength, limitedBy: endIndex) ?? endIndex
             }
         }
+		print("<<< Exiting index(pattern=\(pattern),usingHorspoolImprovement=\(usingHorspoolImprovement))")
         return nil
     }
 }

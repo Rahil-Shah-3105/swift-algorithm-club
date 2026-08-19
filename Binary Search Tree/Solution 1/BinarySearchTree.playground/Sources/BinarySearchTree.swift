@@ -74,6 +74,7 @@ extension BinarySearchTree {
     Performance: runs in O(h) time, where h is the height of the tree.
   */
   public func insert(value: T) {
+	print(">>> Entering insert(value=\(value))")
     if value < self.value {
       if let left = left {
         left.insert(value: value)
@@ -89,6 +90,7 @@ extension BinarySearchTree {
         right?.parent = self
       }
     }
+	print("<<< Exiting insert(value=\(value))")
   }
 }
 
@@ -105,6 +107,7 @@ extension BinarySearchTree {
     Performance: runs in O(h) time, where h is the height of the tree.
   */
   @discardableResult public func remove() -> BinarySearchTree? {
+	print(">>> Entering remove()")
     let replacement: BinarySearchTree?
 
     // Replacement for current node can be either biggest one on the left or
@@ -112,6 +115,7 @@ extension BinarySearchTree {
     if let right = right {
       replacement = right.minimum()
     } else if let left = left {
+	print("remove(): replacement → \(replacement)")
       replacement = left.maximum()
     } else {
       replacement = nil
@@ -128,21 +132,27 @@ extension BinarySearchTree {
 
     // The current node is no longer part of the tree, so clean it up.
     parent = nil
+	print("remove(): parent → \(parent)")
     left = nil
     right = nil
 
+	print("<<< Exiting remove()")
     return replacement
   }
 
   private func reconnectParentTo(node: BinarySearchTree?) {
+	print(">>> Entering reconnectParentTo(node=\(node))")
     if let parent = parent {
       if isLeftChild {
         parent.left = node
+		print("reconnectParentTo(node=\(node)): parent.left → \(parent.left)")
       } else {
         parent.right = node
+		print("reconnectParentTo(node=\(node)): parent.right → \(parent.right)")
       }
     }
     node?.parent = parent
+	print("<<< Exiting reconnectParentTo(node=\(node))")
   }
 }
 
@@ -154,16 +164,19 @@ extension BinarySearchTree {
     Performance: runs in O(h) time, where h is the height of the tree.
   */
   public func search(value: T) -> BinarySearchTree? {
+	print(">>> Entering search(value=\(value))")
     var node: BinarySearchTree? = self
     while let n = node {
       if value < n.value {
         node = n.left
+		print("search(value=\(value)): node → \(node)")
       } else if value > n.value {
         node = n.right
       } else {
         return node
       }
     }
+	print("<<< Exiting search(value=\(value))")
     return nil
   }
 
@@ -181,6 +194,8 @@ extension BinarySearchTree {
   */
 
   public func contains(value: T) -> Bool {
+	print(">>> Entering contains(value=\(value))")
+	print("<<< Exiting contains(value=\(value))")
     return search(value: value) != nil
   }
 
@@ -188,10 +203,12 @@ extension BinarySearchTree {
     Returns the leftmost descendent. O(h) time.
   */
   public func minimum() -> BinarySearchTree {
+	print(">>> Entering minimum()")
     var node = self
     while let next = node.left {
       node = next
     }
+	print("<<< Exiting minimum()")
     return node
   }
 
@@ -199,10 +216,12 @@ extension BinarySearchTree {
     Returns the rightmost descendent. O(h) time.
   */
   public func maximum() -> BinarySearchTree {
+	print(">>> Entering maximum()")
     var node = self
     while let next = node.right {
       node = next
     }
+	print("<<< Exiting maximum()")
     return node
   }
 
@@ -211,12 +230,14 @@ extension BinarySearchTree {
     Takes O(h) time.
   */
   public func depth() -> Int {
+	print(">>> Entering depth()")
     var node = self
     var edges = 0
     while let parent = node.parent {
       node = parent
       edges += 1
     }
+	print("<<< Exiting depth()")
     return edges
   }
 
@@ -225,9 +246,11 @@ extension BinarySearchTree {
     Since this looks at all children of this node, performance is O(n).
   */
   public func height() -> Int {
+	print(">>> Entering height()")
     if isLeaf {
       return 0
     } else {
+	print("<<< Exiting height()")
       return 1 + max(left?.height() ?? 0, right?.height() ?? 0)
     }
   }
@@ -236,6 +259,7 @@ extension BinarySearchTree {
     Finds the node whose value precedes our value in sorted order.
   */
   public func predecessor() -> BinarySearchTree? {
+	print(">>> Entering predecessor()")
     if let left = left {
       return left.maximum()
     } else {
@@ -244,6 +268,7 @@ extension BinarySearchTree {
         if parent.value < value { return parent }
         node = parent
       }
+	print("<<< Exiting predecessor()")
       return nil
     }
   }
@@ -252,6 +277,7 @@ extension BinarySearchTree {
     Finds the node whose value succeeds our value in sorted order.
   */
   public func successor() -> BinarySearchTree? {
+	print(">>> Entering successor()")
     if let right = right {
       return right.minimum()
     } else {
@@ -260,6 +286,7 @@ extension BinarySearchTree {
         if parent.value > value { return parent }
         node = parent
       }
+	print("<<< Exiting successor()")
       return nil
     }
   }
@@ -269,31 +296,42 @@ extension BinarySearchTree {
 
 extension BinarySearchTree {
   public func traverseInOrder(process: (T) -> Void) {
+	print(">>> Entering traverseInOrder(process=\(process))")
     left?.traverseInOrder(process: process)
     process(value)
     right?.traverseInOrder(process: process)
+	print("<<< Exiting traverseInOrder(process=\(process))")
   }
 
   public func traversePreOrder(process: (T) -> Void) {
+	print(">>> Entering traversePreOrder(process=\(process))")
     process(value)
     left?.traversePreOrder(process: process)
     right?.traversePreOrder(process: process)
+	print("<<< Exiting traversePreOrder(process=\(process))")
   }
 
   public func traversePostOrder(process: (T) -> Void) {
+	print(">>> Entering traversePostOrder(process=\(process))")
     left?.traversePostOrder(process: process)
     right?.traversePostOrder(process: process)
     process(value)
+	print("<<< Exiting traversePostOrder(process=\(process))")
   }
 
   /*
     Performs an in-order traversal and collects the results in an array.
   */
   public func map(formula: (T) -> T) -> [T] {
+	print(">>> Entering map(formula=\(formula))")
     var a = [T]()
     if let left = left { a += left.map(formula: formula) }
+	print("map(formula=\(formula)): left → \(left)")
+	print("map(formula=\(formula)): a → \(a)")
+	print("map(formula=\(formula)): right → \(right)")
     a.append(formula(value))
     if let right = right { a += right.map(formula: formula) }
+	print("<<< Exiting map(formula=\(formula))")
     return a
   }
 }
@@ -303,9 +341,13 @@ extension BinarySearchTree {
 */
 extension BinarySearchTree {
   public func isBST(minValue: T, maxValue: T) -> Bool {
+	print(">>> Entering isBST(minValue=\(minValue),maxValue=\(maxValue))")
     if value < minValue || value > maxValue { return false }
     let leftBST = left?.isBST(minValue: minValue, maxValue: value) ?? true
+	print("isBST(minValue=\(minValue),maxValue=\(maxValue)): leftBST → \(leftBST)")
+	print("isBST(minValue=\(minValue),maxValue=\(maxValue)): rightBST → \(rightBST)")
     let rightBST = right?.isBST(minValue: value, maxValue: maxValue) ?? true
+	print("<<< Exiting isBST(minValue=\(minValue),maxValue=\(maxValue))")
     return leftBST && rightBST
   }
 }
@@ -326,6 +368,8 @@ extension BinarySearchTree: CustomStringConvertible {
   }
 
    public func toArray() -> [T] {
+	print(">>> Entering toArray()")
+	print("<<< Exiting toArray()")
       return map { $0 }
    }
 

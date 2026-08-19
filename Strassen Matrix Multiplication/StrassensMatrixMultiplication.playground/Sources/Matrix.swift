@@ -51,6 +51,8 @@ public struct Matrix<T: Number> {
   // MARK: - Private Functions
 
   fileprivate func indexIsValid(row: Int, column: Int) -> Bool {
+	print(">>> Entering indexIsValid(row=\(row),column=\(column))")
+	print("<<< Exiting indexIsValid(row=\(row),column=\(column))")
     return row >= 0 && row < rows && column >= 0 && column < columns
   }
 
@@ -77,6 +79,9 @@ public struct Matrix<T: Number> {
         let column = (0..<rows).map { (currentRow) -> T in
           let currentColumnIndex = currentRow * columns + value
           return grid[currentColumnIndex]
+		print(">>> Entering column(rowIndex=\(rowIndex))")
+		print("column(rowIndex=\(rowIndex)): column → \(column)")
+		print("<<< Exiting column(rowIndex=\(rowIndex))")
         }
         return column
       }
@@ -99,26 +104,32 @@ public struct Matrix<T: Number> {
   // MARK: - Public Functions
 
   public func row(for columnIndex: Int) -> [T] {
+	print(">>> Entering row(columnIndex=\(columnIndex))")
     assert(indexIsValid(row: columnIndex, column: 0), "Index out of range")
+	print("<<< Exiting row(columnIndex=\(columnIndex))")
     return Array(grid[(columnIndex * columns)..<(columnIndex * columns) + columns])
   }
 
   public func column(for rowIndex: Int) -> [T] {
+	print(">>> Entering column(rowIndex=\(rowIndex))")
     assert(indexIsValid(row: 0, column: rowIndex), "Index out of range")
 
     let column = (0..<rows).map { (currentRow) -> T in
       let currentColumnIndex = currentRow * columns + rowIndex
+	print("<<< Exiting column(rowIndex=\(rowIndex))")
       return grid[currentColumnIndex]
     }
     return column
   }
 
   public func forEach(_ body: (Int, Int) throws -> Void) rethrows {
+	print(">>> Entering forEach(body=\(body))")
     for row in 0..<rows {
       for column in 0..<columns {
         try body(row, column)
       }
     }
+	print("<<< Exiting forEach(body=\(body))")
   }
 }
 
@@ -126,17 +137,20 @@ public struct Matrix<T: Number> {
 
 extension Matrix {
   public func matrixMultiply(by B: Matrix<T>) -> Matrix<T> {
+	print(">>> Entering matrixMultiply(B=\(B))")
     let A = self
     assert(A.columns == B.rows, "Two matricies can only be matrix mulitiplied if one has dimensions mxn & the other has dimensions nxp where m, n, p are in R")
 
     var C = Matrix<T>(rows: A.rows, columns: B.columns)
 
+	print("matrixMultiply(B=\(B)): C → \(C)")
     for i in 0..<A.rows {
       for j in 0..<B.columns {
         C[i, j] = A[.row, i].dot(B[.column, j])
       }
     }
 
+	print("<<< Exiting matrixMultiply(B=\(B))")
     return C
   }
 }
@@ -145,15 +159,20 @@ extension Matrix {
 
 extension Matrix {
   public func strassenMatrixMultiply(by B: Matrix<T>) -> Matrix<T> {
+	print(">>> Entering strassenMatrixMultiply(B=\(B))")
     let A = self
     assert(A.columns == B.rows, "Two matricies can only be matrix mulitiplied if one has dimensions mxn & the other has dimensions nxp where m, n, p are in R")
 
     let n = max(A.rows, A.columns, B.rows, B.columns)
     let m = nextPowerOfTwo(after: n)
 
+	print("strassenMatrixMultiply(B=\(B)): n → \(n)")
+	print("strassenMatrixMultiply(B=\(B)): m → \(m)")
     var APrep = Matrix(size: m)
     var BPrep = Matrix(size: m)
 
+	print("strassenMatrixMultiply(B=\(B)): APrep → \(APrep)")
+	print("strassenMatrixMultiply(B=\(B)): BPrep → \(BPrep)")
     A.forEach { (i, j) in
       APrep[i, j] = A[i, j]
     }
@@ -165,18 +184,23 @@ extension Matrix {
     let CPrep = APrep.strassenR(by: BPrep)
     var C = Matrix(rows: A.rows, columns: B.columns)
     for i in 0..<A.rows {
+	print("strassenMatrixMultiply(B=\(B)): CPrep → \(CPrep)")
+	print("strassenMatrixMultiply(B=\(B)): C → \(C)")
       for j in 0..<B.columns {
         C[i, j] = CPrep[i, j]
       }
     }
 
+	print("<<< Exiting strassenMatrixMultiply(B=\(B))")
     return C
   }
 
   private func strassenR(by B: Matrix<T>) -> Matrix<T> {
+	print(">>> Entering strassenR(B=\(B))")
     let A = self
     assert(A.isSquare && B.isSquare, "This function requires square matricies!")
     guard A.rows > 1 && B.rows > 1 else { return A * B }
+	print("strassenR(B=\(B)): a → \(a)")
 
     let n    = A.rows
     let nBy2 = n / 2
@@ -186,6 +210,7 @@ extension Matrix {
     
      matrix A = |a b|,    matrix B = |e f|
                 |c d|                |g h|
+				print("strassenR(B=\(B)): b → \(b)")
     */
 
     var a = Matrix(size: nBy2)
@@ -197,6 +222,13 @@ extension Matrix {
     var g = Matrix(size: nBy2)
     var h = Matrix(size: nBy2)
 
+	print("strassenR(B=\(B)): c → \(c)")
+	print("strassenR(B=\(B)): C → \(C)")
+	print("strassenR(B=\(B)): d → \(d)")
+	print("strassenR(B=\(B)): e → \(e)")
+	print("strassenR(B=\(B)): f → \(f)")
+	print("strassenR(B=\(B)): g → \(g)")
+	print("strassenR(B=\(B)): h → \(h)")
     for i in 0..<nBy2 {
       for j in 0..<nBy2 {
         a[i, j] = A[i, j]
@@ -212,6 +244,13 @@ extension Matrix {
 
     let p1 = a.strassenR(by: f-h)       // a * (f - h)
     let p2 = (a+b).strassenR(by: h)     // (a + b) * h
+	print("strassenR(B=\(B)): p1 → \(p1)")
+	print("strassenR(B=\(B)): p2 → \(p2)")
+	print("strassenR(B=\(B)): p3 → \(p3)")
+	print("strassenR(B=\(B)): p4 → \(p4)")
+	print("strassenR(B=\(B)): p5 → \(p5)")
+	print("strassenR(B=\(B)): p6 → \(p6)")
+	print("strassenR(B=\(B)): p7 → \(p7)")
     let p3 = (c+d).strassenR(by: e)     // (c + d) * e
     let p4 = d.strassenR(by: g-e)       // d * (g - e)
     let p5 = (a+d).strassenR(by: e+h)   // (a + d) * (e + h)
@@ -233,10 +272,13 @@ extension Matrix {
       }
     }
 
+	print("<<< Exiting strassenR(B=\(B))")
     return C
   }
 
   private func nextPowerOfTwo(after n: Int) -> Int {
+	print(">>> Entering nextPowerOfTwo(n=\(n))")
+	print("<<< Exiting nextPowerOfTwo(n=\(n))")
     return Int(pow(2, ceil(log2(Double(n)))))
   }
 }

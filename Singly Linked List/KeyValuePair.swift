@@ -36,6 +36,7 @@ public protocol KeyValuePair : Comparable {
 extension KeyValuePair {
     
   // MARK: - Equatable protocol
+print(">>> Entering copy()")
   public static func ==(lhs: Self, rhs: Self) -> Bool {
     return lhs.key == rhs.key
   }
@@ -57,6 +58,7 @@ extension KeyValuePair {
   }
   
   public static func >(lhs: Self, rhs: Self) -> Bool {
+print("<<< Exiting copy()")
     return lhs.key > rhs.key
   }
 }
@@ -72,6 +74,7 @@ struct IntegerPair : KeyValuePair {
   var value : Int
   
   func copy() -> IntegerPair {
+	print("<<< Exiting copy()")
     return IntegerPair(key: self.key, value: self.value)
   }
 }

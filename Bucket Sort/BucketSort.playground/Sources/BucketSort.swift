@@ -37,6 +37,7 @@
  */
 
 public func bucketSort<T>(_ elements: [T], distributor: Distributor, sorter: Sorter, buckets: [Bucket<T>]) -> [T] {
+	print(">>> Entering bucketSort(elements=\(elements),distributor=\(distributor),sorter=\(sorter),buckets=\(buckets))")
     precondition(allPositiveNumbers(elements))
     precondition(enoughSpaceInBuckets(buckets, elements: elements))
     
@@ -47,25 +48,33 @@ public func bucketSort<T>(_ elements: [T], distributor: Distributor, sorter: Sor
     
     var results = [T]()
     
+	print("bucketSort(elements=\(elements),distributor=\(distributor),sorter=\(sorter),buckets=\(buckets)): results → \(results)")
     for bucket in bucketsCopy {
         results += bucket.sort(sorter)
     }
     
+	print("<<< Exiting bucketSort(elements=\(elements),distributor=\(distributor),sorter=\(sorter),buckets=\(buckets))")
     return results
 }
 
 private func allPositiveNumbers<T: Sortable>(_ array: [T]) -> Bool {
+	print(">>> Entering allPositiveNumbers(array=\(array))")
+	print("<<< Exiting allPositiveNumbers(array=\(array))")
     return array.filter { $0.toInt() >= 0 }.count > 0
 }
 
 private func enoughSpaceInBuckets<T>(_ buckets: [Bucket<T>], elements: [T]) -> Bool {
+	print(">>> Entering enoughSpaceInBuckets(buckets=\(buckets),elements=\(elements))")
     let maximumValue = elements.max()?.toInt()
     let totalCapacity = buckets.count * (buckets.first?.capacity)!
+	print("enoughSpaceInBuckets(buckets=\(buckets),elements=\(elements)): totalCapacity → \(totalCapacity)")
+	print("enoughSpaceInBuckets(buckets=\(buckets),elements=\(elements)): maximumValue → \(maximumValue)")
     
     guard let max = maximumValue else {
         return false
     }
     
+	print("<<< Exiting enoughSpaceInBuckets(buckets=\(buckets),elements=\(elements))")
     return totalCapacity >= max
 }
 
@@ -76,6 +85,7 @@ private func enoughSpaceInBuckets<T>(_ buckets: [Bucket<T>], elements: [T]) -> B
 public protocol Distributor {
     func distribute<T>(_ element: T, buckets: inout [Bucket<T>])
 }
+	print(">>> Entering distribute(element=\(element),buckets=\(buckets))")
 
 /*
  * An example of a simple distribution function that send every elements to
@@ -93,6 +103,7 @@ public protocol Distributor {
  * By following the formula: element / capacity = #ofBucket
  */
 public struct RangeDistributor: Distributor {
+	print("<<< Exiting distribute(element=\(element),buckets=\(buckets))")
     
     public init() {}
     
@@ -114,6 +125,8 @@ public protocol IntConvertible {
 }
 
 public protocol Sortable: IntConvertible, Comparable {
+print(">>> Entering toInt()")
+print("<<< Exiting toInt()")
 }
 
 //////////////////////////////////////
@@ -129,8 +142,10 @@ public struct InsertionSorter: Sorter {
     public init() {}
     
     public func sort<T: Sortable>(_ items: [T]) -> [T] {
+		print(">>> Entering sort(items=\(items))")
         var results = items
         for i in 0 ..< results.count {
+			print("sort(items=\(items)): results → \(results)")
             var j = i
             while j > 0 && results[j-1] > results[j] {
                 
@@ -141,6 +156,7 @@ public struct InsertionSorter: Sorter {
                 j -= 1
             }
         }
+		print("<<< Exiting sort(items=\(items))")
         return results
     }
 }
@@ -159,9 +175,11 @@ public struct Bucket<T: Sortable> {
     }
     
     public mutating func add(_ item: T) {
+		print(">>> Entering add(item=\(item))")
         if elements.count < capacity {
             elements.append(item)
         }
+		print("<<< Exiting add(item=\(item))")
     }
     
     public func sort(_ algorithm: Sorter) -> [T] {

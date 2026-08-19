@@ -7,12 +7,15 @@ print("Hello, Swift 4!")
 
 /* Calculates n! */
 func factorial(_ n: Int) -> Int {
+print(">>> Entering factorial(n=\(n))")
   var n = n
   var result = 1
+print("factorial(n=\(n)): result → \(result)")
   while n > 1 {
     result *= n
     n -= 1
   }
+print("<<< Exiting factorial(n=\(n))")
   return result
 }
 
@@ -24,12 +27,14 @@ factorial(20)
  in groups of size k.
  */
 func permutations(_ n: Int, _ k: Int) -> Int {
+print(">>> Entering permutations(n=\(n),k=\(k))")
   var n = n
   var answer = n
   for _ in 1..<k {
     n -= 1
     answer *= n
   }
+print("<<< Exiting permutations(n=\(n),k=\(k))")
   return answer
 }
 
@@ -43,6 +48,7 @@ permutations(9, 4)
  See also Dr.Dobb's Magazine June 1993, Algorithm Alley
  */
 func permuteWirth<T>(_ a: [T], _ n: Int) {
+print(">>> Entering permuteWirth(a=\(a),n=\(n))")
   if n == 0 {
     print(a)   // display the current permutation
   } else {
@@ -52,6 +58,7 @@ func permuteWirth<T>(_ a: [T], _ n: Int) {
       a.swapAt(i, n)
       permuteWirth(a, n - 1)
       a.swapAt(i, n)
+	print("<<< Exiting permuteWirth(a=\(a),n=\(n))")
     }
   }
 }
@@ -75,6 +82,7 @@ permuteWirth(xyz, 2)
  See also Dr.Dobb's Magazine June 1993, Algorithm Alley
  */
 func permuteSedgewick(_ a: [Int], _ n: Int, _ pos: inout Int) {
+print(">>> Entering permuteSedgewick(a=\(a),n=\(n),pos=\(pos))")
   var a = a
   pos += 1
   a[n] = pos
@@ -89,6 +97,7 @@ func permuteSedgewick(_ a: [Int], _ n: Int, _ pos: inout Int) {
   }
   pos -= 1
   a[n] = 0
+print("<<< Exiting permuteSedgewick(a=\(a),n=\(n),pos=\(pos))")
 }
 
 print("\nSedgewick permutations:")
@@ -101,6 +110,8 @@ permuteSedgewick(numbers, 0, &pos)
  of size k out of a total number of distinct elements (n) you can make.
  */
 func combinations(_ n: Int, choose k: Int) -> Int {
+print(">>> Entering combinations(n=\(n),k=\(k))")
+print("<<< Exiting combinations(n=\(n),k=\(k))")
   return permutations(n, k) / factorial(k)
 }
 
@@ -117,12 +128,15 @@ for i in 1...20 {
  k things out of n possibilities.
  */
 func quickBinomialCoefficient(_ n: Int, choose k: Int) -> Int {
+print(">>> Entering quickBinomialCoefficient(n=\(n),k=\(k))")
   var result = 1
 
+print("quickBinomialCoefficient(n=\(n),k=\(k)): result → \(result)")
   for i in 0..<k {
     result *= (n - i)
     result /= (i + 1)
   }
+print("<<< Exiting quickBinomialCoefficient(n=\(n),k=\(k))")
   return result
 }
 
@@ -157,8 +171,10 @@ struct Array2D<T> {
  */
 
 func binomialCoefficient(_ n: Int, choose k: Int) -> Int {
+print(">>> Entering binomialCoefficient(n=\(n),k=\(k))")
   var bc = Array(repeating: Array(repeating: 0, count: n + 1), count: n + 1)
 
+print("binomialCoefficient(n=\(n),k=\(k)): bc → \(bc)")
   for i in 0...n {
     bc[i][0] = 1
     bc[i][i] = 1
@@ -172,6 +188,7 @@ func binomialCoefficient(_ n: Int, choose k: Int) -> Int {
     }
   }
 
+print("<<< Exiting binomialCoefficient(n=\(n),k=\(k))")
   return bc[n][k]
 }
 

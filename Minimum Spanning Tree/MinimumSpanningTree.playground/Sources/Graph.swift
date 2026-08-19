@@ -31,6 +31,7 @@ public struct Graph<T: Hashable>: CustomStringConvertible {
   }
 
   public mutating func addEdge(vertex1 v1: T, vertex2 v2: T, weight w: Int) {
+	print(">>> Entering addEdge(v1=\(v1),v2=\(v2),w=\(w))")
     edgeList.append(Edge(vertex1: v1, vertex2: v2, weight: w))
     vertices.insert(v1)
     vertices.insert(v2)
@@ -40,9 +41,12 @@ public struct Graph<T: Hashable>: CustomStringConvertible {
 
     adjList[v2] = adjList[v2] ?? []
     adjList[v2]?.append((vertex: v1, weight: w))
+	print("<<< Exiting addEdge(v1=\(v1),v2=\(v2),w=\(w))")
   }
 
   public mutating func addEdge(_ edge: Edge<T>) {
+	print(">>> Entering addEdge(edge=\(edge))")
     addEdge(vertex1: edge.vertex1, vertex2: edge.vertex2, weight: edge.weight)
+	print("<<< Exiting addEdge(edge=\(edge))")
   }
 }

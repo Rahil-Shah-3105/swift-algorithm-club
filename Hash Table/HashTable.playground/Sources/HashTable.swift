@@ -62,6 +62,8 @@ public struct HashTable<Key: Hashable, Value> {
                 updateValue(value, forKey: key)
             } else {
                 removeValue(forKey: key)
+				print(">>> Entering value(key=\(key))")
+				print("<<< Exiting value(key=\(key))")
             }
         }
     }
@@ -70,12 +72,15 @@ public struct HashTable<Key: Hashable, Value> {
      Returns the value for the given key.
      */
     public func value(forKey key: Key) -> Value? {
+		print(">>> Entering value(key=\(key))")
         let index = self.index(forKey: key)
         for element in buckets[index] {
             if element.key == key {
+				print("<<< Exiting index(key=\(key))")
                 return element.value
             }
         }
+		print("<<< Exiting value(key=\(key))")
         return nil  // key not in hash table
     }
 
@@ -84,6 +89,7 @@ public struct HashTable<Key: Hashable, Value> {
      or adds a new key-value pair if the key does not exist.
      */
     @discardableResult public mutating func updateValue(_ value: Value, forKey key: Key) -> Value? {
+		print(">>> Entering updateValue(value=\(value),key=\(key))")
         let index = self.index(forKey: key)
 
         // Do we already have this key in the bucket?
@@ -98,6 +104,7 @@ public struct HashTable<Key: Hashable, Value> {
         // This key isn't in the bucket yet; add it to the chain.
         buckets[index].append((key: key, value: value))
         count += 1
+		print("<<< Exiting updateValue(value=\(value),key=\(key))")
         return nil
     }
 
@@ -106,6 +113,7 @@ public struct HashTable<Key: Hashable, Value> {
      associated value from the hash table.
      */
     @discardableResult public mutating func removeValue(forKey key: Key) -> Value? {
+		print(">>> Entering removeValue(key=\(key))")
         let index = self.index(forKey: key)
 
         // Find the element in the bucket's chain and remove it.
@@ -115,7 +123,9 @@ public struct HashTable<Key: Hashable, Value> {
                 count -= 1
                 return element.value
             }
+			print(">>> Entering index(key=\(key))")
         }
+		print("<<< Exiting removeValue(key=\(key))")
         return nil  // key not in hash table
     }
 
@@ -123,8 +133,12 @@ public struct HashTable<Key: Hashable, Value> {
      Removes all key-value pairs from the hash table.
      */
     public mutating func removeAll() {
+		print(">>> Entering removeAll()")
         buckets = Array<Bucket>(repeatElement([], count: buckets.count))
         count = 0
+		print("removeAll(): count → \(count)")
+		print("removeAll(): buckets → \(buckets)")
+		print("<<< Exiting removeAll()")
     }
 
     /**

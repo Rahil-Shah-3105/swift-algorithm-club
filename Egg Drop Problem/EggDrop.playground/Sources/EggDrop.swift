@@ -1,4 +1,5 @@
 public func drop(numberOfEggs: Int, numberOfFloors: Int) -> Int {
+print(">>> Entering drop(numberOfEggs=\(numberOfEggs),numberOfFloors=\(numberOfFloors))")
   guard numberOfEggs != 0 && numberOfFloors != 0 else { return 0 }
   guard numberOfEggs != 1 && numberOfFloors != 1 else { return 1 }
   
@@ -23,5 +24,6 @@ public func drop(numberOfEggs: Int, numberOfFloors: Int) -> Int {
     }
   }
   
+print("<<< Exiting drop(numberOfEggs=\(numberOfEggs),numberOfFloors=\(numberOfFloors))")
   return eggFloor[numberOfEggs][numberOfFloors]
 }

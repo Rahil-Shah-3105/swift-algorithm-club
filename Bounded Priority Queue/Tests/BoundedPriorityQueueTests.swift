@@ -26,15 +26,20 @@ private func > (m1: Message, m2: Message) -> Bool {
 
 class BoundedPriorityQueueTest: XCTestCase {
   func testEmpty() {
+	print(">>> Entering testEmpty()")
     let queue = BoundedPriorityQueue<Message>(maxElements: 5)
     XCTAssertTrue(queue.isEmpty)
     XCTAssertEqual(queue.count, 0)
     XCTAssertNil(queue.dequeue())
+	print("testEmpty(): queue → \(queue)")
+	print("<<< Exiting testEmpty()")
   }
 
   func testOneElement() {
+	print(">>> Entering testOneElement()")
     let queue = BoundedPriorityQueue<Message>(maxElements: 5)
 
+	print("testOneElement(): queue → \(queue)")
     queue.enqueue(Message(name: "hello", priority: 100))
     XCTAssertFalse(queue.isEmpty)
     XCTAssertEqual(queue.count, 1)
@@ -43,12 +48,16 @@ class BoundedPriorityQueueTest: XCTestCase {
     XCTAssertEqual(result!.priority, 100)
     XCTAssertTrue(queue.isEmpty)
     XCTAssertEqual(queue.count, 0)
+	print("testOneElement(): result → \(result)")
+	print("<<< Exiting testOneElement()")
   }
 
   func testMaxElements() {
+	print(">>> Entering testMaxElements()")
     let queue = BoundedPriorityQueue<Message>(maxElements: 5)
     XCTAssertTrue(queue.isEmpty)
 
+	print("testMaxElements(): queue → \(queue)")
     queue.enqueue(Message(name: "john", priority: 100))
     XCTAssertEqual(queue.count, 1)
     XCTAssertEqual(queue.peek()?.priority, 100)
@@ -89,6 +98,7 @@ class BoundedPriorityQueueTest: XCTestCase {
     XCTAssertEqual(result!.priority, 550)
     XCTAssertEqual(queue.count, 4)
 
+	print("testMaxElements(): result → \(result)")
     result = queue.dequeue()
     XCTAssertEqual(result!.priority, 500)
     XCTAssertEqual(queue.count, 3)
@@ -117,5 +127,6 @@ class BoundedPriorityQueueTest: XCTestCase {
     XCTAssertNil(result)
     XCTAssertEqual(queue.count, 0)
     XCTAssertTrue(queue.isEmpty)
+	print("<<< Exiting testMaxElements()")
   }
 }

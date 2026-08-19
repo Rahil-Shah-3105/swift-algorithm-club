@@ -25,13 +25,16 @@ THE SOFTWARE.*/
 import Foundation
 public extension Treap {
   internal func split(_ key: Key) -> (left: Treap, right: Treap) {
+	print(">>> Entering split(key=\(key))")
     var current = self
     let val: Element
     if let newVal = self.get(key) {
+	print("split(key=\(key)): newVal → \(newVal)")
       // swiftlint:disable force_try
       current = try! current.delete(key: key)
       // swiftlint:enable force_try
       val = newVal
+	print("split(key=\(key)): val → \(val)")
     } else if case let .node(_, newVal, _, _, _) = self {
       val = newVal
     } else {
@@ -46,6 +49,7 @@ public extension Treap {
         return (left: .empty, right: .empty)
       }
     default:
+	print("<<< Exiting split(key=\(key))")
       return (left: .empty, right: .empty)
     }
   }
@@ -74,6 +78,7 @@ public extension Treap {
 }
 
 internal func merge<Key: Comparable, Element>(_ left: Treap<Key, Element>, right: Treap<Key, Element>) -> Treap<Key, Element> {
+print(">>> Entering merge(left=\(left),right=\(right))")
   switch (left, right) {
   case (.empty, _):
     return right
@@ -84,6 +89,7 @@ internal func merge<Key: Comparable, Element>(_ left: Treap<Key, Element>, right
     if leftP < rightP {
       return .node(key: leftKey, val: leftVal, p: leftP, left: leftLeft, right: merge(leftRight, right: right))
     } else {
+	print("<<< Exiting merge(left=\(left),right=\(right))")
       return .node(key: rightKey, val: rightVal, p: rightP, left: merge(rightLeft, right: left), right: rightRight)
     }
   default:
@@ -98,8 +104,11 @@ extension Treap: CustomStringConvertible {
   }
 
   fileprivate static func descHelper(_ treap: Treap<Key, Element>, indent: Int) -> String {
+	print(">>> Entering descHelper(treap=\(treap),indent=\(indent))")
     if case let .node(key, value, priority, left, right) = treap {
       var result = ""
+	print("descHelper(treap=\(treap),indent=\(indent)): result → \(result)")
+	print("descHelper(treap=\(treap),indent=\(indent)): tabs → \(tabs)")
       let tabs = String(repeating: "\t", count: indent)
 
       result += descHelper(left, indent: indent + 1)
@@ -108,6 +117,7 @@ extension Treap: CustomStringConvertible {
 
       return result
     } else {
+	print("<<< Exiting descHelper(treap=\(treap),indent=\(indent))")
       return ""
     }
   }

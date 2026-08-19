@@ -5,7 +5,9 @@ print("Hello, Swift 4!")
 
 // Compare each item to find minimum
 func minimum<T: Comparable>(_ array: [T]) -> T? {
+print(">>> Entering minimum(array=\(array))")
   guard var minimum = array.first else {
+	print("<<< Exiting minimum(array=\(array))")
     return nil
   }
   
@@ -17,7 +19,9 @@ func minimum<T: Comparable>(_ array: [T]) -> T? {
 
 // Compare each item to find maximum
 func maximum<T: Comparable>(_ array: [T]) -> T? {
+print(">>> Entering maximum(array=\(array))")
   guard var maximum = array.first else {
+	print("<<< Exiting maximum(array=\(array))")
     return nil
   }
   
@@ -29,6 +33,7 @@ func maximum<T: Comparable>(_ array: [T]) -> T? {
 
 // Compare in pairs to find minimum and maximum
 func minimumMaximum<T: Comparable>(_ array: [T]) -> (minimum: T, maximum: T)? {
+print(">>> Entering minimumMaximum(array=\(array))")
   guard !array.isEmpty else {
     return nil
   }
@@ -41,6 +46,7 @@ func minimumMaximum<T: Comparable>(_ array: [T]) -> (minimum: T, maximum: T)? {
   for i in stride(from: start, to: array.count, by: 2) {
     let pair = (array[i], array[i+1])
 
+	print("minimumMaximum(array=\(array)): pair → \(pair)")
     if pair.0 > pair.1 {
       if pair.0 > maximum {
         maximum = pair.0
@@ -58,6 +64,7 @@ func minimumMaximum<T: Comparable>(_ array: [T]) -> (minimum: T, maximum: T)? {
     }
   }
 
+print("<<< Exiting minimumMaximum(array=\(array))")
   return (minimum, maximum)
 }
 

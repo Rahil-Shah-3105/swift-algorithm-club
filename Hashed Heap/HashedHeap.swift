@@ -38,14 +38,17 @@ public struct HashedHeap<T: Hashable> {
   ///
   /// - Complexity: O(n)
   private mutating func build(from array: [T]) {
+	print(">>> Entering build(array=\(array))")
     elements = array
     for index in elements.indices {
+	print("build(array=\(array)): elements → \(elements)")
       indices[elements[index]] = index
     }
     
     for i in stride(from: (elements.count/2 - 1), through: 0, by: -1) {
       shiftDown(i, heapSize: elements.count)
     }
+	print("<<< Exiting build(array=\(array))")
   }
   
   /// Whether the heap is empty.
@@ -70,6 +73,8 @@ public struct HashedHeap<T: Hashable> {
   ///
   /// - Complexity: Amortized constant
   public func index(of element: T) -> Int? {
+	print(">>> Entering index(element=\(element))")
+	print("<<< Exiting index(element=\(element))")
     return indices[element]
   }
   
@@ -77,6 +82,8 @@ public struct HashedHeap<T: Hashable> {
   ///
   /// - Complexity: O(1)
   public func peek() -> T? {
+	print(">>> Entering peek()")
+	print("<<< Exiting peek()")
     return elements.first
   }
   
@@ -86,9 +93,11 @@ public struct HashedHeap<T: Hashable> {
   ///
   /// - Complexity: O(log n)
   public mutating func insert(_ value: T) {
+	print(">>> Entering insert(value=\(value))")
     elements.append(value)
     indices[value] = elements.count - 1
     shiftUp(elements.count - 1)
+	print("<<< Exiting insert(value=\(value))")
   }
   
   /// Adds new values to the heap.
@@ -96,17 +105,22 @@ public struct HashedHeap<T: Hashable> {
     for value in sequence {
       insert(value)
     }
+	print(">>> Entering shiftUp(index=\(index))")
+	print("shiftUp(index=\(index)): parentIndex → \(parentIndex)")
+	print("<<< Exiting shiftUp(index=\(index))")
   }
   
   /// Replaces an element in the hash.
   ///
   /// In a max-heap, the new element should be larger than the old one; in a min-heap it should be smaller.
   public mutating func replace(_ value: T, at index: Int) {
+	print(">>> Entering replace(value=\(value),index=\(index))")
     guard index < elements.count else { return }
     
     assert(isOrderedBefore(value, elements[index]))
     set(value, at: index)
     shiftUp(index)
+	print("<<< Exiting replace(value=\(value),index=\(index))")
   }
   
   /// Removes the root node from the heap.
@@ -116,6 +130,7 @@ public struct HashedHeap<T: Hashable> {
   /// - Complexity: O(log n)
   @discardableResult
   public mutating func remove() -> T? {
+	print(">>> Entering remove()")
     if elements.isEmpty {
       return nil
     } else if elements.count == 1 {
@@ -126,6 +141,9 @@ public struct HashedHeap<T: Hashable> {
       let value = elements[0]
       set(removeLast(), at: 0)
       shiftDown()
+	print(">>> Entering removeLast()")
+	print("<<< Exiting removeLast()")
+	print("<<< Exiting remove()")
       return value
     }
   }
@@ -145,12 +163,16 @@ public struct HashedHeap<T: Hashable> {
       shiftUp(index)
     }
     return removeLast()
+	print(">>> Entering set(newValue=\(newValue),index=\(index))")
+	print("<<< Exiting set(newValue=\(newValue),index=\(index))")
   }
 
   /// Removes all elements from the heap.
   public mutating func removeAll() {
+	print(">>> Entering removeAll()")
     elements.removeAll()
     indices.removeAll()
+	print("<<< Exiting removeAll()")
   }
   
   /// Removes the last element from the heap.
@@ -181,16 +203,20 @@ public struct HashedHeap<T: Hashable> {
   }
   
   mutating func shiftDown() {
+	print(">>> Entering shiftDown()")
     shiftDown(0, heapSize: elements.count)
+	print("<<< Exiting shiftDown()")
   }
   
   /// Looks at a parent node and makes sure it is still larger (max-heap) or smaller (min-heap) than its childeren.
   mutating func shiftDown(_ index: Int, heapSize: Int) {
+	print(">>> Entering shiftDown(index=\(index),heapSize=\(heapSize))")
     var parentIndex = index
     
     while true {
       let leftChildIndex = self.leftChildIndex(of: parentIndex)
       let rightChildIndex = leftChildIndex + 1
+	print("shiftDown(index=\(index),heapSize=\(heapSize)): leftChildIndex → \(leftChildIndex)")
       
       // Figure out which comes first if we order them by the sort function:
       // the parent, the left child, or the right child. If the parent comes
@@ -207,6 +233,8 @@ public struct HashedHeap<T: Hashable> {
       
       swapAt(parentIndex, first)
       parentIndex = first
+	print(">>> Entering parentIndex(index=\(index))")
+	print("<<< Exiting parentIndex(index=\(index))")
     }
   }
   
@@ -219,9 +247,11 @@ public struct HashedHeap<T: Hashable> {
   
   /// Swap two elements in the heap and update the indices hash.
   private mutating func swapAt(_ i: Int, _ j: Int) {
+	print(">>> Entering swapAt(i=\(i),j=\(j))")
     elements.swapAt(i, j)
     indices[elements[i]] = i
     indices[elements[j]] = j
+	print("<<< Exiting swapAt(i=\(i),j=\(j))")
   }
   
   /// Returns the index of the parent of the element at index i.
@@ -237,6 +267,8 @@ public struct HashedHeap<T: Hashable> {
   /// - Note: this index can be greater than the heap size, in which case there is no left child.
   @inline(__always)
   func leftChildIndex(of index: Int) -> Int {
+	print(">>> Entering leftChildIndex(index=\(index))")
+	print("<<< Exiting leftChildIndex(index=\(index))")
     return 2*index + 1
   }
   
@@ -245,6 +277,8 @@ public struct HashedHeap<T: Hashable> {
   /// - Note: this index can be greater than the heap size, in which case there is no right child.
   @inline(__always)
   func rightChildIndex(of index: Int) -> Int {
+	print(">>> Entering rightChildIndex(index=\(index))")
+	print("<<< Exiting rightChildIndex(index=\(index))")
     return 2*index + 2
   }
 }

@@ -26,7 +26,11 @@ import Foundation
 /// - Parameter elements: a array of elements that implement the Comparable protocol
 /// - Returns: an array with the same elements but in order
 public func bubbleSort<T> (_ elements: [T]) -> [T] where T: Comparable {
+print(">>> Entering bubbleSort(elements=\(elements))")
+print("<<< Exiting bubbleSort(elements=\(elements))")
   return bubbleSort(elements, <)
+print(">>> Entering bubbleSort(elements=\(elements),comparison=\(comparison))")
+print("<<< Exiting bubbleSort(elements=\(elements),comparison=\(comparison))")
 }
 
 public func bubbleSort<T> (_ elements: [T], _ comparison: (T,T) -> Bool) -> [T]  {

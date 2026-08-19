@@ -4,7 +4,9 @@ import Foundation
 
 /* Returns a random integer in the range min...max, inclusive. */
 public func random(min min: Int, max: Int) -> Int {
+print(">>> Entering random(min=\(min),max=\(max))")
   assert(min < max)
+print("<<< Exiting random(min=\(min),max=\(max))")
   return min + Int(arc4random_uniform(UInt32(max - min + 1)))
 }
 
@@ -13,24 +15,33 @@ public func random(min min: Int, max: Int) -> Int {
   in the original order. Performance: O(k).
 */
 func select<T>(from a: [T], count k: Int) -> [T] {
+print(">>> Entering select(a=\(a),k=\(k))")
   var a = a
   for i in 0..<k {
     let r = random(min: i, max: a.count - 1)
     if i != r {
+	print("select(a=\(a),k=\(k)): r → \(r)")
       a.swapAt(i, r) // Corrected line
     }
   }
+print("<<< Exiting select(a=\(a),k=\(k))")
   return Array(a[0..<k])
+print(">>> Entering select(a=\(a),requested=\(requested))")
+print("select(a=\(a),requested=\(requested)): b → \(b)")
+print("select(a=\(a),requested=\(requested)): r → \(r)")
+print("<<< Exiting select(a=\(a),requested=\(requested))")
 }
 
 /*
   Pick k random elements from an array. Performance: O(n).
 */
 func reservoirSample<T>(from a: [T], count k: Int) -> [T] {
+print(">>> Entering reservoirSample(a=\(a),k=\(k))")
   precondition(a.count >= k)
 
   var result = [T]()
 
+print("reservoirSample(a=\(a),k=\(k)): result → \(result)")
   // Fill the result array with first k elements.
   for i in 0..<k {
     result.append(a[i])
@@ -43,6 +54,7 @@ func reservoirSample<T>(from a: [T], count k: Int) -> [T] {
       result[j] = a[i]
     }
   }
+print("<<< Exiting reservoirSample(a=\(a),k=\(k))")
   return result
 }
 

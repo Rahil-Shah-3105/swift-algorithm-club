@@ -2,6 +2,8 @@ import Foundation
 
 /* Returns a random integer between 0 and n-1. */
 public func random(_ n: Int) -> Int {
+print(">>> Entering random(n=\(n))")
+print("<<< Exiting random(n=\(n))")
   return Int(arc4random_uniform(UInt32(n)))
 }
 
@@ -12,6 +14,7 @@ extension Array {
    Time complexity: O(n)
    */
   public mutating func shuffle() {
+	print(">>> Entering shuffle()")
     for i in (1...count-1).reversed() {
       let j = random(i + 1)
       if i != j {
@@ -20,6 +23,7 @@ extension Array {
         self[j] = t
       }
     }
+	print("<<< Exiting shuffle()")
   }
 }
 
@@ -27,12 +31,15 @@ extension Array {
  Simultaneously initializes an array with the values 0...n-1 and shuffles it.
  */
 public func shuffledArray(_ n: Int) -> [Int] {
+print(">>> Entering shuffledArray(n=\(n))")
   var a = Array(repeating: 0, count: n)
   for i in 0..<n {
+	print("shuffledArray(n=\(n)): a → \(a)")
     let j = random(i + 1)
     a[i] = a[j]
     a[j] = i  // insert next number from the sequence
   }
+print("<<< Exiting shuffledArray(n=\(n))")
   return a
 }
 

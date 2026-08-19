@@ -4,6 +4,8 @@ set -e
 
 # $1 - readme file name
 function render_markdown_to_html {
+echo ">>> Entering render_markdown_to_html()" >&2
+__logStart=$SECONDS
   # escape escaping characters on Darwin only
   content=$(
     cat "$1"                                          \
@@ -13,9 +15,13 @@ function render_markdown_to_html {
       | sed -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\\n/g' \
   )
 
+echo "render_markdown_to_html(): content → $content" >&2
   # network call to GitHub API
   json="{\"text\":\"$content\",\"mode\":\"gfm\",\"context\":\"$USERNAME/swift-algorithm-club\"}"
+echo "render_markdown_to_html(): json → $json" >&2
+echo "render_markdown_to_html(): external service call took $((SECONDS - __logStart)) ms" >&2
   echo -e "$(curl -s --data "$json" -u $USERNAME:$TOKEN https://api.github.com/markdown)"
+echo "<<< Exiting render_markdown_to_html()" >&2
 }
 
 # download github systax highlight stylesheet

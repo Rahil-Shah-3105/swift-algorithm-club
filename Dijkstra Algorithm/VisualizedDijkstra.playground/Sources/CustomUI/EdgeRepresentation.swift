@@ -88,17 +88,28 @@ public class EdgeRepresentation {
     }
 
     public func setCheckingColor() {
+		print(">>> Entering setCheckingColor()")
         layer.strokeColor = graphColors.checkingColor.cgColor
         label.backgroundColor = graphColors.checkingColor
+		print("setCheckingColor(): layer.strokeColor → \(layer.strokeColor)")
+		print("setCheckingColor(): label.backgroundColor → \(label.backgroundColor)")
+		print("<<< Exiting setCheckingColor()")
     }
 
     public func setDefaultColor() {
+		print(">>> Entering setDefaultColor()")
         layer.strokeColor = graphColors.defaultEdgeColor.cgColor
         label.backgroundColor = graphColors.defaultEdgeColor
+		print("setDefaultColor(): layer.strokeColor → \(layer.strokeColor)")
+		print("setDefaultColor(): label.backgroundColor → \(label.backgroundColor)")
+		print("<<< Exiting setDefaultColor()")
     }
 
     public func setText(text: String) {
+		print(">>> Entering setText(text=\(text))")
+		print("setText(text=\(text)): label.text → \(label.text)")
         label.text = text
+		print("<<< Exiting setText(text=\(text))")
     }
 }
 

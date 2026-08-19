@@ -11,9 +11,11 @@ import Cocoa
 class ViewController: NSViewController {
 
   override func viewDidLoad() {
+	print(">>> Entering viewDidLoad()")
     super.viewDidLoad()
 
     // Do any additional setup after loading the view.
+	print("<<< Exiting viewDidLoad()")
   }
 
   override var representedObject: Any? {

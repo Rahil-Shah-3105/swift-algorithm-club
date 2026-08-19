@@ -1,6 +1,7 @@
 // Last checked with Xcode Version 11.4.1 (11E503a)
 
 func fizzBuzz(_ numberOfTurns: Int) {
+	print(">>> Entering fizzBuzz(numberOfTurns=\(numberOfTurns))")
     guard numberOfTurns >= 1 else {
         print("Number of turns must be >= 1")
         return
@@ -18,4 +19,5 @@ func fizzBuzz(_ numberOfTurns: Int) {
             print("Fizz Buzz")
         }
     }
+	print("<<< Exiting fizzBuzz(numberOfTurns=\(numberOfTurns))")
 }

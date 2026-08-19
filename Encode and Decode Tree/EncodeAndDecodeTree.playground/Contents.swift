@@ -1,6 +1,7 @@
 //: Playground - noun: a place where people can play
 
 func printTree(_ root: BinaryNode<String>?) {
+	print(">>> Entering printTree(root=\(root))")
     guard let root = root else {
         return
     }
@@ -12,6 +13,7 @@ func printTree(_ root: BinaryNode<String>?) {
 
     printTree(root.left)
     printTree(root.right)
+	print("<<< Exiting printTree(root=\(root))")
 }
 
 let coder = BinaryNodeCoder<String>()

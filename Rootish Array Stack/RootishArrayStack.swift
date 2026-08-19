@@ -46,29 +46,39 @@ public struct RootishArrayStack<T> {
 	// MARK: - Equations
 
 	fileprivate func block(fromIndex index: Int) -> Int {
+		print(">>> Entering block(index=\(index))")
 		let block = Int(ceil((-3.0 + sqrt(9.0 + 8.0 * Double(index))) / 2))
+		print("block(index=\(index)): block → \(block)")
+		print("<<< Exiting block(index=\(index))")
 		return block
 	}
 
 	fileprivate func innerBlockIndex(fromIndex index: Int, fromBlock block: Int) -> Int {
+		print(">>> Entering innerBlockIndex(index=\(index),block=\(block))")
+		print("<<< Exiting innerBlockIndex(index=\(index),block=\(block))")
 		return index - block * (block + 1) / 2
 	}
 
 	// MARK: - Behavior
 
 	fileprivate mutating func growIfNeeded() {
+		print(">>> Entering growIfNeeded()")
 		if capacity - blocks.count < count + 1 {
 			let newArray = [T?](repeating: nil, count: blocks.count + 1)
 			blocks.append(newArray)
 		}
+			print("growIfNeeded(): newArray → \(newArray)")
+		print("<<< Exiting growIfNeeded()")
 	}
 
 	fileprivate mutating func shrinkIfNeeded() {
+		print(">>> Entering shrinkIfNeeded()")
 		if capacity + blocks.count >= count {
 			while blocks.count > 0 && (blocks.count - 2) * (blocks.count - 1) / 2 >= count {
 				blocks.remove(at: blocks.count - 1)
 			}
 		}
+		print("<<< Exiting shrinkIfNeeded()")
 	}
 
 	public subscript(index: Int) -> T {
@@ -85,6 +95,7 @@ public struct RootishArrayStack<T> {
 	}
 
 	public mutating func insert(element: T, atIndex index: Int) {
+		print(">>> Entering insert(element=\(element),index=\(index))")
 		growIfNeeded()
 		internalCount += 1
 		var i = count - 1
@@ -93,19 +104,27 @@ public struct RootishArrayStack<T> {
 			i -= 1
 		}
 		self[index] = element
+		print("<<< Exiting insert(element=\(element),index=\(index))")
 	}
 
 	public mutating func append(element: T) {
+		print(">>> Entering append(element=\(element))")
 		insert(element: element, atIndex: count)
+		print("<<< Exiting append(element=\(element))")
 	}
 
 	fileprivate mutating func makeNil(atIndex index: Int) {
+		print(">>> Entering makeNil(index=\(index))")
 		let block = self.block(fromIndex: index)
 		let innerBlockIndex = self.innerBlockIndex(fromIndex: index, fromBlock: block)
 		blocks[block][innerBlockIndex] = nil
+		print("makeNil(index=\(index)): innerBlockIndex → \(innerBlockIndex)")
+		print("makeNil(index=\(index)): block → \(block)")
+		print("<<< Exiting makeNil(index=\(index))")
 	}
 
 	public mutating func remove(atIndex index: Int) -> T {
+		print(">>> Entering remove(index=\(index))")
 		let element = self[index]
 		for i in index..<count - 1 {
 			self[i] = self[i + 1]
@@ -113,6 +132,7 @@ public struct RootishArrayStack<T> {
 		internalCount -= 1
 		makeNil(atIndex: count)
 		shrinkIfNeeded()
+		print("<<< Exiting remove(index=\(index))")
 		return element
 	}
 

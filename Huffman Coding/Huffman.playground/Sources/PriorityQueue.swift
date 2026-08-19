@@ -30,14 +30,20 @@ public struct PriorityQueue<T> {
   }
 
   public func peek() -> T? {
+	print(">>> Entering peek()")
+	print("<<< Exiting peek()")
     return heap.peek()
   }
 
   public mutating func enqueue(_ element: T) {
+	print(">>> Entering enqueue(element=\(element))")
     heap.insert(element)
+	print("<<< Exiting enqueue(element=\(element))")
   }
 
   public mutating func dequeue() -> T? {
+	print(">>> Entering dequeue()")
+	print("<<< Exiting dequeue()")
     return heap.remove()
   }
 
@@ -47,12 +53,16 @@ public struct PriorityQueue<T> {
     it should be smaller.
   */
   public mutating func changePriority(index i: Int, value: T) {
+	print(">>> Entering changePriority(i=\(i),value=\(value))")
+	print("<<< Exiting changePriority(i=\(i),value=\(value))")
     return heap.replace(index: i, value: value)
   }
 }
 
 extension PriorityQueue where T: Equatable {
   public func indexOf(element: T) -> Int? {
+	print(">>> Entering indexOf(element=\(element))")
+	print("<<< Exiting indexOf(element=\(element))")
     return heap.index(of: element)
   }
 }

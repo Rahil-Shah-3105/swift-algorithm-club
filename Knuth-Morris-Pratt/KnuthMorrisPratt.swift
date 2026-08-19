@@ -11,10 +11,13 @@ import Foundation
 extension String {
   
   func indexesOf(ptnr: String) -> [Int]? {
+	print(">>> Entering indexesOf(ptnr=\(ptnr))")
     
     let text = Array(self)
     let pattern = Array(ptnr)
     
+	print("indexesOf(ptnr=\(ptnr)): text → \(text)")
+	print("indexesOf(ptnr=\(ptnr)): pattern → \(pattern)")
     let textLength: Int = text.count
     let patternLength: Int = pattern.count
     
@@ -30,8 +33,10 @@ extension String {
     /* Pre-processing stage: computing the table for the shifts (through Z-Algorithm) */
     let zeta = ZetaAlgorithm(ptnr: ptnr)
     
+	print("indexesOf(ptnr=\(ptnr)): zeta → \(zeta)")
     for patternIndex in (1 ..< patternLength).reversed() {
       textIndex = patternIndex + zeta![patternIndex] - 1
+	print("indexesOf(ptnr=\(ptnr)): textIndex → \(textIndex)")
       suffixPrefix[textIndex] = zeta![patternIndex]
     }
     
@@ -58,6 +63,7 @@ extension String {
     }
     
     guard !indexes.isEmpty else {
+	print("<<< Exiting indexesOf(ptnr=\(ptnr))")
       return nil
     }
     return indexes

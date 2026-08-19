@@ -28,11 +28,15 @@ public func < (x: Player, y: Player) -> Bool {
 
 // Prints a Player formatted with their name and number of points.
 public func print(player: Player) {
+print(">>> Entering print(player=\(player))")
   print("Player: \(player.name) | Points: \(player.points)")
+print("<<< Exiting print(player=\(player))")
 }
 
 public func print(set: SortedSet<Player>) {
+print(">>> Entering print(set=\(set))")
   for i in 0..<set.count {
     print(set[set.count - i - 1])
   }
+print("<<< Exiting print(set=\(set))")
 }

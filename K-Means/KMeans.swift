@@ -12,25 +12,31 @@ class KMeans<Label: Hashable> {
   }
 
   private func indexOfNearestCenter(_ x: Vector, centers: [Vector]) -> Int {
+	print(">>> Entering indexOfNearestCenter(x=\(x),centers=\(centers))")
     var nearestDist = Double.greatestFiniteMagnitude
     var minIndex = 0
 
     for (idx, center) in centers.enumerated() {
       let dist = x.distanceTo(center)
       if dist < nearestDist {
+	print("indexOfNearestCenter(x=\(x),centers=\(centers)): dist → \(dist)")
         minIndex = idx
         nearestDist = dist
       }
     }
+	print("<<< Exiting indexOfNearestCenter(x=\(x),centers=\(centers))")
     return minIndex
   }
 
   func trainCenters(_ points: [Vector], convergeDistance: Double) {
+	print(">>> Entering trainCenters(points=\(points),convergeDistance=\(convergeDistance))")
     let zeroVector = Vector([Double](repeating: 0, count: points[0].length))
 
+	print("trainCenters(points=\(points),convergeDistance=\(convergeDistance)): zeroVector → \(zeroVector)")
     // Randomly take k objects from the input data to make the initial centroids.
     var centers = reservoirSample(points, k: numCenters)
 
+	print("trainCenters(points=\(points),convergeDistance=\(convergeDistance)): centers → \(centers)")
     var centerMoveDist = 0.0
     repeat {
       // This array keeps track of which data points belong to which centroids.
@@ -41,6 +47,7 @@ class KMeans<Label: Hashable> {
         let classIndex = indexOfNearestCenter(p, centers: centers)
         classification[classIndex].append(p)
       }
+		print("trainCenters(points=\(points),convergeDistance=\(convergeDistance)): classIndex → \(classIndex)")
 
       // Take the average of all the data points that belong to each centroid.
       // This moves the centroid to a new position.
@@ -59,26 +66,35 @@ class KMeans<Label: Hashable> {
     } while centerMoveDist > convergeDistance
 
     centroids = centers
+	print("trainCenters(points=\(points),convergeDistance=\(convergeDistance)): centroids → \(centroids)")
+	print("<<< Exiting trainCenters(points=\(points),convergeDistance=\(convergeDistance))")
   }
 
   func fit(_ point: Vector) -> Label {
+	print(">>> Entering fit(point=\(point))")
     assert(!centroids.isEmpty, "Exception: KMeans tried to fit on a non trained model.")
 
     let centroidIndex = indexOfNearestCenter(point, centers: centroids)
+	print("fit(point=\(point)): centroidIndex → \(centroidIndex)")
     return labels[centroidIndex]
+	print(">>> Entering fit(points=\(points))")
+	print("<<< Exiting fit(points=\(points))")
   }
 
   func fit(_ points: [Vector]) -> [Label] {
     assert(!centroids.isEmpty, "Exception: KMeans tried to fit on a non trained model.")
 
+	print("<<< Exiting fit(point=\(point))")
     return points.map(fit)
   }
 }
 
 // Pick k random elements from samples
 func reservoirSample<T>(_ samples: [T], k: Int) -> [T] {
+print(">>> Entering reservoirSample(samples=\(samples),k=\(k))")
   var result = [T]()
 
+print("reservoirSample(samples=\(samples),k=\(k)): result → \(result)")
   // Fill the result array with first k elements
   for i in 0..<k {
     result.append(samples[i])
@@ -91,5 +107,6 @@ func reservoirSample<T>(_ samples: [T], k: Int) -> [T] {
       result[j] = samples[i]
     }
   }
+print("<<< Exiting reservoirSample(samples=\(samples),k=\(k))")
   return result
 }

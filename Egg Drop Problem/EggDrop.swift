@@ -1,4 +1,5 @@
 public func eggDrop(numberOfEggs: Int, numberOfFloors: Int) -> Int {
+	print(">>> Entering eggDrop(numberOfEggs=\(numberOfEggs),numberOfFloors=\(numberOfFloors))")
     if numberOfEggs == 0 || numberOfFloors == 0{ //edge case: When either number of eggs or number of floors is 0, answer is 0
         return 0
     }
@@ -7,6 +8,7 @@ public func eggDrop(numberOfEggs: Int, numberOfFloors: Int) -> Int {
     }
     
     var eggFloor = [[Int]](repeating: [Int](repeating: 0, count: numberOfFloors+1), count: numberOfEggs+1) //egg(rows) floor(cols) array to store the solutions
+	print("eggDrop(numberOfEggs=\(numberOfEggs),numberOfFloors=\(numberOfFloors)): eggFloor → \(eggFloor)")
     var attempts: Int = 0
     
     for var floorNumber in (0..<(numberOfFloors+1)){
@@ -22,6 +24,7 @@ public func eggDrop(numberOfEggs: Int, numberOfFloors: Int) -> Int {
                 //case 1: egg breaks. meaning we'll have one less egg, and we'll have to go downstairs -> visitingFloor-1
                 //case 2: egg doesn't break. meaning we'll still have 'eggs' number of eggs, and we'll go upstairs -> floorNumber-visitingFloor
                 attempts = 1 + max(eggFloor[eggNumber-1][visitingFloor-1], eggFloor[eggNumber][floorNumber-visitingFloor])//we add one taking into account the attempt we're taking at the moment
+				print("eggDrop(numberOfEggs=\(numberOfEggs),numberOfFloors=\(numberOfFloors)): attempts → \(attempts)")
                 
                 if attempts < eggFloor[eggNumber][floorNumber]{ //finding the min
                     eggFloor[eggNumber][floorNumber] = attempts;
@@ -30,10 +33,13 @@ public func eggDrop(numberOfEggs: Int, numberOfFloors: Int) -> Int {
         }
     }
     
+	print("<<< Exiting eggDrop(numberOfEggs=\(numberOfEggs),numberOfFloors=\(numberOfFloors))")
     return eggFloor[numberOfEggs][numberOfFloors]
 }
 
 //Helper function to find max of two integers
 public func max(_ x1: Int, _ x2: Int) -> Int{
+	print(">>> Entering max(x1=\(x1),x2=\(x2))")
+	print("<<< Exiting max(x1=\(x1),x2=\(x2))")
     return x1 > x2 ? x1 : x2
 }

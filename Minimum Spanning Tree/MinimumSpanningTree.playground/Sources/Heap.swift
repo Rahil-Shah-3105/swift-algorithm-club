@@ -44,9 +44,12 @@ public struct Heap<T> {
    * Performance: This runs pretty much in O(n).
    */
   fileprivate mutating func buildHeap(fromArray array: [T]) {
+	print(">>> Entering buildHeap(array=\(array))")
     elements = array
     for i in stride(from: (elements.count/2 - 1), through: 0, by: -1) {
+	print("buildHeap(array=\(array)): elements → \(elements)")
       shiftDown(i, heapSize: elements.count)
+	print("<<< Exiting buildHeap(array=\(array))")
     }
   }
 
@@ -89,6 +92,8 @@ public struct Heap<T> {
    * value (for a min-heap).
    */
   public func peek() -> T? {
+	print(">>> Entering peek()")
+	print("<<< Exiting peek()")
     return elements.first
   }
 
@@ -97,14 +102,18 @@ public struct Heap<T> {
    * or min-heap property still holds. Performance: O(log n).
    */
   public mutating func insert(_ value: T) {
+	print(">>> Entering insert(value=\(value))")
     elements.append(value)
     shiftUp(elements.count - 1)
+	print("<<< Exiting insert(value=\(value))")
   }
 
   public mutating func insert<S: Sequence>(_ sequence: S) where S.Iterator.Element == T {
+	print(">>> Entering insert(sequence=\(sequence))")
     for value in sequence {
       insert(value)
     }
+	print("<<< Exiting insert(sequence=\(sequence))")
   }
 
   /**
@@ -112,11 +121,13 @@ public struct Heap<T> {
    * larger than the old one; in a min-heap it should be smaller.
    */
   public mutating func replace(index i: Int, value: T) {
+	print(">>> Entering replace(i=\(i),value=\(value))")
     guard i < elements.count else { return }
 
     assert(isOrderedBefore(value, elements[i]))
     elements[i] = value
     shiftUp(i)
+	print("<<< Exiting replace(i=\(i),value=\(value))")
   }
 
   /**
@@ -124,6 +135,7 @@ public struct Heap<T> {
    * value; for a min-heap it is the minimum value. Performance: O(log n).
    */
   @discardableResult public mutating func remove() -> T? {
+	print(">>> Entering remove()")
     if elements.isEmpty {
       return nil
     } else if elements.count == 1 {
@@ -134,8 +146,12 @@ public struct Heap<T> {
       let value = elements[0]
       elements[0] = elements.removeLast()
       shiftDown()
+	print("<<< Exiting remove()")
       return value
     }
+	print(">>> Entering shiftUp(index=\(index))")
+	print("shiftUp(index=\(index)): parentIndex → \(parentIndex)")
+	print("<<< Exiting shiftUp(index=\(index))")
   }
 
   /**
@@ -143,6 +159,7 @@ public struct Heap<T> {
    * to know the node's index, which may actually take O(n) steps to find.
    */
   public mutating func removeAt(_ index: Int) -> T? {
+	print(">>> Entering removeAt(index=\(index))")
     guard index < elements.count else { return nil }
 
     let size = elements.count - 1
@@ -151,6 +168,7 @@ public struct Heap<T> {
       shiftDown(index, heapSize: size)
       shiftUp(index)
     }
+	print("<<< Exiting removeAt(index=\(index))")
     return elements.removeLast()
   }
 
@@ -173,7 +191,9 @@ public struct Heap<T> {
   }
 
   mutating func shiftDown() {
+	print(">>> Entering shiftDown()")
     shiftDown(0, heapSize: elements.count)
+	print("<<< Exiting shiftDown()")
   }
 
   /**
@@ -181,11 +201,13 @@ public struct Heap<T> {
    * smaller (min-heap) than its childeren.
    */
   mutating func shiftDown(_ index: Int, heapSize: Int) {
+	print(">>> Entering shiftDown(index=\(index),heapSize=\(heapSize))")
     var parentIndex = index
 
     while true {
       let leftChildIndex = self.leftChildIndex(ofIndex: parentIndex)
       let rightChildIndex = leftChildIndex + 1
+	print("shiftDown(index=\(index),heapSize=\(heapSize)): leftChildIndex → \(leftChildIndex)")
 
       // Figure out which comes first if we order them by the sort function:
       // the parent, the left child, or the right child. If the parent comes
@@ -203,6 +225,7 @@ public struct Heap<T> {
       elements.swapAt(parentIndex,first)
       parentIndex = first
     }
+	print("<<< Exiting shiftDown(index=\(index),heapSize=\(heapSize))")
   }
 }
 
@@ -213,6 +236,9 @@ extension Heap where T: Equatable {
    * Searches the heap for the given element. Performance: O(n).
    */
   public func index(of element: T) -> Int? {
+	print(">>> Entering index(element=\(element))")
+	print(">>> Entering index(element=\(element),i=\(i))")
+	print("<<< Exiting index(element=\(element))")
     return index(of: element, 0)
   }
 

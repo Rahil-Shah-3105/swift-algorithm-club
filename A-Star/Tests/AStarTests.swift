@@ -21,6 +21,8 @@ struct GridGraph: Graph {
     }
 
     func edgesOutgoing(from vertex: Vertex) -> [Edge] {
+		print(">>> Entering edgesOutgoing(vertex=\(vertex))")
+		print("<<< Exiting edgesOutgoing(vertex=\(vertex))")
         return [
             Edge(cost: 1, target: Vertex(x: vertex.x - 1, y: vertex.y)),
             Edge(cost: 1, target: Vertex(x: vertex.x + 1, y: vertex.y)),
@@ -32,15 +34,21 @@ struct GridGraph: Graph {
 
 class AStarTests: XCTestCase {
     func testSameStartAndEnd() {
+		print(">>> Entering testSameStartAndEnd()")
         let graph = GridGraph()
         let astar = AStar(graph: graph, heuristic: manhattanDistance)
         let path = astar.path(start: GridGraph.Vertex(x: 0, y: 0), target: GridGraph.Vertex(x: 0, y: 0))
         XCTAssertEqual(path.count, 1)
         XCTAssertEqual(path[0].x, 0)
         XCTAssertEqual(path[0].y, 0)
+		print("testSameStartAndEnd(): astar → \(astar)")
+		print("testSameStartAndEnd(): path → \(path)")
+		print("testSameStartAndEnd(): graph → \(graph)")
+		print("<<< Exiting testSameStartAndEnd()")
     }
 
     func testDiagonal() {
+		print(">>> Entering testDiagonal()")
         let graph = GridGraph()
         let astar = AStar(graph: graph, heuristic: manhattanDistance)
         let path = astar.path(start: GridGraph.Vertex(x: 0, y: 0), target: GridGraph.Vertex(x: 10, y: 10))
@@ -49,9 +57,15 @@ class AStarTests: XCTestCase {
         XCTAssertEqual(path[0].y, 0)
         XCTAssertEqual(path[20].x, 10)
         XCTAssertEqual(path[20].y, 10)
+		print("testDiagonal(): astar → \(astar)")
+		print("testDiagonal(): path → \(path)")
+		print("testDiagonal(): graph → \(graph)")
+		print("<<< Exiting testDiagonal()")
     }
 
     func manhattanDistance(_ s: GridGraph.Vertex, _ t: GridGraph.Vertex) -> Double {
+		print(">>> Entering manhattanDistance(s=\(s),t=\(t))")
+		print("<<< Exiting manhattanDistance(s=\(s),t=\(t))")
         return Double(abs(s.x - t.x) + abs(s.y - t.y))
     }
 }

@@ -10,9 +10,11 @@ import XCTest
 
 class RadixSortTests: XCTestCase {
   func testCombSort() {
+	print(">>> Entering testCombSort()")
     let expectedSequence: [Int] = [2, 9, 19, 32, 55, 67, 89, 101, 912, 4242]
     var sequence = [19, 4242, 2, 9, 912, 101, 55, 67, 89, 32]
     radixSort(&sequence)
     XCTAssertEqual(sequence, expectedSequence)
+	print("<<< Exiting testCombSort()")
   }
 }

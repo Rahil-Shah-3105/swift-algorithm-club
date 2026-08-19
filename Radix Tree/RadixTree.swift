@@ -10,6 +10,7 @@ public class Root {
 
   // Returns the length (in number of edges) of the longest traversal down the tree.
   public func height() -> Int {
+	print(">>> Entering height()")
     // Base case: no children: the tree has a height of 1
     if children.count == 0 {
       return 1
@@ -22,6 +23,7 @@ public class Root {
           max = c.height()
         }
       }
+	print("<<< Exiting height()")
       return 1 + max
     }
   }
@@ -29,11 +31,13 @@ public class Root {
   // Returns how far down in the tree a Root/Edge is.
   // A root's level is always 0.
   public func level() -> Int {
+	print("<<< Exiting level()")
     return 0
   }
 
   // Prints the tree for debugging/visualization purposes.
   public func printRoot() {
+	print(">>> Entering printRoot()")
     // Print the first half of the children
     if children.count > 1 {
       for c in 0...children.count/2-1 {
@@ -53,6 +57,7 @@ public class Root {
       }
     }
     print()
+	print("<<< Exiting printRoot()")
   }
 }
 
@@ -80,18 +85,22 @@ public class Edge: Root {
 
   // Erases a specific edge (and all edges below it in the tree).
   public func erase() {
+	print(">>> Entering erase()")
     self.parent = nil
     if children.count > 0 {
+	print("erase(): self.parent → \(self.parent)")
       // For each child, erase it, then remove it from the children array.
       for _ in 0...children.count-1 {
         children[0].erase()
         children.remove(at: 0)
       }
     }
+	print("<<< Exiting erase()")
   }
 
   // Prints the tree for debugging/visualization purposes.
   public func printEdge() {
+	print(">>> Entering printEdge()")
     // Print the first half of the edge's children
     if children.count > 1 {
       for c in 0...children.count/2-1 {
@@ -121,6 +130,7 @@ public class Edge: Root {
         children[c].printEdge()
       }
     }
+	print("<<< Exiting printEdge()")
   }
 }
 
@@ -138,6 +148,7 @@ public class RadixTree {
 
   // Inserts a string into the tree.
   public func insert(_ str: String) -> Bool {
+	print(">>> Entering insert(str=\(str))")
     //Account for a blank input. The empty string is already in the tree.
     if str == "" {
       return false
@@ -159,6 +170,7 @@ public class RadixTree {
         let newEdge = Edge(searchStr)
         currEdge.children.append(newEdge)
         newEdge.parent = currEdge
+		print("insert(str=\(str)): newEdge → \(newEdge)")
         return true
       }
 
@@ -168,6 +180,7 @@ public class RadixTree {
         // search string
         let shared = sharedPrefix(searchStr, e.label)
         var index  = shared.startIndex
+		print("insert(str=\(str)): shared → \(shared)")
 
         // If the search string is equal to the shared string,
         // the string already exists in the tree
@@ -208,6 +221,7 @@ public class RadixTree {
           // Create 2 new edges and update parent/children values
           let newEdge = Edge(e.label)
           e.label = shared
+		print("insert(str=\(str)): e.label → \(e.label)")
           for ec in e.children {
             newEdge.children.append(ec)
           }
@@ -215,10 +229,13 @@ public class RadixTree {
           e.children.removeAll()
           for nec in newEdge.children {
             nec.parent = newEdge
+			print("insert(str=\(str)): nec.parent → \(nec.parent)")
           }
           e.children.append(newEdge)
           let newEdge2 = Edge(searchStr)
           newEdge2.parent = e
+		print("insert(str=\(str)): newEdge2 → \(newEdge2)")
+		print("insert(str=\(str)): newEdge2.parent → \(newEdge2.parent)")
           e.children.append(newEdge2)
           return true
         }
@@ -230,6 +247,7 @@ public class RadixTree {
         let newEdge = Edge(searchStr)
         currEdge.children.append(newEdge)
         newEdge.parent = currEdge
+		print("<<< Exiting insert(str=\(str))")
         return true
       }
     }
@@ -237,6 +255,7 @@ public class RadixTree {
 
   // Tells you if a string is in the tree
   public func find(_ str: String) -> Bool {
+	print(">>> Entering find(str=\(str))")
     // A radix tree always contains the empty string
     if str == "" {
       return true
@@ -261,6 +280,7 @@ public class RadixTree {
         // and the label
         let shared = sharedPrefix(searchStr, c.label)
 
+		print("find(str=\(str)): shared → \(shared)")
         // If the shared string is equal to the label, update the curent node,
         // break the loop, and run it back
         if shared == c.label {
@@ -294,6 +314,7 @@ public class RadixTree {
 
       // If nothing was found, return false
       if !found {
+		print("<<< Exiting find(str=\(str))")
         return false
       }
     }
@@ -301,6 +322,7 @@ public class RadixTree {
 
   // Removes a string from the tree
   public func remove(_ str: String) -> Bool {
+	print(">>> Entering remove(str=\(str))")
     // Removing the empty string removes everything in the tree
     if str == "" {
       for c in root.children {
@@ -336,6 +358,7 @@ public class RadixTree {
         // Find the shared string
         let shared = sharedPrefix(searchStr, currEdge.children[c].label)
 
+		print("remove(str=\(str)): shared → \(shared)")
         // If the shared string is equal to the child's string, go down a level
         if shared == currEdge.children[c].label {
           currEdge = currEdge.children[c]
@@ -351,6 +374,7 @@ public class RadixTree {
 
       // If there is no match, then the searchStr is not in the tree
       if !found {
+		print("<<< Exiting remove(str=\(str))")
         return false
       }
     }
@@ -358,13 +382,16 @@ public class RadixTree {
 
   // Prints the tree by calling the root's print function
   public func printTree() {
+	print(">>> Entering printTree()")
     root.printRoot()
+	print("<<< Exiting printTree()")
   }
 }
 
 // Returns the prefix that is shared between the two input strings
 // i.e. sharedPrefix("court", "coral") -> "co"
 public func sharedPrefix(_ str1: String, _ str2: String) -> String {
+print(">>> Entering sharedPrefix(str1=\(str1),str2=\(str2))")
   var temp = ""
   var c1 = str1.startIndex
   var c2 = str2.startIndex
@@ -377,5 +404,6 @@ public func sharedPrefix(_ str1: String, _ str2: String) -> String {
       return temp
     }
   }
+print("<<< Exiting sharedPrefix(str1=\(str1),str2=\(str2))")
   return temp
 }

@@ -3,13 +3,16 @@ import XCTest
 class ShortestPathTests: XCTestCase {
   
   func testSwift4() {
+	print(">>> Entering testSwift4()")
     // last checked with Xcode 9.0b4
     #if swift(>=4.0)
       print("Hello, Swift 4!")
     #endif
+	print("<<< Exiting testSwift4()")
   }
 
   func testShortestPathWhenGivenTree() {
+	print(">>> Entering testShortestPathWhenGivenTree()")
     let tree = Graph()
     let nodeA = tree.addNode(label: "a")
     let nodeB = tree.addNode(label: "b")
@@ -27,8 +30,18 @@ class ShortestPathTests: XCTestCase {
     tree.addEdge(nodeC, neighbor: nodeG)
     tree.addEdge(nodeE, neighbor: nodeH)
 
+	print("testShortestPathWhenGivenTree(): nodeA → \(nodeA)")
+	print("testShortestPathWhenGivenTree(): nodeB → \(nodeB)")
+	print("testShortestPathWhenGivenTree(): nodeC → \(nodeC)")
+	print("testShortestPathWhenGivenTree(): nodeD → \(nodeD)")
+	print("testShortestPathWhenGivenTree(): nodeE → \(nodeE)")
+	print("testShortestPathWhenGivenTree(): nodeF → \(nodeF)")
+	print("testShortestPathWhenGivenTree(): nodeG → \(nodeG)")
+	print("testShortestPathWhenGivenTree(): nodeH → \(nodeH)")
+	print("testShortestPathWhenGivenTree(): tree → \(tree)")
     let shortestPaths = breadthFirstSearchShortestPath(graph: tree, source: nodeA)
 
+	print("testShortestPathWhenGivenTree(): shortestPaths → \(shortestPaths)")
     XCTAssertEqual(shortestPaths.findNodeWithLabel(label: nodeA.label).distance, 0)
     XCTAssertEqual(shortestPaths.findNodeWithLabel(label: nodeB.label).distance, 1)
     XCTAssertEqual(shortestPaths.findNodeWithLabel(label: nodeC.label).distance, 1)
@@ -37,11 +50,23 @@ class ShortestPathTests: XCTestCase {
     XCTAssertEqual(shortestPaths.findNodeWithLabel(label: nodeF.label).distance, 2)
     XCTAssertEqual(shortestPaths.findNodeWithLabel(label: nodeG.label).distance, 2)
     XCTAssertEqual(shortestPaths.findNodeWithLabel(label: nodeH.label).distance, 3)
+	print("<<< Exiting testShortestPathWhenGivenTree()")
   }
 
   func testShortestPathWhenGivenGraph() {
+	print(">>> Entering testShortestPathWhenGivenGraph()")
     let graph = Graph()
 
+	print("testShortestPathWhenGivenGraph(): graph → \(graph)")
+	print("testShortestPathWhenGivenGraph(): nodeA → \(nodeA)")
+	print("testShortestPathWhenGivenGraph(): nodeB → \(nodeB)")
+	print("testShortestPathWhenGivenGraph(): nodeC → \(nodeC)")
+	print("testShortestPathWhenGivenGraph(): nodeD → \(nodeD)")
+	print("testShortestPathWhenGivenGraph(): nodeE → \(nodeE)")
+	print("testShortestPathWhenGivenGraph(): nodeF → \(nodeF)")
+	print("testShortestPathWhenGivenGraph(): nodeG → \(nodeG)")
+	print("testShortestPathWhenGivenGraph(): nodeH → \(nodeH)")
+	print("testShortestPathWhenGivenGraph(): nodeI → \(nodeI)")
     let nodeA = graph.addNode(label:"a")
     let nodeB = graph.addNode(label:"b")
     let nodeC = graph.addNode(label:"c")
@@ -83,6 +108,7 @@ class ShortestPathTests: XCTestCase {
 
     let shortestPaths = breadthFirstSearchShortestPath(graph: graph, source: nodeA)
 
+	print("testShortestPathWhenGivenGraph(): shortestPaths → \(shortestPaths)")
     XCTAssertEqual(shortestPaths.findNodeWithLabel(label: nodeA.label).distance, 0)
     XCTAssertEqual(shortestPaths.findNodeWithLabel(label: nodeB.label).distance, 1)
     XCTAssertEqual(shortestPaths.findNodeWithLabel(label: nodeC.label).distance, 2)
@@ -92,5 +118,6 @@ class ShortestPathTests: XCTestCase {
     XCTAssertEqual(shortestPaths.findNodeWithLabel(label: nodeG.label).distance, 2)
     XCTAssertEqual(shortestPaths.findNodeWithLabel(label: nodeH.label).distance, 1)
     XCTAssertEqual(shortestPaths.findNodeWithLabel(label: nodeI.label).distance, 2)
+	print("<<< Exiting testShortestPathWhenGivenGraph()")
   }
 }

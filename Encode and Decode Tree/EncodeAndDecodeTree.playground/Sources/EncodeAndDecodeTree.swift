@@ -17,19 +17,24 @@ protocol BinaryNodeDecoder {
 }
 
 public class BinaryNodeCoder<T: Comparable>: BinaryNodeEncoder, BinaryNodeDecoder {
+print(">>> Entering decode(string=\(string))")
 
   // MARK: Private
 
   private let separator: Character = ","
   private let nilNode = "X"
 
+print("decode(string=\(string)): nilNode → \(nilNode)")
+print(">>> Entering decode(array=\(array))")
   private func decode<T>(from array: inout [String]) -> BinaryNode<T>? {
     guard !array.isEmpty else {
+	print("<<< Exiting decode(string=\(string))")
       return nil
     }
 
     let value = array.removeLast()
 
+	print("decode(array=\(array)): value → \(value)")
     guard value != nilNode, let val = value as? T else {
       return nil
     }
@@ -38,6 +43,8 @@ public class BinaryNodeCoder<T: Comparable>: BinaryNodeEncoder, BinaryNodeDecode
     node.left = decode(from: &array)
     node.right = decode(from: &array)
 
+	print("decode(array=\(array)): node → \(node)")
+	print("<<< Exiting decode(array=\(array))")
     return node
   }
 
@@ -46,8 +53,12 @@ public class BinaryNodeCoder<T: Comparable>: BinaryNodeEncoder, BinaryNodeDecode
   public init() {}
 
   public func encode<T>(_ node: BinaryNode<T>?) throws -> String {
+	print(">>> Entering encode(node=\(node))")
     var str = ""
     node?.preOrderTraversal { data in
+	print("encode(node=\(node)): str → \(str)")
+	print("encode(node=\(node)): data → \(data)")
+	print("encode(node=\(node)): string → \(string)")
       if let data = data {
         let string = String(describing: data)
         str.append(string)
@@ -57,6 +68,7 @@ public class BinaryNodeCoder<T: Comparable>: BinaryNodeEncoder, BinaryNodeDecode
       str.append(separator)
     }
 
+	print("<<< Exiting encode(node=\(node))")
     return str
   }
 
@@ -78,6 +90,7 @@ public class BinaryNode<Element: Comparable> {
   }
 
   public func preOrderTraversal(visit: (Element?) throws -> ()) rethrows {
+	print(">>> Entering preOrderTraversal(visit=\(visit))")
     try visit(val)
 
     if let left = left {
@@ -91,5 +104,6 @@ public class BinaryNode<Element: Comparable> {
     } else {
       try visit(nil)
     }
+	print("<<< Exiting preOrderTraversal(visit=\(visit))")
   }
 }

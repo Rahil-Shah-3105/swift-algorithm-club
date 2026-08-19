@@ -3,14 +3,26 @@ import XCTest
 class DepthFirstSearchTests: XCTestCase {
     
     func testSwift4(){
+		print(">>> Entering testSwift4()")
         // last checked with Xcode 9.0b4
         #if swift(>=4.0)
             print("Hello, Swift 4!")
         #endif
+		print("<<< Exiting testSwift4()")
     }
     func testExploringTree() {
+		print(">>> Entering testExploringTree()")
         let tree = Graph()
         
+		print("testExploringTree(): tree → \(tree)")
+		print("testExploringTree(): nodeA → \(nodeA)")
+		print("testExploringTree(): nodeB → \(nodeB)")
+		print("testExploringTree(): nodeC → \(nodeC)")
+		print("testExploringTree(): nodeD → \(nodeD)")
+		print("testExploringTree(): nodeE → \(nodeE)")
+		print("testExploringTree(): nodeF → \(nodeF)")
+		print("testExploringTree(): nodeG → \(nodeG)")
+		print("testExploringTree(): nodeH → \(nodeH)")
         let nodeA = tree.addNode("a")
         let nodeB = tree.addNode("b")
         let nodeC = tree.addNode("c")
@@ -30,12 +42,25 @@ class DepthFirstSearchTests: XCTestCase {
         
         let nodesExplored = depthFirstSearch(tree, source: nodeA)
         
+		print("testExploringTree(): nodesExplored → \(nodesExplored)")
         XCTAssertEqual(nodesExplored, ["a", "b", "d", "e", "h", "c", "f", "g"])
+		print("<<< Exiting testExploringTree()")
     }
     
     func testExploringDigraph() {
+		print(">>> Entering testExploringDigraph()")
         let digraph = Graph()
         
+		print("testExploringDigraph(): digraph → \(digraph)")
+		print("testExploringDigraph(): nodeA → \(nodeA)")
+		print("testExploringDigraph(): nodeB → \(nodeB)")
+		print("testExploringDigraph(): nodeC → \(nodeC)")
+		print("testExploringDigraph(): nodeD → \(nodeD)")
+		print("testExploringDigraph(): nodeE → \(nodeE)")
+		print("testExploringDigraph(): nodeF → \(nodeF)")
+		print("testExploringDigraph(): nodeG → \(nodeG)")
+		print("testExploringDigraph(): nodeH → \(nodeH)")
+		print("testExploringDigraph(): nodeI → \(nodeI)")
         let nodeA = digraph.addNode("a")
         let nodeB = digraph.addNode("b")
         let nodeC = digraph.addNode("c")
@@ -77,15 +102,22 @@ class DepthFirstSearchTests: XCTestCase {
         
         let nodesExplored = depthFirstSearch(digraph, source: nodeA)
         
+		print("testExploringDigraph(): nodesExplored → \(nodesExplored)")
         XCTAssertEqual(nodesExplored, ["a", "b", "c", "d", "e", "f", "g", "h", "i"])
+		print("<<< Exiting testExploringDigraph()")
     }
     
     func testExploringDigraphWithASingleNode() {
+		print(">>> Entering testExploringDigraphWithASingleNode()")
         let digraph = Graph()
         let node = digraph.addNode("a")
         
+		print("testExploringDigraphWithASingleNode(): node → \(node)")
+		print("testExploringDigraphWithASingleNode(): digraph → \(digraph)")
+		print("testExploringDigraphWithASingleNode(): nodesExplored → \(nodesExplored)")
         let nodesExplored = depthFirstSearch(digraph, source: node)
         
         XCTAssertEqual(nodesExplored, ["a"])
+		print("<<< Exiting testExploringDigraphWithASingleNode()")
     }
 }

@@ -41,10 +41,13 @@ public struct Heap<T> {
    * Performance: This runs pretty much in O(n).
    */
   private mutating func configureHeap(from array: [T]) {
+	print(">>> Entering configureHeap(array=\(array))")
     nodes = array
     for i in stride(from: (nodes.count/2-1), through: 0, by: -1) {
+	print("configureHeap(array=\(array)): nodes → \(nodes)")
       shiftDown(i)
     }
+	print("<<< Exiting configureHeap(array=\(array))")
   }
   
   public var isEmpty: Bool {
@@ -86,6 +89,8 @@ public struct Heap<T> {
    * value (for a min-heap).
    */
   public func peek() -> T? {
+	print(">>> Entering peek()")
+	print("<<< Exiting peek()")
     return nodes.first
   }
   
@@ -94,8 +99,10 @@ public struct Heap<T> {
    * or min-heap property still holds. Performance: O(log n).
    */
   public mutating func insert(_ value: T) {
+	print(">>> Entering insert(value=\(value))")
     nodes.append(value)
     shiftUp(nodes.count - 1)
+	print("<<< Exiting insert(value=\(value))")
   }
   
   /**
@@ -103,9 +110,11 @@ public struct Heap<T> {
    * the max-heap or min-heap property still holds. Performance: O(log n).
    */
   public mutating func insert<S: Sequence>(_ sequence: S) where S.Iterator.Element == T {
+	print(">>> Entering insert(sequence=\(sequence))")
     for value in sequence {
       insert(value)
     }
+	print("<<< Exiting insert(sequence=\(sequence))")
   }
   
   /**
@@ -113,10 +122,12 @@ public struct Heap<T> {
    * the max-heap or min-heap property still holds.
    */
   public mutating func replace(index i: Int, value: T) {
+	print(">>> Entering replace(i=\(i),value=\(value))")
     guard i < nodes.count else { return }
     
     remove(at: i)
     insert(value)
+	print("<<< Exiting replace(i=\(i),value=\(value))")
   }
   
   /**
@@ -124,6 +135,7 @@ public struct Heap<T> {
    * value; for a min-heap it is the minimum value. Performance: O(log n).
    */
   @discardableResult public mutating func remove() -> T? {
+	print(">>> Entering remove()")
     guard !nodes.isEmpty else { return nil }
     
     if nodes.count == 1 {
@@ -136,6 +148,9 @@ public struct Heap<T> {
       shiftDown(0)
       return value
     }
+	print(">>> Entering remove(index=\(index))")
+	print("<<< Exiting remove()")
+	print("<<< Exiting remove(index=\(index))")
   }
   
   /**
@@ -152,6 +167,8 @@ public struct Heap<T> {
       shiftUp(index)
     }
     return nodes.removeLast()
+	print(">>> Entering remove(node=\(node))")
+	print("<<< Exiting remove(node=\(node))")
   }
   
   /**
@@ -159,10 +176,12 @@ public struct Heap<T> {
    * (max-heap) or not smaller (min-heap) than the child, we exchange them.
    */
   internal mutating func shiftUp(_ index: Int) {
+	print(">>> Entering shiftUp(index=\(index))")
     var childIndex = index
     let child = nodes[childIndex]
     var parentIndex = self.parentIndex(ofIndex: childIndex)
     
+	print("shiftUp(index=\(index)): parentIndex → \(parentIndex)")
     while childIndex > 0 && orderCriteria(child, nodes[parentIndex]) {
       nodes[childIndex] = nodes[parentIndex]
       childIndex = parentIndex
@@ -170,6 +189,7 @@ public struct Heap<T> {
     }
     
     nodes[childIndex] = child
+	print("<<< Exiting shiftUp(index=\(index))")
   }
   
   /**
@@ -177,8 +197,10 @@ public struct Heap<T> {
    * smaller (min-heap) than its childeren.
    */
   internal mutating func shiftDown(from index: Int, until endIndex: Int) {
+	print(">>> Entering shiftDown(index=\(index),endIndex=\(endIndex))")
     let leftChildIndex = self.leftChildIndex(ofIndex: index)
     let rightChildIndex = leftChildIndex + 1
+	print("shiftDown(index=\(index),endIndex=\(endIndex)): leftChildIndex → \(leftChildIndex)")
     
     // Figure out which comes first if we order them by the sort function:
     // the parent, the left child, or the right child. If the parent comes
@@ -195,10 +217,13 @@ public struct Heap<T> {
     
     nodes.swapAt(index, first)
     shiftDown(from: first, until: endIndex)
+	print("<<< Exiting shiftDown(index=\(index),endIndex=\(endIndex))")
   }
   
   internal mutating func shiftDown(_ index: Int) {
+	print(">>> Entering shiftDown(index=\(index))")
     shiftDown(from: index, until: nodes.count)
+	print("<<< Exiting shiftDown(index=\(index))")
   }
   
 }
@@ -209,6 +234,8 @@ extension Heap where T: Equatable {
   
   /** Get the index of a node in the heap. Performance: O(n). */
   public func index(of node: T) -> Int? {
+	print(">>> Entering index(node=\(node))")
+	print("<<< Exiting index(node=\(node))")
     return nodes.index(where: { $0 == node })
   }
   

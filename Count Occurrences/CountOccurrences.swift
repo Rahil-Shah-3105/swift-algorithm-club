@@ -4,11 +4,13 @@
 /// - Parameter array: the array to search
 /// - Returns: the count of occurences of the key in the given array
 func countOccurrences<T: Comparable>(of key: T, in array: [T]) -> Int {
+print(">>> Entering countOccurrences(key=\(key),array=\(array))")
   var leftBoundary: Int {
     var low = 0
     var high = array.count
     while low < high {
       let midIndex = low + (high - low)/2
+	print("countOccurrences(key=\(key),array=\(array)): midIndex → \(midIndex)")
       if array[midIndex] < key {
         low = midIndex + 1
       } else {
@@ -32,5 +34,6 @@ func countOccurrences<T: Comparable>(of key: T, in array: [T]) -> Int {
     return low
   }
 
+print("<<< Exiting countOccurrences(key=\(key),array=\(array))")
   return rightBoundary - leftBoundary
 }

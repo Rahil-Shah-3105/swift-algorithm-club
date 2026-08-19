@@ -33,10 +33,12 @@ class TrieNode<T: Hashable> {
   ///
   /// - Parameter value: The item to be added to this node.
   func add(value: T) {
+	print(">>> Entering add(value=\(value))")
     guard children[value] == nil else {
       return
     }
     children[value] = TrieNode(value: value, parentNode: self)
+	print("<<< Exiting add(value=\(value))")
   }
 }
 
@@ -84,7 +86,9 @@ class Trie: NSObject, NSCoding {
   ///
   /// - Parameter coder: The object that will encode the array
   func encode(with coder: NSCoder) {
+	print(">>> Entering encode(coder=\(coder))")
     coder.encode(self.words, forKey: "words")
+	print("<<< Exiting encode(coder=\(coder))")
   }
 }
 
@@ -95,6 +99,7 @@ extension Trie {
   ///
   /// - Parameter word: the word to be inserted.
   func insert(word: String) {
+	print(">>> Entering insert(word=\(word))")
     guard !word.isEmpty else {
       return
     }
@@ -113,6 +118,8 @@ extension Trie {
     }
     wordCount += 1
     currentNode.isTerminating = true
+	print("insert(word=\(word)): currentNode.isTerminating → \(currentNode.isTerminating)")
+	print("<<< Exiting insert(word=\(word))")
   }
 
   /// Determines whether a word is in the trie.
@@ -123,6 +130,7 @@ extension Trie {
   ///   if it is only a prefix of other nodes in the trie
   /// - Returns: true if the word is present, false otherwise.
   func contains(word: String, matchPrefix: Bool = false) -> Bool {
+	print(">>> Entering contains(word=\(word),matchPrefix=\(matchPrefix))")
     guard !word.isEmpty else {
       return false
     }
@@ -133,6 +141,7 @@ extension Trie {
       }
       currentNode = childNode
     }
+	print("<<< Exiting contains(word=\(word),matchPrefix=\(matchPrefix))")
     return matchPrefix || currentNode.isTerminating
   }
 
@@ -144,6 +153,7 @@ extension Trie {
   /// - Returns: the node where the search ended, nil if the
   /// search failed.
   private func findLastNodeOf(word: String) -> Node? {
+	print(">>> Entering findLastNodeOf(word=\(word))")
     var currentNode = root
     for character in word.lowercased() {
       guard let childNode = currentNode.children[character] else {
@@ -151,6 +161,7 @@ extension Trie {
       }
       currentNode = childNode
     }
+	print("<<< Exiting findLastNodeOf(word=\(word))")
     return currentNode
   }
 
@@ -161,7 +172,10 @@ extension Trie {
   /// - Returns: the node where the search ended, nil if the
   /// search failed.
   private func findTerminalNodeOf(word: String) -> Node? {
+	print(">>> Entering findTerminalNodeOf(word=\(word))")
     if let lastNode = findLastNodeOf(word: word) {
+	print("findTerminalNodeOf(word=\(word)): lastNode → \(lastNode)")
+	print("<<< Exiting findTerminalNodeOf(word=\(word))")
       return lastNode.isTerminating ? lastNode : nil
     }
     return nil
@@ -174,6 +188,7 @@ extension Trie {
   /// - Parameter terminalNode: the node representing the last node
   /// of a word
   private func deleteNodesForWordEndingWith(terminalNode: Node) {
+	print(">>> Entering deleteNodesForWordEndingWith(terminalNode=\(terminalNode))")
     var lastNode = terminalNode
     var character = lastNode.value
     while lastNode.isLeaf, let parentNode = lastNode.parentNode {
@@ -184,6 +199,7 @@ extension Trie {
         break
       }
     }
+	print("<<< Exiting deleteNodesForWordEndingWith(terminalNode=\(terminalNode))")
   }
 
   /// Removes a word from the trie.  If the word is not present or
@@ -195,18 +211,22 @@ extension Trie {
   ///
   /// - Parameter word: the word to be removed
   func remove(word: String) {
+	print(">>> Entering remove(word=\(word))")
     guard !word.isEmpty else {
       return
     }
     guard let terminalNode = findTerminalNodeOf(word: word) else {
+	print("remove(word=\(word)): terminalNode → \(terminalNode)")
       return
     }
     if terminalNode.isLeaf {
       deleteNodesForWordEndingWith(terminalNode: terminalNode)
     } else {
       terminalNode.isTerminating = false
+	print("remove(word=\(word)): terminalNode.isTerminating → \(terminalNode.isTerminating)")
     }
     wordCount -= 1
+	print("<<< Exiting remove(word=\(word))")
   }
 
   /// Returns an array of words in a subtrie of the trie
@@ -216,8 +236,10 @@ extension Trie {
   ///   - partialWord: the letters collected by traversing to this node
   /// - Returns: the words in the subtrie
   fileprivate func wordsInSubtrie(rootNode: Node, partialWord: String) -> [String] {
+	print(">>> Entering wordsInSubtrie(rootNode=\(rootNode),partialWord=\(partialWord))")
     var subtrieWords = [String]()
     var previousLetters = partialWord
+	print("wordsInSubtrie(rootNode=\(rootNode),partialWord=\(partialWord)): subtrieWords → \(subtrieWords)")
     if let value = rootNode.value {
       previousLetters.append(value)
     }
@@ -227,7 +249,9 @@ extension Trie {
     for childNode in rootNode.children.values {
       let childWords = wordsInSubtrie(rootNode: childNode, partialWord: previousLetters)
       subtrieWords += childWords
+	print("wordsInSubtrie(rootNode=\(rootNode),partialWord=\(partialWord)): childWords → \(childWords)")
     }
+	print("<<< Exiting wordsInSubtrie(rootNode=\(rootNode),partialWord=\(partialWord))")
     return subtrieWords
   }
 
@@ -238,17 +262,23 @@ extension Trie {
   ///   - prefix: the letters for word prefix
   /// - Returns: the words in the subtrie that start with prefix
   func findWordsWithPrefix(prefix: String) -> [String] {
+	print(">>> Entering findWordsWithPrefix(prefix=\(prefix))")
     var words = [String]()
     let prefixLowerCased = prefix.lowercased()
     if let lastNode = findLastNodeOf(word: prefixLowerCased) {
+	print("findWordsWithPrefix(prefix=\(prefix)): prefixLowerCased → \(prefixLowerCased)")
+	print("findWordsWithPrefix(prefix=\(prefix)): lastNode → \(lastNode)")
+	print("findWordsWithPrefix(prefix=\(prefix)): words → \(words)")
       if lastNode.isTerminating {
         words.append(prefixLowerCased)
       }
       for childNode in lastNode.children.values {
         let childWords = wordsInSubtrie(rootNode: childNode, partialWord: prefixLowerCased)
         words += childWords
+		print("findWordsWithPrefix(prefix=\(prefix)): childWords → \(childWords)")
       }
     }
+	print("<<< Exiting findWordsWithPrefix(prefix=\(prefix))")
     return words
   }
 }

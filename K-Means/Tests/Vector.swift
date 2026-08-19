@@ -14,10 +14,13 @@ struct Vector: CustomStringConvertible, Equatable {
   }
 
   func distanceTo(_ other: Vector) -> Double {
+	print(">>> Entering distanceTo(other=\(other))")
     var result = 0.0
     for idx in 0..<length {
+	print("distanceTo(other=\(other)): result → \(result)")
       result += pow(data[idx] - other.data[idx], 2.0)
     }
+	print("<<< Exiting distanceTo(other=\(other))")
     return sqrt(result)
   }
 }

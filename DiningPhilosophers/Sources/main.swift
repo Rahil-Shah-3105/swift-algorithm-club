@@ -33,15 +33,19 @@ struct ForkPair {
     }
 
     func pickUp() {
+		print(">>> Entering pickUp()")
         //Acquire by starting with the lower index
         leftFork.wait()
         rightFork.wait()
+		print("<<< Exiting pickUp()")
     }
 
     func putDown() {
+		print(">>> Entering putDown()")
         //The order does not matter here
         leftFork.signal()
         rightFork.signal()
+		print("<<< Exiting putDown()")
     }
 }
 
@@ -75,6 +79,7 @@ struct Philosophers {
             print("Releasing lock for Philosopher: \(philosopherIndex) Left:\(leftIndex) Right:\(rightIndex)")
             forkPair.putDown()
         }
+		print("<<< Exiting run()")
     }
 }
 

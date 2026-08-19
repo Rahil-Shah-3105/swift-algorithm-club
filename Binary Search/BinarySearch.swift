@@ -14,15 +14,19 @@ import Foundation
 // The recursive version of binary search.
 
 public func binarySearch<T: Comparable>(_ a: [T], key: T, range: Range<Int>) -> Int? {
+	print(">>> Entering binarySearch(a=\(a),key=\(key),range=\(range))")
     if range.lowerBound >= range.upperBound {
         return nil
     } else {
         let midIndex = range.lowerBound + (range.upperBound - range.lowerBound) / 2
+		print("binarySearch(a=\(a),key=\(key),range=\(range)): midIndex → \(midIndex)")
         if a[midIndex] > key {
             return binarySearch(a, key: key, range: range.lowerBound ..< midIndex)
         } else if a[midIndex] < key {
             return binarySearch(a, key: key, range: midIndex + 1 ..< range.upperBound)
         } else {
+			print("<<< Exiting binarySearch(a=\(a),key=\(key),range=\(range))")
+			print("<<< Exiting binarySearch(a=\(a),key=\(key))")
             return midIndex
         }
     }

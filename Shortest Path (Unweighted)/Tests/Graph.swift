@@ -39,7 +39,9 @@ open class Node: CustomStringConvertible, Equatable {
     }
 
     open func remove(_ edge: Edge) {
+		print(">>> Entering remove(edge=\(edge))")
         neighbors.remove(at: neighbors.index { $0 === edge }!)
+		print("<<< Exiting remove(edge=\(edge))")
     }
 }
 
@@ -57,14 +59,20 @@ open class Graph: CustomStringConvertible, Equatable {
     }
 
     open func addNode(label: String) -> Node {
+		print(">>> Entering addNode(label=\(label))")
         let node = Node(label: label)
         nodes.append(node)
+		print("addNode(label=\(label)): node → \(node)")
+		print("<<< Exiting addNode(label=\(label))")
         return node
     }
 
     open func addEdge(_ source: Node, neighbor: Node) {
+		print(">>> Entering addEdge(source=\(source),neighbor=\(neighbor))")
         let edge = Edge(neighbor: neighbor)
         source.neighbors.append(edge)
+		print("addEdge(source=\(source),neighbor=\(neighbor)): edge → \(edge)")
+		print("<<< Exiting addEdge(source=\(source),neighbor=\(neighbor))")
     }
 
     open var description: String {
@@ -79,12 +87,16 @@ open class Graph: CustomStringConvertible, Equatable {
     }
 
     open func findNodeWithLabel(label: String) -> Node {
+		print(">>> Entering findNodeWithLabel(label=\(label))")
+		print("<<< Exiting findNodeWithLabel(label=\(label))")
         return nodes.filter { $0.label == label }.first!
     }
 
     open func duplicate() -> Graph {
+		print(">>> Entering duplicate()")
         let duplicated = Graph()
 
+		print("duplicate(): duplicated → \(duplicated)")
         for node in nodes {
             duplicated.addNode(label: node.label)
         }
@@ -95,8 +107,11 @@ open class Graph: CustomStringConvertible, Equatable {
                 let neighbour = duplicated.findNodeWithLabel(label: edge.neighbor.label)
                 duplicated.addEdge(source, neighbor: neighbour)
             }
+				print("duplicate(): source → \(source)")
+				print("duplicate(): neighbour → \(neighbour)")
         }
 
+		print("<<< Exiting duplicate()")
         return duplicated
     }
 }

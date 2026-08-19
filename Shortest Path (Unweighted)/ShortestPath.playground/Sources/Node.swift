@@ -23,7 +23,9 @@ public class Node: CustomStringConvertible, Equatable {
   }
 
   public func remove(edge: Edge) {
+	print(">>> Entering remove(edge=\(edge))")
     neighbors.remove(at: neighbors.index { $0 === edge }!)
+	print("<<< Exiting remove(edge=\(edge))")
   }
 }
 

@@ -30,12 +30,17 @@ public struct FloydWarshall<T>: APSPAlgorithm where T: Hashable {
    - returns a `FloydWarshallResult` struct which can be queried for shortest paths and their total weights
    */
   public static func apply<T>(_ graph: AbstractGraph<T>) -> FloydWarshallResult<T> {
+print(">>> Entering apply(graph=\(graph))")
 
     var previousDistance = constructInitialDistanceMatrix(graph)
     var previousPredecessor = constructInitialPredecessorMatrix(previousDistance)
     for intermediateIdx in 0 ..< graph.vertices.count {
+	print("apply(graph=\(graph)): previousDistance → \(previousDistance)")
+	print("apply(graph=\(graph)): previousPredecessor → \(previousPredecessor)")
       let nextResult = nextStep(intermediateIdx, previousDistances: previousDistance, previousPredecessors: previousPredecessor, graph: graph)
       previousDistance = nextResult.distances
+	print("apply(graph=\(graph)): nextResult → \(nextResult)")
+	print("<<< Exiting apply(graph=\(graph))")
       previousPredecessor = nextResult.predecessors
 
 //      // uncomment to see each new weight matrix
@@ -61,12 +66,18 @@ public struct FloydWarshall<T>: APSPAlgorithm where T: Hashable {
    */
   static fileprivate func nextStep<T>(_ intermediateIdx: Int, previousDistances: Distances,
                                previousPredecessors: Predecessors, graph: AbstractGraph<T>) -> StepResult {
+							print(">>> Entering nextStep(intermediateIdx=\(intermediateIdx),previousDistances=\(previousDistances),previousPredecessors=\(previousPredecessors),graph=\(graph))")
 
     let vertexCount = graph.vertices.count
     var nextDistances = Array(repeating: Array(repeating: Double.infinity, count: vertexCount), count: vertexCount)
     var nextPredecessors = Array(repeating: Array<Int?>(repeating: nil, count: vertexCount), count: vertexCount)
 
+	print("nextStep(intermediateIdx=\(intermediateIdx),previousDistances=\(previousDistances),previousPredecessors=\(previousPredecessors),graph=\(graph)): nextDistances → \(nextDistances)")
+	print("nextStep(intermediateIdx=\(intermediateIdx),previousDistances=\(previousDistances),previousPredecessors=\(previousPredecessors),graph=\(graph)): nextPredecessors → \(nextPredecessors)")
     for fromIdx in 0 ..< vertexCount {
+	print("nextStep(intermediateIdx=\(intermediateIdx),previousDistances=\(previousDistances),previousPredecessors=\(previousPredecessors),graph=\(graph)): minimum → \(minimum)")
+	print("nextStep(intermediateIdx=\(intermediateIdx),previousDistances=\(previousDistances),previousPredecessors=\(previousPredecessors),graph=\(graph)): predecessor → \(predecessor)")
+	print("<<< Exiting nextStep(intermediateIdx=\(intermediateIdx),previousDistances=\(previousDistances),previousPredecessors=\(previousPredecessors),graph=\(graph))")
       for toIndex in 0 ..< vertexCount {
 //        printMatrix(previousDistances, i: fromIdx, j: toIdx, k: intermediateIdx) // uncomment to see each comparison being made
         let originalPathWeight = previousDistances[fromIdx][toIndex]
@@ -98,12 +109,14 @@ public struct FloydWarshall<T>: APSPAlgorithm where T: Hashable {
    - returns: weighted adjacency matrix in form ready for processing with Floyd-Warshall
    */
   static fileprivate func constructInitialDistanceMatrix<T>(_ graph: AbstractGraph<T>) -> Distances {
+print(">>> Entering constructInitialDistanceMatrix(graph=\(graph))")
 
     let vertices = graph.vertices
 
     let vertexCount = graph.vertices.count
     var distances = Array(repeating: Array(repeating: Double.infinity, count: vertexCount), count: vertexCount)
 
+	print("constructInitialDistanceMatrix(graph=\(graph)): distances → \(distances)")
     for row in vertices {
       for col in vertices {
         let rowIdx = row.index
@@ -111,11 +124,13 @@ public struct FloydWarshall<T>: APSPAlgorithm where T: Hashable {
         if rowIdx == colIdx {
           distances[rowIdx][colIdx] = 0.0
         } else if let w = graph.weightFrom(row, to: col) {
+		print("constructInitialDistanceMatrix(graph=\(graph)): w → \(w)")
           distances[rowIdx][colIdx] = w
         }
       }
     }
 
+	print("<<< Exiting constructInitialDistanceMatrix(graph=\(graph))")
     return distances
 
   }
@@ -126,10 +141,12 @@ public struct FloydWarshall<T>: APSPAlgorithm where T: Hashable {
    - complexity: `Θ(V^2)` time/space
   */
   static fileprivate func constructInitialPredecessorMatrix(_ distances: Distances) -> Predecessors {
+print(">>> Entering constructInitialPredecessorMatrix(distances=\(distances))")
 
     let vertexCount = distances.count
     var predecessors = Array(repeating: Array<Int?>(repeating: nil, count: vertexCount), count: vertexCount)
 
+	print("constructInitialPredecessorMatrix(distances=\(distances)): predecessors → \(predecessors)")
     for fromIdx in 0 ..< vertexCount {
       for toIdx in 0 ..< vertexCount {
         if fromIdx != toIdx && distances[fromIdx][toIdx] < Double.infinity {
@@ -138,6 +155,7 @@ public struct FloydWarshall<T>: APSPAlgorithm where T: Hashable {
       }
     }
 
+	print("<<< Exiting constructInitialPredecessorMatrix(distances=\(distances))")
     return predecessors
 
   }
@@ -162,7 +180,9 @@ public struct FloydWarshallResult<T>: APSPResult where T: Hashable {
    - complexity: `Θ(1)` time/space
    */
   public func distance(fromVertex from: Vertex<T>, toVertex to: Vertex<T>) -> Double? {
+print(">>> Entering distance(from=\(from),to=\(to))")
 
+	print("<<< Exiting distance(from=\(from),to=\(to))")
     return weights[from.index][to.index]
 
   }
@@ -173,11 +193,14 @@ public struct FloydWarshallResult<T>: APSPResult where T: Hashable {
    - complexity: `Θ(V)` time, `Θ(V^2)` space
    */
   public func path(fromVertex from: Vertex<T>, toVertex to: Vertex<T>, inGraph graph: AbstractGraph<T>) -> [T]? {
+print(">>> Entering path(from=\(from),to=\(to),graph=\(graph))")
 
     if let path = recursePathFrom(fromVertex: from, toVertex: to, path: [ to ], inGraph: graph) {
+	print("path(from=\(from),to=\(to),graph=\(graph)): path → \(path)")
       let pathValues = path.map { vertex in
         vertex.data
       }
+	print("<<< Exiting path(from=\(from),to=\(to),graph=\(graph))")
       return pathValues
     }
     return nil
@@ -192,6 +215,7 @@ public struct FloydWarshallResult<T>: APSPResult where T: Hashable {
    */
   fileprivate func recursePathFrom(fromVertex from: Vertex<T>, toVertex to: Vertex<T>, path: [Vertex<T>],
                                           inGraph graph: AbstractGraph<T>) -> [Vertex<T>]? {
+										print(">>> Entering recursePathFrom(from=\(from),to=\(to),path=\(path),graph=\(graph))")
 
     if from.index == to.index {
       return [ from, to ]
@@ -205,10 +229,12 @@ public struct FloydWarshallResult<T>: APSPResult where T: Hashable {
       } else {
         let buildPath = recursePathFrom(fromVertex: from, toVertex: predecessorVertex, path: path, inGraph: graph)
         let newPath = buildPath! + [ to ]
+		print("recursePathFrom(from=\(from),to=\(to),path=\(path),graph=\(graph)): buildPath → \(buildPath)")
         return newPath
       }
     }
 
+	print("<<< Exiting recursePathFrom(from=\(from),to=\(to),path=\(path),graph=\(graph))")
     return nil
   }
 

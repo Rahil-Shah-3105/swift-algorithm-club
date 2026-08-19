@@ -37,6 +37,7 @@ public class SparseTable<T> {
   }
 
   public func query(from l: Int, until r: Int) -> T {
+	print(">>> Entering query(l=\(l),r=\(r))")
     let width = r - l
     let N = table[0].count
     if width <= 0 || l >= N {
@@ -45,7 +46,11 @@ public class SparseTable<T> {
     let r = min(N, r)
     let W = Int(floor(log2(Double(width))))
     let lo = table[W][l]
+	print("query(l=\(l),r=\(r)): r → \(r)")
+	print("query(l=\(l),r=\(r)): W → \(W)")
     let hi = table[W][r - (1 << W)]
+	print("query(l=\(l),r=\(r)): hi → \(hi)")
+	print("<<< Exiting query(l=\(l),r=\(r))")
     return function(lo, hi)
   }
 }
@@ -101,15 +106,19 @@ print("---------------------------- EXAMPLE 4 ----------------------------------
 
 let posIntArray = [7, 2, 3, 4, 6, 5, 25, 75, 100]
 func gcd(_ m: Int, _ n: Int) -> Int {
+print(">>> Entering gcd(m=\(m),n=\(n))")
   var a = 0
   var b = max(m, n)
   var r = min(m, n)
 
+print("gcd(m=\(m),n=\(n)): b → \(b)")
+print("gcd(m=\(m),n=\(n)): r → \(r)")
   while r != 0 {
     a = b
     b = r
     r = a % b
   }
+print("<<< Exiting gcd(m=\(m),n=\(n))")
   return b
 }
 

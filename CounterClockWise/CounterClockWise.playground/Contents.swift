@@ -23,6 +23,7 @@ public struct Point{
 // MARK : Function that determine the area of a simple polygon whose vertices are described
 //        by their Cartesian coordinates in the plane.
 func ccw(points: [Point]) -> Int{
+print(">>> Entering ccw(points=\(points))")
   let polygon = points.count
   var orientation = 0
   
@@ -44,6 +45,7 @@ func ccw(points: [Point]) -> Int{
   case 0:
     return 0 // if operation == 0 : Parallel
   default:
+	print("<<< Exiting ccw(points=\(points))")
     return 1 // if operation > 0 : CounterClockWise
   }
 }
