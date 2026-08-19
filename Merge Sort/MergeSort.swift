@@ -7,14 +7,19 @@
 //
 
 func mergeSort<T: Comparable>(_ array: [T]) -> [T] {
+print(">>> Entering mergeSort(array=\(array))")
   guard array.count > 1 else { return array }
   let middleIndex = array.count / 2
   let leftArray = mergeSort(Array(array[0..<middleIndex]))
   let rightArray = mergeSort(Array(array[middleIndex..<array.count]))
+print("mergeSort(array=\(array)): leftArray → \(leftArray)")
+print("mergeSort(array=\(array)): rightArray → \(rightArray)")
+print("<<< Exiting mergeSort(array=\(array))")
   return merge(leftPile: leftArray, rightPile: rightArray)
 }
 
 func merge<T: Comparable>(leftPile: [T], rightPile: [T]) -> [T] {
+print(">>> Entering merge(leftPile=\(leftPile),rightPile=\(rightPile))")
   var leftIndex = 0
   var rightIndex = 0
   var orderedPile: [T] = []
@@ -42,6 +47,7 @@ func merge<T: Comparable>(leftPile: [T], rightPile: [T]) -> [T] {
   }
 
 
+print("<<< Exiting merge(leftPile=\(leftPile),rightPile=\(rightPile))")
   return orderedPile
 }
 
@@ -58,6 +64,7 @@ func merge<T: Comparable>(leftPile: [T], rightPile: [T]) -> [T] {
   just two arrays.
 */
 func mergeSortBottomUp<T>(_ a: [T], _ isOrderedBefore: (T, T) -> Bool) -> [T] {
+print(">>> Entering mergeSortBottomUp(a=\(a),isOrderedBefore=\(isOrderedBefore))")
   let n = a.count
   var z = [a, a]   // the two working arrays
   var d = 0        // z[d] is used for reading, z[1 - d] for writing
@@ -75,6 +82,8 @@ func mergeSortBottomUp<T>(_ a: [T], _ isOrderedBefore: (T, T) -> Bool) -> [T] {
       let lmax = min(l + width, n)
       let rmax = min(r + width, n)
 
+	print("mergeSortBottomUp(a=\(a),isOrderedBefore=\(isOrderedBefore)): lmax → \(lmax)")
+	print("mergeSortBottomUp(a=\(a),isOrderedBefore=\(isOrderedBefore)): rmax → \(rmax)")
       while l < lmax && r < rmax {
         if isOrderedBefore(z[d][l], z[d][r]) {
           z[1 - d][j] = z[d][l]
@@ -102,5 +111,6 @@ func mergeSortBottomUp<T>(_ a: [T], _ isOrderedBefore: (T, T) -> Bool) -> [T] {
     width *= 2   // in each step, the subarray to merge becomes larger
     d = 1 - d    // swap active array
   }
+print("<<< Exiting mergeSortBottomUp(a=\(a),isOrderedBefore=\(isOrderedBefore))")
   return z[d]
 }

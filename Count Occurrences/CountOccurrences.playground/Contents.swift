@@ -1,10 +1,12 @@
 
 func countOccurrences<T: Comparable>(of key: T, in array: [T]) -> Int {
+print(">>> Entering countOccurrences(key=\(key),array=\(array))")
   var leftBoundary: Int {
     var low = 0
     var high = array.count
     while low < high {
       let midIndex = low + (high - low)/2
+	print("countOccurrences(key=\(key),array=\(array)): midIndex → \(midIndex)")
       if array[midIndex] < key {
         low = midIndex + 1
       } else {
@@ -28,6 +30,7 @@ func countOccurrences<T: Comparable>(of key: T, in array: [T]) -> Int {
     return low
   }
 
+print("<<< Exiting countOccurrences(key=\(key),array=\(array))")
   return rightBoundary - leftBoundary
 }
 
@@ -41,15 +44,19 @@ countOccurrences(of: 3, in: a)
 import Foundation
 
 func createArray() -> [Int] {
+print(">>> Entering createArray()")
   var a = [Int]()
   for i in 0...5 {
+	print("createArray(): a → \(a)")
     if i != 2 {  // don't include the number 2
       let count = Int(arc4random_uniform(UInt32(6))) + 1
+	print("createArray(): count → \(count)")
       for _ in 0..<count {
         a.append(i)
       }
     }
   }
+print("<<< Exiting createArray()")
   return a.sorted()
 }
 

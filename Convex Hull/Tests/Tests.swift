@@ -10,6 +10,7 @@ import XCTest
 
 class Tests: XCTestCase {
   func testHorizontalInitialLine() {
+	print(">>> Entering testHorizontalInitialLine()")
     let view = View()
     let excludedPoint = CGPoint(x: 146, y: 284)
     let includedPoints = [
@@ -17,6 +18,7 @@ class Tests: XCTestCase {
       CGPoint(x: 22, y: 22),
       CGPoint(x: 157, y: 447),
     ]
+	print("testHorizontalInitialLine(): excludedPoint → \(excludedPoint)")
 
     view.points = [CGPoint]()
     view.convexHull = [CGPoint]()
@@ -32,5 +34,6 @@ class Tests: XCTestCase {
            "\(includedPoints) should have been included")
     assert(!view.convexHull.contains(excludedPoint),
            "\(excludedPoint) should have been excluded")
+		print("<<< Exiting testHorizontalInitialLine()")
     }
 }

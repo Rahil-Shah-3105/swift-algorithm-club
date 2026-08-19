@@ -1,6 +1,7 @@
 import Foundation
 
 public func insertionSort<T>(for array: inout [T], range: Range<Int>, by areInIncreasingOrder: (T, T) -> Bool) {
+	print(">>> Entering insertionSort(array=\(array),range=\(range),areInIncreasingOrder=\(areInIncreasingOrder))")
     guard !range.isEmpty else { return }
     
     let start = range.lowerBound
@@ -13,6 +14,7 @@ public func insertionSort<T>(for array: inout [T], range: Range<Int>, by areInIn
         var i = sortedEnd
         repeat {
             let predecessor = array[array.index(before: i)]
+			print("insertionSort(array=\(array),range=\(range),areInIncreasingOrder=\(areInIncreasingOrder)): predecessor → \(predecessor)")
             
             guard areInIncreasingOrder(x, predecessor) else { break }
             array[i] = predecessor
@@ -25,4 +27,5 @@ public func insertionSort<T>(for array: inout [T], range: Range<Int>, by areInIn
         array.formIndex(after: &sortedEnd)
     }
     
+	print("<<< Exiting insertionSort(array=\(array),range=\(range),areInIncreasingOrder=\(areInIncreasingOrder))")
 }

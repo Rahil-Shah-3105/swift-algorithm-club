@@ -1,9 +1,11 @@
 //: Playground - noun: a place where people can play
 
 func ZetaAlgorithm(ptnr: String) -> [Int]? {
+print(">>> Entering ZetaAlgorithm(ptnr=\(ptnr))")
   
   let pattern = Array(ptnr)
   let patternLength: Int = pattern.count
+print("ZetaAlgorithm(ptnr=\(ptnr)): pattern → \(pattern)")
   
   guard patternLength > 0 else {
     return nil
@@ -21,6 +23,7 @@ func ZetaAlgorithm(ptnr: String) -> [Int]? {
   for k in 1 ..< patternLength {
     if k > right {
       patternIndex = 0
+	print("ZetaAlgorithm(ptnr=\(ptnr)): patternIndex → \(patternIndex)")
       
       while k + patternIndex < patternLength  &&
         pattern[k + patternIndex] == pattern[patternIndex] {
@@ -31,16 +34,21 @@ func ZetaAlgorithm(ptnr: String) -> [Int]? {
       
       if zeta[k] > 0 {
         left = k
+		print("ZetaAlgorithm(ptnr=\(ptnr)): left → \(left)")
+		print("ZetaAlgorithm(ptnr=\(ptnr)): right → \(right)")
         right = k + zeta[k] - 1
       }
     } else {
       k_1 = k - left + 1
+	print("ZetaAlgorithm(ptnr=\(ptnr)): k_1 → \(k_1)")
+	print("ZetaAlgorithm(ptnr=\(ptnr)): betaLength → \(betaLength)")
       betaLength = right - k + 1
       
       if zeta[k_1 - 1] < betaLength {
         zeta[k] = zeta[k_1 - 1]
       } else if zeta[k_1 - 1] >= betaLength {
         textIndex = betaLength
+		print("ZetaAlgorithm(ptnr=\(ptnr)): textIndex → \(textIndex)")
         patternIndex = right + 1
         
         while patternIndex < patternLength && pattern[textIndex] == pattern[patternIndex] {
@@ -53,16 +61,20 @@ func ZetaAlgorithm(ptnr: String) -> [Int]? {
       }
     }
   }
+print("<<< Exiting ZetaAlgorithm(ptnr=\(ptnr))")
   return zeta
 }
 
 extension String {
   
   func indexesOf(ptnr: String) -> [Int]? {
+	print(">>> Entering indexesOf(ptnr=\(ptnr))")
     
     let text = Array(self)
     let pattern = Array(ptnr.characters)
     
+	print("indexesOf(ptnr=\(ptnr)): text → \(text)")
+	print("indexesOf(ptnr=\(ptnr)): pattern → \(pattern)")
     let textLength: Int = text.count
     let patternLength: Int = pattern.count
     
@@ -78,8 +90,10 @@ extension String {
     /* Pre-processing stage: computing the table for the shifts (through Z-Algorithm) */
     let zeta = ZetaAlgorithm(ptnr: ptnr)
     
+	print("indexesOf(ptnr=\(ptnr)): zeta → \(zeta)")
     for patternIndex in (1 ..< patternLength).reversed() {
       textIndex = patternIndex + zeta![patternIndex] - 1
+	print("indexesOf(ptnr=\(ptnr)): textIndex → \(textIndex)")
       suffixPrefix[textIndex] = zeta![patternIndex]
     }
     
@@ -106,6 +120,7 @@ extension String {
     }
     
     guard !indexes.isEmpty else {
+	print("<<< Exiting indexesOf(ptnr=\(ptnr))")
       return nil
     }
     return indexes

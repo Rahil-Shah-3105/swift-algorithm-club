@@ -29,6 +29,7 @@ protocol Clonable {
 
 extension Clonable {
   func clone() -> Self {
+	print("<<< Exiting clone()")
     return Self.init(current: self)
   }
 }
@@ -43,7 +44,9 @@ protocol SAObject: Clonable {
 // MARK: - create a new copy of elements
 
 extension Array where Element: Clonable {
+print(">>> Entering shuffle()")
   func clone() -> Array {
+	print("<<< Exiting shuffle()")
     var newArray = Array<Element>()
     for elem in self {
       newArray.append(elem.clone())
@@ -51,6 +54,10 @@ extension Array where Element: Clonable {
     
     return newArray
   }
+print(">>> Entering currentEnergy()")
+print("currentEnergy(): tourEnergy → \(tourEnergy)")
+print("currentEnergy(): self.energy → \(self.energy)")
+print("<<< Exiting currentEnergy()")
 }
 
 typealias Points = [Point]
@@ -114,12 +121,15 @@ class Tour: SAObject {
 
 extension Tour {
   func randSwap(a: Int, b: Int) -> Void {
+	print(">>> Entering randSwap(a=\(a),b=\(b))")
     let (cpos1, cpos2) = (self[a], self[b])
     self[a] = cpos2
     self[b] = cpos1
+	print("<<< Exiting randSwap(a=\(a),b=\(b))")
   }
 
   func currentEnergy() -> Double {
+	print(">>> Entering currentEnergy()")
     if self.energy == 0 {
       var tourEnergy: Double = 0.0
       for i in 0..<self.count {
@@ -134,6 +144,7 @@ extension Tour {
       }
       self.energy = tourEnergy
     }
+	print("<<< Exiting currentEnergy()")
     return self.energy
   }
 
@@ -156,12 +167,14 @@ extension Tour {
 }
 
 func SimulatedAnnealing<T: SAObject>(initial: T, temperature: Double, coolingRate: Double, acceptance: AcceptanceFunc) -> T {
+print(">>> Entering SimulatedAnnealing(initial=\(initial),temperature=\(temperature),coolingRate=\(coolingRate),acceptance=\(acceptance))")
   var temp: Double = temperature
   var currentSolution = initial.clone()
   currentSolution.shuffle()
   var bestSolution = currentSolution.clone()
   print("Initial solution: ", bestSolution.currentEnergy())
   
+print("SimulatedAnnealing(initial=\(initial),temperature=\(temperature),coolingRate=\(coolingRate),acceptance=\(acceptance)): currentSolution → \(currentSolution)")
   while temp > 1 {
     let newSolution: T = currentSolution.clone()
     let pos1: Int = Int.random(in: 0 ..< newSolution.count)
@@ -181,6 +194,7 @@ func SimulatedAnnealing<T: SAObject>(initial: T, temperature: Double, coolingRat
   }
   
   print("Best solution: ", bestSolution.currentEnergy())
+print("<<< Exiting SimulatedAnnealing(initial=\(initial),temperature=\(temperature),coolingRate=\(coolingRate),acceptance=\(acceptance))")
   return bestSolution
 }
 

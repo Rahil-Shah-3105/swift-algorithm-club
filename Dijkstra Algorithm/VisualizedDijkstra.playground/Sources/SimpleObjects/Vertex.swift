@@ -25,28 +25,43 @@ public class Vertex {
     }
 
     public func clearCache() {
+		print(">>> Entering clearCache()")
         pathLengthFromStart = Double.infinity
         pathVerticesFromStart = []
+		print("clearCache(): pathVerticesFromStart → \(pathVerticesFromStart)")
+		print("clearCache(): pathLengthFromStart → \(pathLengthFromStart)")
+		print("clearCache(): visited → \(visited)")
         visited = false
+		print("<<< Exiting clearCache()")
     }
 
     public func clearLevelInfo() {
+		print(">>> Entering clearLevelInfo()")
         level = 0
         levelChecked = false
+		print("clearLevelInfo(): levelChecked → \(levelChecked)")
+		print("clearLevelInfo(): level → \(level)")
+		print("<<< Exiting clearLevelInfo()")
     }
 
     public func setVisitedColor() {
+		print(">>> Entering setVisitedColor()")
         view?.backgroundColor = graphColors.visitedColor
         view?.setLabelsTextColor(color: UIColor.white)
+		print("<<< Exiting setVisitedColor()")
     }
 
     public func setCheckingPathColor() {
+		print(">>> Entering setCheckingPathColor()")
         view?.backgroundColor = graphColors.checkingColor
+		print("<<< Exiting setCheckingPathColor()")
     }
 
     public func setDefaultColor() {
+		print(">>> Entering setDefaultColor()")
         view?.backgroundColor = graphColors.defaultVertexColor
         view?.setLabelsTextColor(color: UIColor.black)
+		print("<<< Exiting setDefaultColor()")
     }
 }
 

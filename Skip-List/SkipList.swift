@@ -35,26 +35,36 @@ public struct Stack<T> {
   }
 
   public mutating func push(_ element: T) {
+	print(">>> Entering push(element=\(element))")
     array.append(element)
+	print("<<< Exiting push(element=\(element))")
   }
 
   public mutating func pop() -> T? {
+	print(">>> Entering pop()")
+	print("<<< Exiting pop()")
     return array.popLast()
   }
 
   public func peek() -> T? {
+	print(">>> Entering peek()")
+	print("<<< Exiting peek()")
     return array.last
   }
 }
 
 extension Stack: Sequence {
   public func makeIterator() -> AnyIterator<T> {
+	print(">>> Entering makeIterator()")
     var curr = self
+	print("<<< Exiting makeIterator()")
     return AnyIterator { curr.pop() }
   }
 }
 
 private func coinFlip() -> Bool {
+print(">>> Entering coinFlip()")
+print("<<< Exiting coinFlip()")
   return arc4random_uniform(2) == 1
 }
 
@@ -89,6 +99,7 @@ open class SkipList<Key: Comparable, Payload> {
 extension SkipList {
 
   func findNode(key: Key) -> Node? {
+	print(">>> Entering findNode(key=\(key))")
     var currentNode: Node? = head
     var isFound: Bool = false
 
@@ -99,10 +110,12 @@ extension SkipList {
         case .none:
 
           currentNode = node.down
+		print("findNode(key=\(key)): currentNode → \(currentNode)")
         case .some(let value) where value.key != nil:
 
           if value.key == key {
             isFound = true
+			print("findNode(key=\(key)): isFound → \(isFound)")
             break
           } else {
             if key < value.key! {
@@ -124,13 +137,16 @@ extension SkipList {
     if isFound {
       return currentNode
     } else {
+	print("<<< Exiting findNode(key=\(key))")
       return nil
     }
 
   }
 
   func search(key: Key) -> Payload? {
+	print(">>> Entering search(key=\(key))")
     guard let node = findNode(key: key) else {
+	print("<<< Exiting search(key=\(key))")
       return nil
     }
 
@@ -143,12 +159,16 @@ extension SkipList {
 
 extension SkipList {
   private func bootstrapBaseLayer(key: Key, data: Payload) {
+	print(">>> Entering bootstrapBaseLayer(key=\(key),data=\(data))")
     head       = Node(asHead: true)
     var node   = Node(key: key, data: data)
 
+	print("bootstrapBaseLayer(key=\(key),data=\(data)): node → \(node)")
+	print("bootstrapBaseLayer(key=\(key),data=\(data)): head → \(head)")
     head!.next = node
 
     var currentTopNode = node
+	print("<<< Exiting bootstrapBaseLayer(key=\(key),data=\(data))")
 
     while coinFlip() {
       let newHead    = Node(asHead: true)
@@ -163,8 +183,10 @@ extension SkipList {
   }
 
   private func insertItem(key: Key, data: Payload) {
+	print(">>> Entering insertItem(key=\(key),data=\(data))")
     var stack              = Stack<Node>()
     var currentNode: Node? = head
+	print("insertItem(key=\(key),data=\(data)): stack → \(stack)")
 
     while currentNode != nil {
 
@@ -172,6 +194,7 @@ extension SkipList {
         if nextNode.key! > key {
           stack.push(currentNode!)
           currentNode = currentNode!.down
+		print("insertItem(key=\(key),data=\(data)): currentNode → \(currentNode)")
         } else {
           currentNode = nextNode
         }
@@ -186,8 +209,12 @@ extension SkipList {
     let itemAtLayer    = stack.pop()
     var node           = Node(key: key, data: data)
     node.next          = itemAtLayer!.next
+	print("insertItem(key=\(key),data=\(data)): itemAtLayer → \(itemAtLayer)")
+	print("insertItem(key=\(key),data=\(data)): node → \(node)")
+	print("insertItem(key=\(key),data=\(data)): node.next → \(node.next)")
     itemAtLayer!.next  = node
     var currentTopNode = node
+	print("<<< Exiting insertItem(key=\(key),data=\(data))")
 
     while coinFlip() {
       if stack.isEmpty {
@@ -213,8 +240,10 @@ extension SkipList {
   }
 
   public func insert(key: Key, data: Payload) {
+	print(">>> Entering insert(key=\(key),data=\(data))")
     if head != nil {
       if let node = findNode(key: key) {
+		print("insert(key=\(key),data=\(data)): node → \(node)")
         // replace, in case of key already exists.
         var currentNode = node.next
         while currentNode != nil && currentNode!.key == key {
@@ -228,6 +257,7 @@ extension SkipList {
     } else {
       bootstrapBaseLayer(key: key, data: data)
     }
+	print("<<< Exiting insert(key=\(key),data=\(data))")
   }
 
 }
@@ -236,12 +266,14 @@ extension SkipList {
 
 extension SkipList {
   public func remove(key: Key) {
+	print(">>> Entering remove(key=\(key))")
     guard let item = findNode(key: key) else {
       return
     }
 
     var currentNode = Optional(item)
 
+	print("remove(key=\(key)): currentNode → \(currentNode)")
     while currentNode != nil {
       let node   = currentNode!.next
 
@@ -255,6 +287,7 @@ extension SkipList {
       currentNode!.next = nextNode
       currentNode       = currentNode!.down
 
+	print("<<< Exiting remove(key=\(key))")
     }
 
   }
@@ -265,6 +298,8 @@ extension SkipList {
 extension SkipList {
 
   public func get(key: Key) -> Payload? {
+	print(">>> Entering get(key=\(key))")
+	print("<<< Exiting get(key=\(key))")
     return search(key: key)
   }
 }

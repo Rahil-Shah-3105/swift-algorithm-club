@@ -3,8 +3,18 @@ import XCTest
 class BreadthFirstSearchTests: XCTestCase {
 
   func testExploringTree() {
+	print(">>> Entering testExploringTree()")
     let tree = Graph()
 
+	print("testExploringTree(): tree → \(tree)")
+	print("testExploringTree(): nodeA → \(nodeA)")
+	print("testExploringTree(): nodeB → \(nodeB)")
+	print("testExploringTree(): nodeC → \(nodeC)")
+	print("testExploringTree(): nodeD → \(nodeD)")
+	print("testExploringTree(): nodeE → \(nodeE)")
+	print("testExploringTree(): nodeF → \(nodeF)")
+	print("testExploringTree(): nodeG → \(nodeG)")
+	print("testExploringTree(): nodeH → \(nodeH)")
     let nodeA = tree.addNode("a")
     let nodeB = tree.addNode("b")
     let nodeC = tree.addNode("c")
@@ -24,12 +34,25 @@ class BreadthFirstSearchTests: XCTestCase {
 
     let nodesExplored = breadthFirstSearch(tree, source: nodeA)
 
+	print("testExploringTree(): nodesExplored → \(nodesExplored)")
     XCTAssertEqual(nodesExplored, ["a", "b", "c", "d", "e", "f", "g", "h"])
+	print("<<< Exiting testExploringTree()")
   }
 
   func testExploringGraph() {
+	print(">>> Entering testExploringGraph()")
     let graph = Graph()
 
+	print("testExploringGraph(): graph → \(graph)")
+	print("testExploringGraph(): nodeA → \(nodeA)")
+	print("testExploringGraph(): nodeB → \(nodeB)")
+	print("testExploringGraph(): nodeC → \(nodeC)")
+	print("testExploringGraph(): nodeD → \(nodeD)")
+	print("testExploringGraph(): nodeE → \(nodeE)")
+	print("testExploringGraph(): nodeF → \(nodeF)")
+	print("testExploringGraph(): nodeG → \(nodeG)")
+	print("testExploringGraph(): nodeH → \(nodeH)")
+	print("testExploringGraph(): nodeI → \(nodeI)")
     let nodeA = graph.addNode("a")
     let nodeB = graph.addNode("b")
     let nodeC = graph.addNode("c")
@@ -71,15 +94,22 @@ class BreadthFirstSearchTests: XCTestCase {
 
     let nodesExplored = breadthFirstSearch(graph, source: nodeA)
 
+	print("testExploringGraph(): nodesExplored → \(nodesExplored)")
     XCTAssertEqual(nodesExplored, ["a", "b", "h", "c", "g", "i", "d", "f", "e"])
+	print("<<< Exiting testExploringGraph()")
   }
 
   func testExploringGraphWithASingleNode() {
+	print(">>> Entering testExploringGraphWithASingleNode()")
     let graph = Graph()
     let node = graph.addNode("a")
 
+	print("testExploringGraphWithASingleNode(): node → \(node)")
+	print("testExploringGraphWithASingleNode(): graph → \(graph)")
+	print("testExploringGraphWithASingleNode(): nodesExplored → \(nodesExplored)")
     let nodesExplored = breadthFirstSearch(graph, source: node)
 
     XCTAssertEqual(nodesExplored, ["a"])
+	print("<<< Exiting testExploringGraphWithASingleNode()")
   }
 }

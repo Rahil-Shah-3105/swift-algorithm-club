@@ -30,11 +30,13 @@ extension Edge: CustomStringConvertible {
 extension Edge: Hashable {
 
   public func hash(into hasher: inout Hasher) {
+	print(">>> Entering hash(hasher=<redacted>)")
     hasher.combine(from)
     hasher.combine(to)
     if weight != nil {
       hasher.combine(weight)
     }
+	print("<<< Exiting hash(hasher=<redacted>)")
   }
 
 }

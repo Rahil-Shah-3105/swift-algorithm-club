@@ -12,21 +12,25 @@ public struct RingBuffer<T> {
   /* Returns false if out of space. */
   @discardableResult
   public mutating func write(_ element: T) -> Bool {
+	print(">>> Entering write(element=\(element))")
     guard !isFull else { return false }
     defer {
         writeIndex += 1
     }
     array[wrapped: writeIndex] = element
+	print("<<< Exiting write(element=\(element))")
     return true
   }
     
   /* Returns nil if the buffer is empty. */
   public mutating func read() -> T? {
+	print(">>> Entering read()")
     guard !isEmpty else { return nil }
     defer {
         array[wrapped: readIndex] = nil
         readIndex += 1
     }
+	print("<<< Exiting read()")
     return array[wrapped: readIndex]
   }
 
@@ -49,12 +53,14 @@ public struct RingBuffer<T> {
 
 extension RingBuffer: Sequence {
   public func makeIterator() -> AnyIterator<T> {
+	print(">>> Entering makeIterator()")
     var index = readIndex
     return AnyIterator {
       guard index < self.writeIndex else { return nil }
       defer {
         index += 1
         }
+	print("<<< Exiting makeIterator()")
       return self.array[wrapped: index]
     }
   }

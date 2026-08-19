@@ -9,6 +9,7 @@
 import Foundation
 
 public func shellSort(_ list : inout [Int]) {
+	print(">>> Entering shellSort(list=\(list))")
     var sublistCount = list.count / 2
 
     while sublistCount > 0 {
@@ -29,4 +30,5 @@ public func shellSort(_ list : inout [Int]) {
         }
         sublistCount = sublistCount / 2
     }
+	print("<<< Exiting shellSort(list=\(list))")
 }

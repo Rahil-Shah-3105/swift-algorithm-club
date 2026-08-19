@@ -8,7 +8,10 @@
 
 class BoyerMooreHorspoolTests: BoyerMooreTest {
     override func setUp() {
+		print(">>> Entering setUp()")
         super.setUp()
         useHorspoolImprovement = false
+		print("setUp(): useHorspoolImprovement → \(useHorspoolImprovement)")
+		print("<<< Exiting setUp()")
     }
 }

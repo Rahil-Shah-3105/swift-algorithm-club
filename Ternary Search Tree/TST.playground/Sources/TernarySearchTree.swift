@@ -17,6 +17,10 @@ public class TernarySearchTree<Element> {
     // MARK: - Insertion
 
     public func insert(data: Element, withKey key: String) -> Bool {
+		print(">>> Entering insert(data=\(data),key=\(key))")
+		print(">>> Entering insert(node=\(node),data=\(data),key=\(key),charIndex=\(charIndex))")
+		print("<<< Exiting insert(data=\(data),key=\(key))")
+		print("<<< Exiting insert(node=\(node),data=\(data),key=\(key),charIndex=\(charIndex))")
         return insert(node: &root, withData: data, andKey: key, atIndex: 0)
     }
 
@@ -60,6 +64,10 @@ public class TernarySearchTree<Element> {
     // MARK: - Finding
 
     public func find(key: String) -> Element? {
+		print(">>> Entering find(key=\(key))")
+		print(">>> Entering find(node=\(node),key=\(key),charIndex=\(charIndex))")
+		print("<<< Exiting find(key=\(key))")
+		print("<<< Exiting find(node=\(node),key=\(key),charIndex=\(charIndex))")
         return find(node: root, withKey: key, atIndex: 0)
     }
 

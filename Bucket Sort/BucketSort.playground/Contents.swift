@@ -26,6 +26,8 @@
 
 extension Int: IntConvertible, Sortable {
     public func toInt() -> Int {
+		print(">>> Entering toInt()")
+		print("<<< Exiting toInt()")
         return self
     }
 }

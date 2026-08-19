@@ -3,16 +3,21 @@ import XCTest
 
 class StackTest: XCTestCase {
   func testEmpty() {
+	print(">>> Entering testEmpty()")
     var stack = Stack<Int>()
     XCTAssertTrue(stack.isEmpty)
     XCTAssertEqual(stack.count, 0)
     XCTAssertEqual(stack.top, nil)
     XCTAssertNil(stack.pop())
+	print("testEmpty(): stack → \(stack)")
+	print("<<< Exiting testEmpty()")
   }
 
   func testOneElement() {
+	print(">>> Entering testOneElement()")
     var stack = Stack<Int>()
 
+	print("testOneElement(): stack → \(stack)")
     stack.push(123)
     XCTAssertFalse(stack.isEmpty)
     XCTAssertEqual(stack.count, 1)
@@ -24,11 +29,15 @@ class StackTest: XCTestCase {
     XCTAssertEqual(stack.count, 0)
     XCTAssertEqual(stack.top, nil)
     XCTAssertNil(stack.pop())
+	print("testOneElement(): result → \(result)")
+	print("<<< Exiting testOneElement()")
   }
 
   func testTwoElements() {
+	print(">>> Entering testTwoElements()")
     var stack = Stack<Int>()
 
+	print("testTwoElements(): stack → \(stack)")
     stack.push(123)
     stack.push(456)
     XCTAssertFalse(stack.isEmpty)
@@ -41,17 +50,22 @@ class StackTest: XCTestCase {
     XCTAssertEqual(stack.count, 1)
     XCTAssertEqual(stack.top, 123)
 
+	print("testTwoElements(): result1 → \(result1)")
     let result2 = stack.pop()
     XCTAssertEqual(result2, 123)
     XCTAssertTrue(stack.isEmpty)
     XCTAssertEqual(stack.count, 0)
     XCTAssertEqual(stack.top, nil)
     XCTAssertNil(stack.pop())
+	print("testTwoElements(): result2 → \(result2)")
+	print("<<< Exiting testTwoElements()")
   }
 
   func testMakeEmpty() {
+	print(">>> Entering testMakeEmpty()")
     var stack = Stack<Int>()
 
+	print("testMakeEmpty(): stack → \(stack)")
     stack.push(123)
     stack.push(456)
     XCTAssertNotNil(stack.pop())
@@ -68,5 +82,7 @@ class StackTest: XCTestCase {
     XCTAssertEqual(stack.count, 0)
     XCTAssertEqual(stack.top, nil)
     XCTAssertNil(stack.pop())
+	print("testMakeEmpty(): result → \(result)")
+	print("<<< Exiting testMakeEmpty()")
   }
 }

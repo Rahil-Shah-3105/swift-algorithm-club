@@ -16,18 +16,24 @@ public class LazySegmentTree {
     // MARK: - Push Up Operation
     // Description: pushUp() - update items to the top
     private func pushUp(lson: LazySegmentTree, rson: LazySegmentTree) {
+		print(">>> Entering pushUp(lson=\(lson),rson=\(rson))")
+		print("pushUp(lson=\(lson),rson=\(rson)): self.value → \(self.value)")
         self.value = lson.value + rson.value
+		print("<<< Exiting pushUp(lson=\(lson),rson=\(rson))")
     }
     
     // MARK: - Push Down Operation
     // Description: pushDown() - update items to the bottom
     private func pushDown(round: Int, lson: LazySegmentTree, rson: LazySegmentTree) {
+		print(">>> Entering pushDown(round=\(round),lson=\(lson),rson=\(rson))")
         guard lazyValue != 0 else { return }
         lson.lazyValue += lazyValue
         rson.lazyValue += lazyValue
         lson.value += lazyValue * (round - (round >> 1))
         rson.value += lazyValue * (round >> 1)
         lazyValue = 0
+		print("pushDown(round=\(round),lson=\(lson),rson=\(rson)): lazyValue → \(lazyValue)")
+		print("<<< Exiting pushDown(round=\(round),lson=\(lson),rson=\(rson))")
     }
     
     public init(array: [Int], leftBound: Int, rightBound: Int) {
@@ -54,41 +60,53 @@ public class LazySegmentTree {
     }
     
     public func query(leftBound: Int, rightBound: Int) -> Int {
+		print(">>> Entering query(leftBound=\(leftBound),rightBound=\(rightBound))")
         if leftBound <= self.leftBound && self.rightBound <= rightBound {
             return value
         }
         guard let leftChild  = leftChild  else { fatalError("leftChild should not be nil") }
+		print("query(leftBound=\(leftBound),rightBound=\(rightBound)): leftChild → \(leftChild)")
+		print("query(leftBound=\(leftBound),rightBound=\(rightBound)): rightChild → \(rightChild)")
         guard let rightChild = rightChild else { fatalError("rightChild should not be nil") }
         
         pushDown(round: self.rightBound - self.leftBound + 1, lson: leftChild, rson: rightChild)
         
         let middle = self.leftBound + (self.rightBound - self.leftBound) / 2
+		print("query(leftBound=\(leftBound),rightBound=\(rightBound)): middle → \(middle)")
+		print("query(leftBound=\(leftBound),rightBound=\(rightBound)): result → \(result)")
         var result = 0
         
         if leftBound <= middle { result +=  leftChild.query(leftBound: leftBound, rightBound: rightBound) }
         if rightBound > middle { result += rightChild.query(leftBound: leftBound, rightBound: rightBound) }
         
+		print("<<< Exiting query(leftBound=\(leftBound),rightBound=\(rightBound))")
         return result
     }
     
     // MARK: - One Item Update
     public func update(index: Int, incremental: Int) {
+		print(">>> Entering update(index=\(index),incremental=\(incremental))")
         guard self.leftBound != self.rightBound else {
             self.value += incremental
             return
         }
         guard let leftChild  = leftChild  else { fatalError("leftChild should not be nil") }
+		print("update(index=\(index),incremental=\(incremental)): leftChild → \(leftChild)")
+		print("update(index=\(index),incremental=\(incremental)): rightChild → \(rightChild)")
         guard let rightChild = rightChild else { fatalError("rightChild should not be nil") }
         
         let middle = self.leftBound + (self.rightBound - self.leftBound) / 2
+		print("update(index=\(index),incremental=\(incremental)): middle → \(middle)")
         
         if index <= middle { leftChild.update(index: index, incremental: incremental) }
         else { rightChild.update(index: index, incremental: incremental) }
         pushUp(lson: leftChild, rson: rightChild)
+		print("<<< Exiting update(index=\(index),incremental=\(incremental))")
     }
     
     // MARK: - Interval Item Update
     public func update(leftBound: Int, rightBound: Int, incremental: Int) {
+		print(">>> Entering update(leftBound=\(leftBound),rightBound=\(rightBound),incremental=\(incremental))")
         if leftBound <= self.leftBound && self.rightBound <= rightBound {
             self.lazyValue += incremental
             self.value += incremental * (self.rightBound - self.leftBound + 1)
@@ -96,11 +114,14 @@ public class LazySegmentTree {
         }
         
         guard let leftChild  = leftChild  else { fatalError("leftChild should not be nil") }
+		print("update(leftBound=\(leftBound),rightBound=\(rightBound),incremental=\(incremental)): leftChild → \(leftChild)")
+		print("update(leftBound=\(leftBound),rightBound=\(rightBound),incremental=\(incremental)): rightChild → \(rightChild)")
         guard let rightChild = rightChild else { fatalError("rightChild should not be nil") }
         
         pushDown(round: self.rightBound - self.leftBound + 1, lson: leftChild, rson: rightChild)
         
         let middle = self.leftBound + (self.rightBound - self.leftBound) / 2
+		print("update(leftBound=\(leftBound),rightBound=\(rightBound),incremental=\(incremental)): middle → \(middle)")
         
         if leftBound <= middle { leftChild.update(leftBound: leftBound, rightBound: rightBound, incremental: incremental) }
         if middle < rightBound { rightChild.update(leftBound: leftBound, rightBound: rightBound, incremental: incremental) }

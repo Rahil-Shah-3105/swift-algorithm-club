@@ -3,16 +3,21 @@ import XCTest
 
 class QueueTest: XCTestCase {
   func testEmpty() {
+	print(">>> Entering testEmpty()")
     var queue = Queue<Int>()
     XCTAssertTrue(queue.isEmpty)
     XCTAssertEqual(queue.count, 0)
     XCTAssertEqual(queue.front, nil)
     XCTAssertNil(queue.dequeue())
+	print("testEmpty(): queue → \(queue)")
+	print("<<< Exiting testEmpty()")
   }
 
   func testOneElement() {
+	print(">>> Entering testOneElement()")
     var queue = Queue<Int>()
 
+	print("testOneElement(): queue → \(queue)")
     queue.enqueue(123)
     XCTAssertFalse(queue.isEmpty)
     XCTAssertEqual(queue.count, 1)
@@ -23,11 +28,15 @@ class QueueTest: XCTestCase {
     XCTAssertTrue(queue.isEmpty)
     XCTAssertEqual(queue.count, 0)
     XCTAssertEqual(queue.front, nil)
+	print("testOneElement(): result → \(result)")
+	print("<<< Exiting testOneElement()")
   }
 
   func testTwoElements() {
+	print(">>> Entering testTwoElements()")
     var queue = Queue<Int>()
 
+	print("testTwoElements(): queue → \(queue)")
     queue.enqueue(123)
     queue.enqueue(456)
     XCTAssertFalse(queue.isEmpty)
@@ -40,16 +49,21 @@ class QueueTest: XCTestCase {
     XCTAssertEqual(queue.count, 1)
     XCTAssertEqual(queue.front, 456)
 
+	print("testTwoElements(): result1 → \(result1)")
     let result2 = queue.dequeue()
     XCTAssertEqual(result2, 456)
     XCTAssertTrue(queue.isEmpty)
     XCTAssertEqual(queue.count, 0)
     XCTAssertEqual(queue.front, nil)
+	print("testTwoElements(): result2 → \(result2)")
+	print("<<< Exiting testTwoElements()")
   }
 
   func testMakeEmpty() {
+	print(">>> Entering testMakeEmpty()")
     var queue = Queue<Int>()
 
+	print("testMakeEmpty(): queue → \(queue)")
     queue.enqueue(123)
     queue.enqueue(456)
     XCTAssertNotNil(queue.dequeue())
@@ -65,5 +79,7 @@ class QueueTest: XCTestCase {
     XCTAssertTrue(queue.isEmpty)
     XCTAssertEqual(queue.count, 0)
     XCTAssertEqual(queue.front, nil)
+	print("testMakeEmpty(): result → \(result)")
+	print("<<< Exiting testMakeEmpty()")
   }
 }

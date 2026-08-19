@@ -12,8 +12,12 @@ open class Vertex {
     }
 
     open func clearCache() {
+		print(">>> Entering clearCache()")
         pathLengthFromStart = Double.infinity
         pathVerticesFromStart = []
+		print("clearCache(): pathVerticesFromStart → \(pathVerticesFromStart)")
+		print("clearCache(): pathLengthFromStart → \(pathLengthFromStart)")
+		print("<<< Exiting clearCache()")
     }
 }
 

@@ -3,6 +3,7 @@ import XCTest
 class MinimumSpanningTreeTests: XCTestCase {
 
   func testMinimumSpanningTreeReturnsSameTreeWhenGivenTree() {
+	print(">>> Entering testMinimumSpanningTreeReturnsSameTreeWhenGivenTree()")
     let tree = Graph()
     let nodeA = tree.addNode("a")
     let nodeB = tree.addNode("b")
@@ -20,24 +21,50 @@ class MinimumSpanningTreeTests: XCTestCase {
     tree.addEdge(nodeC, neighbor: nodeG)
     tree.addEdge(nodeE, neighbor: nodeH)
 
+	print("testMinimumSpanningTreeReturnsSameTreeWhenGivenTree(): nodeA → \(nodeA)")
+	print("testMinimumSpanningTreeReturnsSameTreeWhenGivenTree(): nodeB → \(nodeB)")
+	print("testMinimumSpanningTreeReturnsSameTreeWhenGivenTree(): nodeC → \(nodeC)")
+	print("testMinimumSpanningTreeReturnsSameTreeWhenGivenTree(): nodeD → \(nodeD)")
+	print("testMinimumSpanningTreeReturnsSameTreeWhenGivenTree(): nodeE → \(nodeE)")
+	print("testMinimumSpanningTreeReturnsSameTreeWhenGivenTree(): nodeF → \(nodeF)")
+	print("testMinimumSpanningTreeReturnsSameTreeWhenGivenTree(): nodeG → \(nodeG)")
+	print("testMinimumSpanningTreeReturnsSameTreeWhenGivenTree(): nodeH → \(nodeH)")
+	print("testMinimumSpanningTreeReturnsSameTreeWhenGivenTree(): tree → \(tree)")
     let minimumSpanningTree = breadthFirstSearchMinimumSpanningTree(tree, source: nodeA)
 
+	print("testMinimumSpanningTreeReturnsSameTreeWhenGivenTree(): minimumSpanningTree → \(minimumSpanningTree)")
     XCTAssertEqual(minimumSpanningTree, tree)
+	print("<<< Exiting testMinimumSpanningTreeReturnsSameTreeWhenGivenTree()")
   }
 
   func testMinimumSpanningTreeReturnsMinimumSpanningTreeWhenGivenGraph() {
+	print(">>> Entering testMinimumSpanningTreeReturnsMinimumSpanningTreeWhenGivenGraph()")
     let graphAndSourceNode = createGraph()
     let expectedMinimumSpanningTree = createMinimumSpanningTree()
 
+	print("testMinimumSpanningTreeReturnsMinimumSpanningTreeWhenGivenGraph(): expectedMinimumSpanningTree → \(expectedMinimumSpanningTree)")
+	print("testMinimumSpanningTreeReturnsMinimumSpanningTreeWhenGivenGraph(): graphAndSourceNode → \(graphAndSourceNode)")
     let actualMinimumSpanningTree = breadthFirstSearchMinimumSpanningTree(graphAndSourceNode.graph,
                                                                   source: graphAndSourceNode.source)
 
     XCTAssertEqual(actualMinimumSpanningTree, expectedMinimumSpanningTree)
+	print("<<< Exiting testMinimumSpanningTreeReturnsMinimumSpanningTreeWhenGivenGraph()")
   }
 
   func createGraph() -> (graph: Graph, source: Node) {
+	print(">>> Entering createGraph()")
     let graph = Graph()
 
+	print("createGraph(): graph → \(graph)")
+	print("createGraph(): nodeA → \(nodeA)")
+	print("createGraph(): nodeB → \(nodeB)")
+	print("createGraph(): nodeC → \(nodeC)")
+	print("createGraph(): nodeD → \(nodeD)")
+	print("createGraph(): nodeE → \(nodeE)")
+	print("createGraph(): nodeF → \(nodeF)")
+	print("createGraph(): nodeG → \(nodeG)")
+	print("createGraph(): nodeH → \(nodeH)")
+	print("createGraph(): nodeI → \(nodeI)")
     let nodeA = graph.addNode("a")
     let nodeB = graph.addNode("b")
     let nodeC = graph.addNode("c")
@@ -77,12 +104,24 @@ class MinimumSpanningTreeTests: XCTestCase {
     graph.addEdge(nodeI, neighbor: nodeG)
     graph.addEdge(nodeI, neighbor: nodeH)
 
+	print("<<< Exiting createGraph()")
     return (graph, nodeA)
   }
 
   func createMinimumSpanningTree() -> Graph {
+	print(">>> Entering createMinimumSpanningTree()")
     let minimumSpanningTree = Graph()
 
+	print("createMinimumSpanningTree(): minimumSpanningTree → \(minimumSpanningTree)")
+	print("createMinimumSpanningTree(): nodeA → \(nodeA)")
+	print("createMinimumSpanningTree(): nodeB → \(nodeB)")
+	print("createMinimumSpanningTree(): nodeC → \(nodeC)")
+	print("createMinimumSpanningTree(): nodeD → \(nodeD)")
+	print("createMinimumSpanningTree(): nodeE → \(nodeE)")
+	print("createMinimumSpanningTree(): nodeF → \(nodeF)")
+	print("createMinimumSpanningTree(): nodeG → \(nodeG)")
+	print("createMinimumSpanningTree(): nodeH → \(nodeH)")
+	print("createMinimumSpanningTree(): nodeI → \(nodeI)")
     let nodeA = minimumSpanningTree.addNode("a")
     let nodeB = minimumSpanningTree.addNode("b")
     let nodeC = minimumSpanningTree.addNode("c")
@@ -102,6 +141,7 @@ class MinimumSpanningTreeTests: XCTestCase {
     minimumSpanningTree.addEdge(nodeC, neighbor: nodeF)
     minimumSpanningTree.addEdge(nodeD, neighbor: nodeE)
 
+	print("<<< Exiting createMinimumSpanningTree()")
     return minimumSpanningTree
   }
 }

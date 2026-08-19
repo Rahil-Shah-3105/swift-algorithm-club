@@ -99,10 +99,14 @@ open class AVLTree<Key: Comparable, Payload> {
 
 extension TreeNode {
   public func minimum() -> TreeNode? {
+	print(">>> Entering minimum()")
+	print("<<< Exiting minimum()")
     return leftChild?.minimum() ?? self
   }
   
   public func maximum() -> TreeNode? {
+	print(">>> Entering maximum()")
+	print("<<< Exiting maximum()")
     return rightChild?.maximum() ?? self
   }
 }
@@ -114,6 +118,10 @@ extension AVLTree {
   }
   
   public func search(input: Key) -> Payload? {
+	print(">>> Entering search(input=\(input))")
+	print(">>> Entering search(key=\(key),node=\(node))")
+	print("<<< Exiting search(input=\(input))")
+	print("<<< Exiting search(key=\(key),node=\(node))")
     return search(key: input, node: root)?.payload
   }
   
@@ -135,21 +143,26 @@ extension AVLTree {
 
 extension AVLTree {
   public func insert(key: Key, payload: Payload? = nil) {
+	print(">>> Entering insert(key=\(key),payload=\(payload))")
     if let root = root {
       insert(input: key, payload: payload, node: root)
     } else {
       root = Node(key: key, payload: payload)
     }
     size += 1
+	print("<<< Exiting insert(key=\(key),payload=\(payload))")
   }
   
   private func insert(input: Key, payload: Payload?, node: Node) {
+	print(">>> Entering insert(input=\(input),payload=\(payload),node=\(node))")
+	print("insert(input=\(input),payload=\(payload),node=\(node)): child → \(child)")
     if input < node.key {
       if let child = node.leftChild {
         insert(input: input, payload: payload, node: child)
       } else {
         let child = Node(key: input, payload: payload, leftChild: nil, rightChild: nil, parent: node, height: 1)
         node.leftChild = child
+		print("insert(input=\(input),payload=\(payload),node=\(node)): node.leftChild → \(node.leftChild)")
         balance(node: child)
       }
     } else if input != node.key {
@@ -158,9 +171,11 @@ extension AVLTree {
       } else {
         let child = Node(key: input, payload: payload, leftChild: nil, rightChild: nil, parent: node, height: 1)
         node.rightChild = child
+		print("insert(input=\(input),payload=\(payload),node=\(node)): node.rightChild → \(node.rightChild)")
         balance(node: child)
       }
     }
+	print("<<< Exiting insert(input=\(input),payload=\(payload),node=\(node))")
   }
 }
 
@@ -168,21 +183,26 @@ extension AVLTree {
 
 extension AVLTree {
   fileprivate func updateHeightUpwards(node: Node?) {
+	print(">>> Entering updateHeightUpwards(node=\(node))")
     if let node = node {
       let lHeight = node.leftChild?.height ?? 0
       let rHeight = node.rightChild?.height ?? 0
       node.height = max(lHeight, rHeight) + 1
       updateHeightUpwards(node: node.parent)
     }
+	print("<<< Exiting updateHeightUpwards(node=\(node))")
   }
   
   fileprivate func lrDifference(node: Node?) -> Int {
+	print(">>> Entering lrDifference(node=\(node))")
     let lHeight = node?.leftChild?.height ?? 0
     let rHeight = node?.rightChild?.height ?? 0
+	print("<<< Exiting lrDifference(node=\(node))")
     return lHeight - rHeight
   }
   
   fileprivate func balance(node: Node?) {
+	print(">>> Entering balance(node=\(node))")
     guard let node = node else {
       return
     }
@@ -193,9 +213,12 @@ extension AVLTree {
     var nodes = [Node?](repeating: nil, count: 3)
     var subtrees = [Node?](repeating: nil, count: 4)
     let nodeParent = node.parent
+	print("balance(node=\(node)): nodes → \(nodes)")
+	print("balance(node=\(node)): subtrees → \(subtrees)")
     
     let lrFactor = lrDifference(node: node)
     if lrFactor > 1 {
+	print("balance(node=\(node)): lrFactor → \(lrFactor)")
       // left-left or left-right
       if lrDifference(node: node.leftChild) > 0 {
         // left-left
@@ -251,6 +274,7 @@ extension AVLTree {
     
     if node.isRoot {
       root = nodes[2]
+	print("balance(node=\(node)): root → \(root)")
       root?.parent = nil
     } else if node.isLeftChild {
       nodeParent?.leftChild = nodes[2]
@@ -278,6 +302,7 @@ extension AVLTree {
     updateHeightUpwards(node: nodes[1])    // Update height from left
     updateHeightUpwards(node: nodes[0])    // Update height from right
     
+	print("<<< Exiting balance(node=\(node))")
     balance(node: nodes[2]?.parent)
   }
 }
@@ -286,6 +311,7 @@ extension AVLTree {
 
 extension AVLTree {
   fileprivate func display(node: Node?, level: Int) {
+	print(">>> Entering display(node=\(node),level=\(level))")
     if let node = node {
       display(node: node.rightChild, level: level + 1)
       print("")
@@ -298,6 +324,9 @@ extension AVLTree {
       print("(\(node.key):\(node.height))", terminator: "")
       display(node: node.leftChild, level: level + 1)
     }
+	print("<<< Exiting display(node=\(node),level=\(level))")
+	print(">>> Entering display(node=\(node))")
+	print("<<< Exiting display(node=\(node))")
   }
   
   public func display(node: Node) {
@@ -306,26 +335,32 @@ extension AVLTree {
   }
   
   public func inorder(node: Node?) -> String {
+	print(">>> Entering inorder(node=\(node))")
     var output = ""
     if let node = node {
       output = "\(inorder(node: node.leftChild)) \(print("\(node.key) ")) \(inorder(node: node.rightChild))"
     }
+	print("<<< Exiting inorder(node=\(node))")
     return output
   }
   
   public func preorder(node: Node?) -> String {
+	print(">>> Entering preorder(node=\(node))")
     var output = ""
     if let node = node {
       output = "\(preorder(node: node.leftChild)) \(print("\(node.key) ")) \(preorder(node: node.rightChild))"
     }
+	print("<<< Exiting preorder(node=\(node))")
     return output
   }
   
   public func postorder(node: Node?) -> String {
+	print(">>> Entering postorder(node=\(node))")
     var output = ""
     if let node = node {
       output = "\(postorder(node: node.leftChild)) \(print("\(node.key) ")) \(postorder(node: node.rightChild))"
     }
+	print("<<< Exiting postorder(node=\(node))")
     return output
   }
 }
@@ -334,16 +369,21 @@ extension AVLTree {
 
 extension AVLTree {
   public func delete(key: Key) {
+	print(">>> Entering delete(key=\(key))")
     if size == 1 {
       root = nil
+	print("delete(key=\(key)): root → \(root)")
       size -= 1
     } else if let node = search(key: key, node: root) {
+	print("delete(key=\(key)): node → \(node)")
       delete(node: node)
       size -= 1
     }
+	print("<<< Exiting delete(key=\(key))")
   }
   
   private func delete(node: Node) {
+	print(">>> Entering delete(node=\(node))")
     if node.isLeaf {
       // Just remove and balance up
       if let parent = node.parent {
@@ -354,18 +394,24 @@ extension AVLTree {
         
         if node.isLeftChild {
           parent.leftChild = nil
+		print("delete(node=\(node)): parent.leftChild → \(parent.leftChild)")
         } else if node.isRightChild {
           parent.rightChild = nil
+		print("delete(node=\(node)): parent.rightChild → \(parent.rightChild)")
         }
         
         balance(node: parent)
       } else {
         // at root
         root = nil
+		print("delete(node=\(node)): root → \(root)")
       }
     } else {
       // Handle stem cases
       if let replacement = node.leftChild?.maximum(), replacement !== node {
+		print("delete(node=\(node)): replacement → \(replacement)")
+		print("delete(node=\(node)): node.key → \(node.key)")
+		print("delete(node=\(node)): node.payload → \(node.payload)")
         node.key = replacement.key
         node.payload = replacement.payload
         delete(node: replacement)
@@ -375,6 +421,7 @@ extension AVLTree {
         delete(node: replacement)
       }
     }
+	print("<<< Exiting delete(node=\(node))")
   }
 }
 
@@ -382,6 +429,7 @@ extension AVLTree {
 
 extension AVLTree {
   public func doInOrder(node: Node?, _ completion: (Node) -> Void) {
+	print(">>> Entering doInOrder(node=\(node),completion=\(completion))")
     if let node = node {
       doInOrder(node: node.leftChild) { lnode in
         completion(lnode)
@@ -391,9 +439,11 @@ extension AVLTree {
         completion(rnode)
       }
     }
+	print("<<< Exiting doInOrder(node=\(node),completion=\(completion))")
   }
   
   public func doInPreOrder(node: Node?, _ completion: (Node) -> Void) {
+	print(">>> Entering doInPreOrder(node=\(node),completion=\(completion))")
     if let node = node {
       completion(node)
       doInPreOrder(node: node.leftChild) { lnode in
@@ -403,9 +453,11 @@ extension AVLTree {
         completion(rnode)
       }
     }
+	print("<<< Exiting doInPreOrder(node=\(node),completion=\(completion))")
   }
   
   public func doInPostOrder(node: Node?, _ completion: (Node) -> Void) {
+	print(">>> Entering doInPostOrder(node=\(node),completion=\(completion))")
     if let node = node {
       doInPostOrder(node: node.leftChild) { lnode in
         completion(lnode)
@@ -415,6 +467,7 @@ extension AVLTree {
       }
       completion(node)
     }
+	print("<<< Exiting doInPostOrder(node=\(node),completion=\(completion))")
   }
 }
 
