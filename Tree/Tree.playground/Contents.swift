@@ -43,14 +43,17 @@ teaNode.parent!.parent
 
 extension TreeNode where T: Equatable {
   func search(_ value: T) -> TreeNode? {
+	print(">>> Entering search(value=\(value))")
     if value == self.value {
       return self
     }
     for child in children {
       if let found = child.search(value) {
+		print("search(value=\(value)): found → \(found)")
         return found
       }
     }
+	print("<<< Exiting search(value=\(value))")
     return nil
   }
 }

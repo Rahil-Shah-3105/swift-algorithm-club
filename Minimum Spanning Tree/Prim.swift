@@ -7,9 +7,11 @@
 //
 
 func minimumSpanningTreePrim<T>(graph: Graph<T>) -> (cost: Int, tree: Graph<T>) {
+print(">>> Entering minimumSpanningTreePrim(graph=\(graph))")
   var cost: Int = 0
   var tree = Graph<T>()
   
+print("minimumSpanningTreePrim(graph=\(graph)): tree → \(tree)")
   guard let start = graph.vertices.first else {
     return (cost: cost, tree: tree)
   }
@@ -18,8 +20,10 @@ func minimumSpanningTreePrim<T>(graph: Graph<T>) -> (cost: Int, tree: Graph<T>) 
   var priorityQueue = PriorityQueue<(vertex: T, weight: Int, parent: T?)>(
     sort: { $0.weight < $1.weight })
   
+print("minimumSpanningTreePrim(graph=\(graph)): visited → \(visited)")
   priorityQueue.enqueue((vertex: start, weight: 0, parent: nil))
   while let head = priorityQueue.dequeue() {
+	print("minimumSpanningTreePrim(graph=\(graph)): head → \(head)")
     let vertex = head.vertex
     if visited.contains(vertex) {
       continue
@@ -41,5 +45,6 @@ func minimumSpanningTreePrim<T>(graph: Graph<T>) -> (cost: Int, tree: Graph<T>) 
     }
   }
   
+print("<<< Exiting minimumSpanningTreePrim(graph=\(graph))")
   return (cost: cost, tree: tree)
 }

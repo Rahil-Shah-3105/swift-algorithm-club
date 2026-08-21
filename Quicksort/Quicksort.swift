@@ -4,6 +4,7 @@ import Foundation
   Easy to understand but not very efficient.
 */
 func quicksort<T: Comparable>(_ a: [T]) -> [T] {
+print(">>> Entering quicksort(a=\(a))")
   guard a.count > 1 else { return a }
 
   let pivot = a[a.count/2]
@@ -11,6 +12,7 @@ func quicksort<T: Comparable>(_ a: [T]) -> [T] {
   let equal = a.filter { $0 == pivot }
   let greater = a.filter { $0 > pivot }
 
+print("<<< Exiting quicksort(a=\(a))")
   return quicksort(less) + equal + quicksort(greater)
 }
 
@@ -30,6 +32,7 @@ func quicksort<T: Comparable>(_ a: [T]) -> [T] {
   left partition.
 */
 func partitionLomuto<T: Comparable>(_ a: inout [T], low: Int, high: Int) -> Int {
+print(">>> Entering partitionLomuto(a=\(a),low=\(low),high=\(high))")
   // We always use the highest item as the pivot.
   let pivot = a[high]
 
@@ -50,6 +53,7 @@ func partitionLomuto<T: Comparable>(_ a: inout [T], low: Int, high: Int) -> Int 
   // the pivot. Now the pivot sits between the <= and > regions and the
   // array is properly partitioned.
   (a[i], a[high]) = (a[high], a[i])
+print("<<< Exiting partitionLomuto(a=\(a),low=\(low),high=\(high))")
   return i
 }
 
@@ -57,11 +61,14 @@ func partitionLomuto<T: Comparable>(_ a: inout [T], low: Int, high: Int) -> Int 
   Recursive, in-place version that uses Lomuto's partioning scheme.
 */
 func quicksortLomuto<T: Comparable>(_ a: inout [T], low: Int, high: Int) {
+print(">>> Entering quicksortLomuto(a=\(a),low=\(low),high=\(high))")
   if low < high {
     let p = partitionLomuto(&a, low: low, high: high)
     quicksortLomuto(&a, low: low, high: p - 1)
     quicksortLomuto(&a, low: p + 1, high: high)
   }
+	print("quicksortLomuto(a=\(a),low=\(low),high=\(high)): p → \(p)")
+print("<<< Exiting quicksortLomuto(a=\(a),low=\(low),high=\(high))")
 }
 
 // MARK: - Hoare partitioning
@@ -81,6 +88,7 @@ func quicksortLomuto<T: Comparable>(_ a: inout [T], low: Int, high: Int) {
   fewer swaps.
 */
 func partitionHoare<T: Comparable>(_ a: inout [T], low: Int, high: Int) -> Int {
+print(">>> Entering partitionHoare(a=\(a),low=\(low),high=\(high))")
   let pivot = a[low]
   var i = low - 1
   var j = high + 1
@@ -95,6 +103,7 @@ func partitionHoare<T: Comparable>(_ a: inout [T], low: Int, high: Int) -> Int {
       return j
     }
   }
+print("<<< Exiting partitionHoare(a=\(a),low=\(low),high=\(high))")
 }
 
 /*
@@ -102,18 +111,23 @@ func partitionHoare<T: Comparable>(_ a: inout [T], low: Int, high: Int) -> Int {
   the choice of pivot, this performs badly if the array is already sorted.
 */
 func quicksortHoare<T: Comparable>(_ a: inout [T], low: Int, high: Int) {
+print(">>> Entering quicksortHoare(a=\(a),low=\(low),high=\(high))")
   if low < high {
     let p = partitionHoare(&a, low: low, high: high)
     quicksortHoare(&a, low: low, high: p)
     quicksortHoare(&a, low: p + 1, high: high)
   }
+	print("quicksortHoare(a=\(a),low=\(low),high=\(high)): p → \(p)")
+print("<<< Exiting quicksortHoare(a=\(a),low=\(low),high=\(high))")
 }
 
 // MARK: - Randomized sort
 
 /* Returns a random integer in the range min...max, inclusive. */
 public func random(min: Int, max: Int) -> Int {
+print(">>> Entering random(min=\(min),max=\(max))")
   assert(min < max)
+print("<<< Exiting random(min=\(min),max=\(max))")
   return min + Int(arc4random_uniform(UInt32(max - min + 1)))
 }
 
@@ -122,10 +136,12 @@ public func random(min: Int, max: Int) -> Int {
   of the input array.
 */
 func quicksortRandom<T: Comparable>(_ a: inout [T], low: Int, high: Int) {
+print(">>> Entering quicksortRandom(a=\(a),low=\(low),high=\(high))")
   if low < high {
     // Create a random pivot index in the range [low...high].
     let pivotIndex = random(min: low, max: high)
 
+	print("quicksortRandom(a=\(a),low=\(low),high=\(high)): pivotIndex → \(pivotIndex)")
     // Because the Lomuto scheme expects a[high] to be the pivot entry, swap
     // a[pivotIndex] with a[high] to put the pivot element at the end.
     (a[pivotIndex], a[high]) = (a[high], a[pivotIndex])
@@ -134,6 +150,8 @@ func quicksortRandom<T: Comparable>(_ a: inout [T], low: Int, high: Int) {
     quicksortRandom(&a, low: low, high: p - 1)
     quicksortRandom(&a, low: p + 1, high: high)
   }
+	print("quicksortRandom(a=\(a),low=\(low),high=\(high)): p → \(p)")
+print("<<< Exiting quicksortRandom(a=\(a),low=\(low),high=\(high))")
 }
 
 // MARK: - Dutch national flag partitioning
@@ -143,9 +161,11 @@ func quicksortRandom<T: Comparable>(_ a: inout [T], low: Int, high: Int) {
   the same memory location. This little wrapper simply ignores such swaps.
 */
 public func swap<T>(_ a: inout [T], _ i: Int, _ j: Int) {
+print(">>> Entering swap(a=\(a),i=\(i),j=\(j))")
   if i != j {
     a.swapAt(i, j)
   }
+print("<<< Exiting swap(a=\(a),i=\(i),j=\(j))")
 }
 
 /*
@@ -166,6 +186,7 @@ public func swap<T>(_ a: inout [T], _ i: Int, _ j: Int) {
   Time complexity is O(n), space complexity is O(1).
 */
 func partitionDutchFlag<T: Comparable>(_ a: inout [T], low: Int, high: Int, pivotIndex: Int) -> (Int, Int) {
+print(">>> Entering partitionDutchFlag(a=\(a),low=\(low),high=\(high),pivotIndex=\(pivotIndex))")
   let pivot = a[pivotIndex]
 
   var smaller = low
@@ -189,6 +210,7 @@ func partitionDutchFlag<T: Comparable>(_ a: inout [T], low: Int, high: Int, pivo
       larger -= 1
     }
   }
+print("<<< Exiting partitionDutchFlag(a=\(a),low=\(low),high=\(high),pivotIndex=\(pivotIndex))")
   return (smaller, larger)
 }
 
@@ -196,10 +218,13 @@ func partitionDutchFlag<T: Comparable>(_ a: inout [T], low: Int, high: Int, pivo
   Uses Dutch national flag partitioning and a random pivot index.
 */
 func quicksortDutchFlag<T: Comparable>(_ a: inout [T], low: Int, high: Int) {
+print(">>> Entering quicksortDutchFlag(a=\(a),low=\(low),high=\(high))")
   if low < high {
     let pivotIndex = random(min: low, max: high)
     let (p, q) = partitionDutchFlag(&a, low: low, high: high, pivotIndex: pivotIndex)
     quicksortDutchFlag(&a, low: low, high: p - 1)
     quicksortDutchFlag(&a, low: q + 1, high: high)
   }
+	print("quicksortDutchFlag(a=\(a),low=\(low),high=\(high)): pivotIndex → \(pivotIndex)")
+print("<<< Exiting quicksortDutchFlag(a=\(a),low=\(low),high=\(high))")
 }

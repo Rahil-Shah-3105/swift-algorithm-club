@@ -14,10 +14,13 @@ public struct Stack<T> {
   }
   
   public mutating func push(_ element: T) {
+	print(">>> Entering push(element=\(element))")
     array.append(element)
+	print("<<< Exiting push(element=\(element))")
   }
   
   public mutating func pop() -> T? {
+	print(">>> Entering pop()")
     return array.popLast()
   }
   
@@ -28,7 +31,9 @@ public struct Stack<T> {
 
 extension Stack: Sequence {
   public func makeIterator() -> AnyIterator<T> {
+	print(">>> Entering makeIterator()")
     var curr = self
+	print("<<< Exiting makeIterator()")
     return AnyIterator {
       return curr.pop()
     }

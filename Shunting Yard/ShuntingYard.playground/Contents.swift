@@ -142,37 +142,50 @@ public class InfixExpressionBuilder {
   private var expression = [Token]()
 
   public func addOperator(_ operatorType: OperatorType) -> InfixExpressionBuilder {
+	print(">>> Entering addOperator(operatorType=\(operatorType))")
     expression.append(Token(operatorType: operatorType))
+	print("<<< Exiting addOperator(operatorType=\(operatorType))")
     return self
   }
 
   public func addOperand(_ operand: Double) -> InfixExpressionBuilder {
+	print(">>> Entering addOperand(operand=\(operand))")
     expression.append(Token(operand: operand))
+	print("<<< Exiting addOperand(operand=\(operand))")
     return self
   }
 
   public func addOpenBracket() -> InfixExpressionBuilder {
+	print(">>> Entering addOpenBracket()")
     expression.append(Token(tokenType: .openBracket))
+	print("<<< Exiting addOpenBracket()")
     return self
   }
 
   public func addCloseBracket() -> InfixExpressionBuilder {
+	print(">>> Entering addCloseBracket()")
     expression.append(Token(tokenType: .closeBracket))
+	print("<<< Exiting addCloseBracket()")
     return self
   }
 
   public func build() -> [Token] {
+	print(">>> Entering build()")
     // Maybe do some validation here
+	print("<<< Exiting build()")
     return expression
   }
 }
 
 // This returns the result of the shunting yard algorithm
 public func reversePolishNotation(_ expression: [Token]) -> String {
+print(">>> Entering reversePolishNotation(expression=\(expression))")
 
   var tokenStack = Stack<Token>()
   var reversePolishNotation = [Token]()
 
+print("reversePolishNotation(expression=\(expression)): tokenStack → <redacted>")
+print("reversePolishNotation(expression=\(expression)): reversePolishNotation → \(reversePolishNotation)")
   for token in expression {
     switch token.tokenType {
     case .operand(_):
@@ -183,6 +196,7 @@ public func reversePolishNotation(_ expression: [Token]) -> String {
 
     case .closeBracket:
       while tokenStack.count > 0, let tempToken = tokenStack.pop(), !tempToken.isOpenBracket {
+		print("reversePolishNotation(expression=\(expression)): tempToken → <redacted>")
         reversePolishNotation.append(tempToken)
       }
 
@@ -209,6 +223,7 @@ public func reversePolishNotation(_ expression: [Token]) -> String {
     reversePolishNotation.append(tokenStack.pop()!)
   }
 
+print("<<< Exiting reversePolishNotation(expression=\(expression))")
   return reversePolishNotation.map({token in token.description}).joined(separator: " ")
 }
 

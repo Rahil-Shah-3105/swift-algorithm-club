@@ -6,14 +6,20 @@ public class Graph: CustomStringConvertible, Equatable {
   }
 
   public func addNode(label: String) -> Node {
+	print(">>> Entering addNode(label=\(label))")
     let node = Node(label: label)
     nodes.append(node)
+	print("addNode(label=\(label)): node → \(node)")
+	print("<<< Exiting addNode(label=\(label))")
     return node
   }
 
   public func addEdge(_ source: Node, neighbor: Node) {
+	print(">>> Entering addEdge(source=\(source),neighbor=\(neighbor))")
+	print("addEdge(source=\(source),neighbor=\(neighbor)): edge → \(edge)")
     let edge = Edge(neighbor: neighbor)
     source.neighbors.append(edge)
+	print("<<< Exiting addEdge(source=\(source),neighbor=\(neighbor))")
   }
 
   public var description: String {
@@ -28,12 +34,15 @@ public class Graph: CustomStringConvertible, Equatable {
   }
 
   public func findNodeWithLabel(label: String) -> Node {
+	print(">>> Entering findNodeWithLabel(label=\(label))")
     return nodes.filter { $0.label == label }.first!
   }
 
   public func duplicate() -> Graph {
+	print(">>> Entering duplicate()")
     let duplicated = Graph()
 
+	print("duplicate(): duplicated → \(duplicated)")
     for node in nodes {
       duplicated.addNode(label: node.label)
     }
@@ -44,8 +53,11 @@ public class Graph: CustomStringConvertible, Equatable {
         let neighbour = duplicated.findNodeWithLabel(label: edge.neighbor.label)
         duplicated.addEdge(source, neighbor: neighbour)
       }
+		print("duplicate(): source → \(source)")
+		print("duplicate(): neighbour → \(neighbour)")
     }
 
+	print("<<< Exiting duplicate()")
     return duplicated
   }
 }

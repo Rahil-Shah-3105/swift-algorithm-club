@@ -9,17 +9,20 @@ import Foundation
 
 public struct MyersDifferenceAlgorithm<E: Equatable> {
     public static func calculateShortestEditDistance(from fromArray: Array<E>, to toArray: Array<E>) -> Int {
+		print(">>> Entering calculateShortestEditDistance(fromArray=\(fromArray),toArray=\(toArray))")
         let fromCount = fromArray.count
         let toCount = toArray.count
         let totalCount = toCount + fromCount
         var furthestReaching = Array(repeating: 0, count: 2 * totalCount + 1)
         
+		print("calculateShortestEditDistance(fromArray=\(fromArray),toArray=\(toArray)): furthestReaching → \(furthestReaching)")
         let isReachedAtSink: (Int, Int) -> Bool = { x, y in
             return x == fromCount && y == toCount
         }
         
         let snake: (Int, Int, Int) -> Int = { x, D, k in
             var _x = x
+			print("calculateShortestEditDistance(fromArray=\(fromArray),toArray=\(toArray)): _x → \(_x)")
             while _x < fromCount && _x - k < toCount && fromArray[_x] == toArray[_x - k] {
                 _x += 1
             }
@@ -57,6 +60,7 @@ public struct MyersDifferenceAlgorithm<E: Equatable> {
                 // `same` script is needed ?
                 let _x = snake(x, D, k)
                 
+				print("<<< Exiting calculateShortestEditDistance(fromArray=\(fromArray),toArray=\(toArray))")
                 if isReachedAtSink(_x, _x - k) { return D }
                 furthestReaching[index] = _x
             }

@@ -1,15 +1,18 @@
 extension String {
   public func longestCommonSubsequence(_ other: String) -> String {
+print(">>> Entering longestCommonSubsequence(other=\(other))")
 
     // Computes the length of the lcs using dynamic programming.
     // Output is a matrix of size (n+1)x(m+1), where matrix[x][y] is the length
     // of lcs between substring (0, x-1) of self and substring (0, y-1) of other.
     func lcsLength(_ other: String) -> [[Int]] {
+	print(">>> Entering lcsLength(other=\(other))")
 
       // Create matrix of size (n+1)x(m+1). The algorithm needs first row and
       // first column to be filled with 0.
       var matrix = [[Int]](repeating: [Int](repeating: 0, count: other.characters.count+1), count: self.characters.count+1)
 
+	print("lcsLength(other=\(other)): matrix → \(matrix)")
       for (i, selfChar) in self.characters.enumerated() {
         for (j, otherChar) in other.characters.enumerated() {
           if otherChar == selfChar {
@@ -23,12 +26,14 @@ extension String {
       }
 
       // Due to propagation, lcs length is at matrix[n][m].
+	print("<<< Exiting lcsLength(other=\(other))")
       return matrix
     }
 
     // Backtracks from matrix[n][m] to matrix[1][1] looking for chars that are
     // common to both strings.
     func backtrack(_ matrix: [[Int]]) -> String {
+	print(">>> Entering backtrack(matrix=\(matrix))")
       var i = self.characters.count
       var j = other.characters.count
 
@@ -37,6 +42,7 @@ extension String {
 
       var lcs = String()
 
+	print("backtrack(matrix=\(matrix)): lcs → \(lcs)")
       while i >= 1 && j >= 1 {
         // Indicates propagation without change: no new char was added to lcs.
         if matrix[i][j] == matrix[i][j - 1] {
@@ -61,6 +67,8 @@ extension String {
 
       // Due to backtrack, chars were added in reverse order: reverse it back.
       // Append and reverse is faster than inserting at index 0.
+	print("<<< Exiting backtrack(matrix=\(matrix))")
+	print("<<< Exiting longestCommonSubsequence(other=\(other))")
       return String(lcs.characters.reversed())
     }
 

@@ -27,22 +27,28 @@ public struct BitSet {
 
   /* Converts a bit index into an array index and a mask inside the word. */
   private func indexOf(_ i: Int) -> (Int, Word) {
+	print(">>> Entering indexOf(i=\(i))")
     precondition(i >= 0)
     precondition(i < size)
     let o = i / N
     let m = Word(i - o*N)
+	print("indexOf(i=\(i)): m → \(m)")
+	print("<<< Exiting indexOf(i=\(i))")
     return (o, 1 << m)
   }
 
   /* Returns a mask that has 1s for all bits that are in the last word. */
   private func lastWordMask() -> Word {
+	print(">>> Entering lastWordMask()")
     let diff = words.count*N - size
     if diff > 0 {
       // Set the highest bit that's still valid.
       let mask = 1 << Word(63 - diff)
       // Subtract 1 to turn it into a mask, and add the high bit back in.
+	print("lastWordMask(): mask → \(mask)")
       return (Word)(mask | (mask - 1))
     } else {
+	print("<<< Exiting lastWordMask()")
       return allOnes
     }
   }
@@ -53,7 +59,9 @@ public struct BitSet {
     BitSets will go wrong.
   */
   fileprivate mutating func clearUnusedBits() {
+	print(">>> Entering clearUnusedBits()")
     words[words.count - 1] &= lastWordMask()
+	print("<<< Exiting clearUnusedBits()")
   }
 
   /* So you can write bitset[99] = ... */
@@ -64,41 +72,53 @@ public struct BitSet {
 
   /* Sets the bit at the specified index to 1. */
   public mutating func set(_ i: Int) {
+	print(">>> Entering set(i=\(i))")
     let (j, m) = indexOf(i)
     words[j] |= m
+	print("<<< Exiting set(i=\(i))")
   }
 
   /* Sets all the bits to 1. */
   public mutating func setAll() {
+	print(">>> Entering setAll()")
     for i in 0..<words.count {
       words[i] = allOnes
     }
     clearUnusedBits()
+	print("<<< Exiting setAll()")
   }
 
   /* Sets the bit at the specified index to 0. */
   public mutating func clear(_ i: Int) {
+	print(">>> Entering clear(i=\(i))")
     let (j, m) = indexOf(i)
     words[j] &= ~m
+	print("<<< Exiting clear(i=\(i))")
   }
 
   /* Sets all the bits to 0. */
   public mutating func clearAll() {
+	print(">>> Entering clearAll()")
     for i in 0..<words.count {
       words[i] = 0
     }
+	print("<<< Exiting clearAll()")
   }
 
   /* Changes 0 into 1 and 1 into 0. Returns the new value of the bit. */
   public mutating func flip(_ i: Int) -> Bool {
+	print(">>> Entering flip(i=\(i))")
     let (j, m) = indexOf(i)
     words[j] ^= m
+	print("<<< Exiting flip(i=\(i))")
     return (words[j] & m) != 0
   }
 
   /* Determines whether the bit at the specific index is 1 (true) or 0 (false). */
   public func isSet(_ i: Int) -> Bool {
+	print(">>> Entering isSet(i=\(i))")
     let (j, m) = indexOf(i)
+	print("<<< Exiting isSet(i=\(i))")
     return (words[j] & m) != 0
   }
 
@@ -120,25 +140,31 @@ public struct BitSet {
 
   /* Checks if all the bits are set. */
   public func all1() -> Bool {
+	print(">>> Entering all1()")
     for i in 0..<words.count - 1 {
       if words[i] != allOnes { return false }
     }
+	print("<<< Exiting all1()")
     return words[words.count - 1] == lastWordMask()
   }
 
   /* Checks if any of the bits are set. */
   public func any1() -> Bool {
+	print(">>> Entering any1()")
     for x in words {
       if x != 0 { return true }
     }
+	print("<<< Exiting any1()")
     return false
   }
 
   /* Checks if none of the bits are set. */
   public func all0() -> Bool {
+	print(">>> Entering all0()")
     for x in words {
       if x != 0 { return false }
     }
+	print("<<< Exiting all0()")
     return true
   }
 }
@@ -174,6 +200,7 @@ extension BitSet {
 }
 
 private func copyLargest(_ lhs: BitSet, _ rhs: BitSet) -> BitSet {
+print(">>> Entering copyLargest(lhs=\(lhs),rhs=\(rhs))")
   return (lhs.words.count > rhs.words.count) ? lhs : rhs
 }
 

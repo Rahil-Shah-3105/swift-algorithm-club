@@ -41,6 +41,7 @@ open class AdjacencyMatrixGraph<T>: AbstractGraph<T> where T: Hashable {
   // Adds a new vertex to the matrix.
   // Performance: possibly O(n^2) because of the resizing of the matrix.
   open override func createVertex(_ data: T) -> Vertex<T> {
+	print(">>> Entering createVertex(data=\(data))")
     // check if the vertex already exists
     let matchingVertices = vertices.filter { vertex in
       return vertex.data == data
@@ -53,6 +54,7 @@ open class AdjacencyMatrixGraph<T>: AbstractGraph<T> where T: Hashable {
     // if the vertex doesn't exist, create a new one
     let vertex = Vertex(data: data, index: adjacencyMatrix.count)
 
+	print("createVertex(data=\(data)): vertex → \(vertex)")
     // Expand each existing row to the right one column.
     for i in 0 ..< adjacencyMatrix.count {
       adjacencyMatrix[i].append(nil)
@@ -62,32 +64,42 @@ open class AdjacencyMatrixGraph<T>: AbstractGraph<T> where T: Hashable {
     let newRow = [Double?](repeating: nil, count: adjacencyMatrix.count + 1)
     adjacencyMatrix.append(newRow)
 
+	print("createVertex(data=\(data)): newRow → \(newRow)")
     _vertices.append(vertex)
 
+	print("<<< Exiting createVertex(data=\(data))")
     return vertex
   }
 
   open override func addDirectedEdge(_ from: Vertex<T>, to: Vertex<T>, withWeight weight: Double?) {
+	print(">>> Entering addDirectedEdge(from=\(from),to=\(to),weight=\(weight))")
     adjacencyMatrix[from.index][to.index] = weight
+	print("<<< Exiting addDirectedEdge(from=\(from),to=\(to),weight=\(weight))")
   }
 
   open override func addUndirectedEdge(_ vertices: (Vertex<T>, Vertex<T>), withWeight weight: Double?) {
+	print(">>> Entering addUndirectedEdge(vertices=\(vertices),weight=\(weight))")
     addDirectedEdge(vertices.0, to: vertices.1, withWeight: weight)
     addDirectedEdge(vertices.1, to: vertices.0, withWeight: weight)
+	print("<<< Exiting addUndirectedEdge(vertices=\(vertices),weight=\(weight))")
   }
 
   open override func weightFrom(_ sourceVertex: Vertex<T>, to destinationVertex: Vertex<T>) -> Double? {
+	print(">>> Entering weightFrom(sourceVertex=\(sourceVertex),destinationVertex=\(destinationVertex))")
     return adjacencyMatrix[sourceVertex.index][destinationVertex.index]
   }
 
   open override func edgesFrom(_ sourceVertex: Vertex<T>) -> [Edge<T>] {
+	print(">>> Entering edgesFrom(sourceVertex=\(sourceVertex))")
     var outEdges = [Edge<T>]()
     let fromIndex = sourceVertex.index
+	print("edgesFrom(sourceVertex=\(sourceVertex)): outEdges → \(outEdges)")
     for column in 0..<adjacencyMatrix.count {
       if let weight = adjacencyMatrix[fromIndex][column] {
         outEdges.append(Edge(from: sourceVertex, to: vertices[column], weight: weight))
       }
     }
+	print("<<< Exiting edgesFrom(sourceVertex=\(sourceVertex))")
     return outEdges
   }
 

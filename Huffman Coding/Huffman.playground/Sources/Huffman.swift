@@ -51,34 +51,42 @@ extension Huffman {
      the leaf nodes. The frequency table used by decompression is derived from
      this. */
   fileprivate func countByteFrequency(inData data: NSData) {
+	print(">>> Entering countByteFrequency(data=\(data))")
     var ptr = data.bytes.assumingMemoryBound(to: UInt8.self)
     for _ in 0..<data.length {
+	print("countByteFrequency(data=\(data)): ptr → \(ptr)")
       let i = Int(ptr.pointee)
       tree[i].count += 1
       tree[i].index = i
       ptr = ptr.successor()
     }
+	print("<<< Exiting countByteFrequency(data=\(data))")
   }
 
   /* Takes a frequency table and rebuilds the tree. This is the first step of
      decompression. */
     fileprivate func restoreTree(fromTable frequencyTable: [Freq]) {
+	print(">>> Entering restoreTree(frequencyTable=\(frequencyTable))")
     for freq in frequencyTable {
       let i = Int(freq.byte)
       tree[i].count = freq.count
       tree[i].index = i
     }
     buildTree()
+	print("<<< Exiting restoreTree(frequencyTable=\(frequencyTable))")
   }
 
   /* Returns the frequency table. This is the first 256 nodes from the tree but
      only those that are actually used, without the parent/left/right pointers.
      You would serialize this along with the compressed file. */
   public func frequencyTable() -> [Freq] {
+	print(">>> Entering frequencyTable()")
     var a = [Freq]()
     for i in 0..<256 where tree[i].count > 0 {
+	print("frequencyTable(): a → \(a)")
       a.append(Freq(byte: UInt8(i), count: tree[i].count))
     }
+	print("<<< Exiting frequencyTable()")
     return a
   }
 }
@@ -86,9 +94,11 @@ extension Huffman {
 extension Huffman {
   /* Builds a Huffman tree from a frequency table. */
   fileprivate func buildTree() {
+	print(">>> Entering buildTree()")
     // Create a min-priority queue and enqueue all used nodes.
     var queue = PriorityQueue<Node>(sort: { $0.count < $1.count })
     for node in tree where node.count > 0 {
+	print("buildTree(): queue → \(queue)")
       queue.enqueue(node)
     }
 
@@ -96,11 +106,18 @@ extension Huffman {
       // Find the two nodes with the smallest frequencies that do not have
       // a parent node yet.
       let node1 = queue.dequeue()!
+	print("buildTree(): node1 → \(node1)")
+	print("buildTree(): node2 → \(node2)")
       let node2 = queue.dequeue()!
 
       // Create a new intermediate node.
       var parentNode = Node()
       parentNode.count = node1.count + node2.count
+	print("buildTree(): parentNode → \(parentNode)")
+	print("buildTree(): parentNode.count → \(parentNode.count)")
+	print("buildTree(): parentNode.left → \(parentNode.left)")
+	print("buildTree(): parentNode.right → \(parentNode.right)")
+	print("buildTree(): parentNode.index → \(parentNode.index)")
       parentNode.left = node1.index
       parentNode.right = node2.index
       parentNode.index = tree.count
@@ -115,6 +132,9 @@ extension Huffman {
     }
 
     // The final remaining node in the queue becomes the root of the tree.
+	print("<<< Exiting buildTree()")
+	print("buildTree(): rootNode → \(rootNode)")
+	print("buildTree(): root → \(root)")
     let rootNode = queue.dequeue()!
     root = rootNode.index
   }
@@ -123,18 +143,23 @@ extension Huffman {
 extension Huffman {
   /* Compresses the contents of an NSData object. */
   public func compressData(data: NSData) -> NSData {
+	print(">>> Entering compressData(data=\(data))")
     countByteFrequency(inData: data)
     buildTree()
 
     let writer = BitWriter()
     var ptr = data.bytes.assumingMemoryBound(to: UInt8.self)
     for _ in 0..<data.length {
+	print("compressData(data=\(data)): writer → \(writer)")
+	print("compressData(data=\(data)): ptr → \(ptr)")
       let c = ptr.pointee
       let i = Int(c)
       traverseTree(writer: writer, nodeIndex: i, childIndex: -1)
       ptr = ptr.successor()
     }
+	let __logStart = ContinuousClock.now
     writer.flush()
+	print("<<< Exiting compressData(data=\(data))")
     return writer.data
   }
 
@@ -142,6 +167,7 @@ extension Huffman {
      again. If a child is the right node, we emit a 0 bit; if it's the left node,
      we emit a 1 bit. */
   private func traverseTree(writer: BitWriter, nodeIndex h: Int, childIndex child: Int) {
+	print(">>> Entering traverseTree(writer=\(writer),h=\(h),child=\(child))")
     if tree[h].parent != -1 {
       traverseTree(writer: writer, nodeIndex: tree[h].parent, childIndex: h)
     }
@@ -152,24 +178,30 @@ extension Huffman {
         writer.writeBit(bit: false)
       }
     }
+	print("<<< Exiting traverseTree(writer=\(writer),h=\(h),child=\(child))")
   }
 }
 
 extension Huffman {
   /* Takes a Huffman-compressed NSData object and outputs the uncompressed data. */
   public func decompressData(data: NSData, frequencyTable: [Freq]) -> NSData {
+	print(">>> Entering decompressData(data=\(data),frequencyTable=\(frequencyTable))")
     restoreTree(fromTable: frequencyTable)
 
     let reader = BitReader(data: data)
     let outData = NSMutableData()
     let byteCount = tree[root].count
+	print("decompressData(data=\(data),frequencyTable=\(frequencyTable)): reader → \(reader)")
+	print("decompressData(data=\(data),frequencyTable=\(frequencyTable)): outData → \(outData)")
 
     var i = 0
     while i < byteCount {
       var b = findLeafNode(reader: reader, nodeIndex: root)
       outData.append(&b, length: 1)
       i += 1
+	print("decompressData(data=\(data),frequencyTable=\(frequencyTable)): b → \(b)")
     }
+	print("<<< Exiting decompressData(data=\(data),frequencyTable=\(frequencyTable))")
     return outData
   }
 
@@ -178,6 +210,7 @@ extension Huffman {
      When we get to the leaf node, we simply return its index, which is equal to
      the original byte value. */
   private func findLeafNode(reader: BitReader, nodeIndex: Int) -> UInt8 {
+	print(">>> Entering findLeafNode(reader=\(reader),nodeIndex=\(nodeIndex))")
     var h = nodeIndex
     while tree[h].right != -1 {
       if reader.readBit() {
@@ -186,6 +219,7 @@ extension Huffman {
         h = tree[h].right
       }
     }
+	print("<<< Exiting findLeafNode(reader=\(reader),nodeIndex=\(nodeIndex))")
     return UInt8(h)
   }
 }

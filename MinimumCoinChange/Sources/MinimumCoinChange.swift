@@ -20,6 +20,7 @@ public struct MinimumCoinChange {
 
     //Greedy Algorithm
     public func changeGreedy(_ value: Int) throws -> [Int] {
+		print(">>> Entering changeGreedy(value=\(value))")
         guard value > 0 else { return [] }
 
         var change: [Int] = []
@@ -37,6 +38,8 @@ public struct MinimumCoinChange {
         }
 
         if newValue > 0 {
+			print("Throwing noRestPossibleForTheGivenValue from changeGreedy(value=\(value))")
+		print("<<< Exiting changeGreedy(value=\(value))")
             throw MinimumCoinChangeError.noRestPossibleForTheGivenValue
         }
 
@@ -45,11 +48,13 @@ public struct MinimumCoinChange {
 
     //Dynamic Programming Algorithm
     public func changeDynamic(_ value: Int) throws -> [Int] {
+		print(">>> Entering changeDynamic(value=\(value))")
         guard value > 0 else { return [] }
 
         var cache: [Int : [Int]] = [:]
 
         func _changeDynamic(_ value: Int) -> [Int] {
+			print(">>> Entering _changeDynamic(value=\(value))")
             guard value > 0 else { return [] }
 
             if let cached = cache[value] {
@@ -72,6 +77,8 @@ public struct MinimumCoinChange {
             if potentialChangeArray.count > 0 {
                 let sortedPotentialChangeArray = potentialChangeArray.sorted(by: { $0.count < $1.count })
                 cache[value] = sortedPotentialChangeArray[0]
+				print("_changeDynamic(value=\(value)): sortedPotentialChangeArray → \(sortedPotentialChangeArray)")
+			print("<<< Exiting _changeDynamic(value=\(value))")
                 return sortedPotentialChangeArray[0]
             }
 
@@ -81,6 +88,7 @@ public struct MinimumCoinChange {
         let change: [Int] = _changeDynamic(value)
 
         if change.reduce(0, +) != value {
+		print("<<< Exiting changeDynamic(value=\(value))")
             throw MinimumCoinChangeError.noRestPossibleForTheGivenValue
         }
 

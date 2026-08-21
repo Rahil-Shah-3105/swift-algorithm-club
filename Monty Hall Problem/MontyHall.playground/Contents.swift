@@ -3,6 +3,7 @@
 import Foundation
 
 func random(_ n: Int) -> Int {
+print(">>> Entering random(n=\(n))")
   return Int(arc4random_uniform(UInt32(n)))
 }
 
@@ -13,12 +14,15 @@ var winOriginalChoice = 0
 var winChangedMind = 0
 
 func playRound() {
+print(">>> Entering playRound()")
   // The door with the prize.
   let prizeDoor = random(numberOfDoors)
 
+print("playRound(): prizeDoor → \(prizeDoor)")
   // The door the player chooses.
   let chooseDoor = random(numberOfDoors)
 
+print("playRound(): chooseDoor → \(chooseDoor)")
   // The door that Monty opens. This must be empty and not the one the player chose.
   var openDoor = -1
   repeat {
@@ -40,6 +44,7 @@ func playRound() {
   }
 
   rounds += 1
+print("<<< Exiting playRound()")
 }
 
 // Run the simulation a large number of times.

@@ -30,35 +30,43 @@ extension BinaryTree: CustomStringConvertible {
 
 extension BinaryTree {
   public func traverseInOrder(process: (T) -> Void) {
+	print(">>> Entering traverseInOrder(process=\(process))")
     if case let .node(left, value, right) = self {
       left.traverseInOrder(process: process)
       process(value)
       right.traverseInOrder(process: process)
     }
+	print("<<< Exiting traverseInOrder(process=\(process))")
   }
 
   public func traversePreOrder(process: (T) -> Void) {
+	print(">>> Entering traversePreOrder(process=\(process))")
     if case let .node(left, value, right) = self {
       process(value)
       left.traversePreOrder(process: process)
       right.traversePreOrder(process: process)
     }
+	print("<<< Exiting traversePreOrder(process=\(process))")
   }
 
   public func traversePostOrder(process: (T) -> Void) {
+	print(">>> Entering traversePostOrder(process=\(process))")
     if case let .node(left, value, right) = self {
       left.traversePostOrder(process: process)
       right.traversePostOrder(process: process)
       process(value)
     }
+	print("<<< Exiting traversePostOrder(process=\(process))")
   }
 }
 
 extension BinaryTree {
   func invert() -> BinaryTree {
+	print(">>> Entering invert()")
     if case let .node(left, value, right) = self {
       return .node(right.invert(), value, left.invert())
     } else {
+	print("<<< Exiting invert()")
       return .empty
     }
   }

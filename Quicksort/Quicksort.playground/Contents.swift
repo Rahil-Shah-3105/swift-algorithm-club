@@ -5,6 +5,7 @@ import Foundation
 // *** Simple but inefficient version of quicksort ***
 
 func quicksort<T: Comparable>(_ a: [T]) -> [T] {
+print(">>> Entering quicksort(a=\(a))")
   guard a.count > 1 else { return a }
 
   let pivot = a[a.count/2]
@@ -16,6 +17,7 @@ func quicksort<T: Comparable>(_ a: [T]) -> [T] {
   // pivot is in each step and how the subarrays are partitioned.
   //print(pivot, less, equal, greater)  return quicksort(less) + equal + quicksort(greater)
 
+print("<<< Exiting quicksort(a=\(a))")
   return quicksort(less) + equal + quicksort(greater)
 }
 
@@ -32,6 +34,7 @@ quicksort(list1)
   return value.
 */
 func partitionLomuto<T: Comparable>(_ a: inout [T], low: Int, high: Int) -> Int {
+print(">>> Entering partitionLomuto(a=\(a),low=\(low),high=\(high))")
   let pivot = a[high]
 
   var i = low
@@ -43,6 +46,7 @@ func partitionLomuto<T: Comparable>(_ a: inout [T], low: Int, high: Int) -> Int 
   }
 
   a.swapAt(i, high)
+print("<<< Exiting partitionLomuto(a=\(a),low=\(low),high=\(high))")
   return i
 }
 
@@ -51,11 +55,14 @@ partitionLomuto(&list2, low: 0, high: list2.count - 1)
 list2
 
 func quicksortLomuto<T: Comparable>(_ a: inout [T], low: Int, high: Int) {
+print(">>> Entering quicksortLomuto(a=\(a),low=\(low),high=\(high))")
   if low < high {
     let p = partitionLomuto(&a, low: low, high: high)
     quicksortLomuto(&a, low: low, high: p - 1)
     quicksortLomuto(&a, low: p + 1, high: high)
   }
+	print("quicksortLomuto(a=\(a),low=\(low),high=\(high)): p → \(p)")
+print("<<< Exiting quicksortLomuto(a=\(a),low=\(low),high=\(high))")
 }
 
 quicksortLomuto(&list2, low: 0, high: list2.count - 1)
@@ -71,6 +78,7 @@ quicksortLomuto(&list2, low: 0, high: list2.count - 1)
   of the two partitions, but the algorithm doesn't tell you which one or where.
 */
 func partitionHoare<T: Comparable>(_ a: inout [T], low: Int, high: Int) -> Int {
+print(">>> Entering partitionHoare(a=\(a),low=\(low),high=\(high))")
   let pivot = a[low]
   var i = low - 1
   var j = high + 1
@@ -85,6 +93,7 @@ func partitionHoare<T: Comparable>(_ a: inout [T], low: Int, high: Int) -> Int {
       return j
     }
   }
+print("<<< Exiting partitionHoare(a=\(a),low=\(low),high=\(high))")
 }
 
 var list3 = [ 8, 0, 3, 9, 2, 14, 10, 27, 1, 5, 8, -1, 26 ]
@@ -92,11 +101,14 @@ partitionHoare(&list3, low: 0, high: list3.count - 1)
 list3
 
 func quicksortHoare<T: Comparable>(_ a: inout [T], low: Int, high: Int) {
+print(">>> Entering quicksortHoare(a=\(a),low=\(low),high=\(high))")
   if low < high {
     let p = partitionHoare(&a, low: low, high: high)
     quicksortHoare(&a, low: low, high: p)
     quicksortHoare(&a, low: p + 1, high: high)
   }
+	print("quicksortHoare(a=\(a),low=\(low),high=\(high)): p → \(p)")
+print("<<< Exiting quicksortHoare(a=\(a),low=\(low),high=\(high))")
 }
 
 quicksortHoare(&list3, low: 0, high: list3.count - 1)
@@ -105,19 +117,25 @@ quicksortHoare(&list3, low: 0, high: list3.count - 1)
 
 /* Returns a random integer in the range min...max, inclusive. */
 public func random(min: Int, max: Int) -> Int {
+print(">>> Entering random(min=\(min),max=\(max))")
   assert(min < max)
+print("<<< Exiting random(min=\(min),max=\(max))")
   return min + Int(arc4random_uniform(UInt32(max - min + 1)))
 }
 
 func quicksortRandom<T: Comparable>(_ a: inout [T], low: Int, high: Int) {
+print(">>> Entering quicksortRandom(a=\(a),low=\(low),high=\(high))")
   if low < high {
     let pivotIndex = random(min: low, max: high)
     (a[pivotIndex], a[high]) = (a[high], a[pivotIndex])
 
+	print("quicksortRandom(a=\(a),low=\(low),high=\(high)): pivotIndex → \(pivotIndex)")
     let p = partitionLomuto(&a, low: low, high: high)
     quicksortRandom(&a, low: low, high: p - 1)
     quicksortRandom(&a, low: p + 1, high: high)
   }
+	print("quicksortRandom(a=\(a),low=\(low),high=\(high)): p → \(p)")
+print("<<< Exiting quicksortRandom(a=\(a),low=\(low),high=\(high))")
 }
 
 var list4 = [ 10, 0, 3, 9, 2, 14, 8, 27, 1, 5, 8, -1, 26 ]
@@ -131,9 +149,11 @@ list4
   the same memory location. This little wrapper simply ignores such swaps.
 */
 public func swap<T>(_ a: inout [T], _ i: Int, _ j: Int) {
+print(">>> Entering swap(a=\(a),i=\(i),j=\(j))")
   if i != j {
     a.swapAt(i, j)
   }
+print("<<< Exiting swap(a=\(a),i=\(i),j=\(j))")
 }
 
 /*
@@ -141,6 +161,7 @@ public func swap<T>(_ a: inout [T], _ i: Int, _ j: Int) {
   Returns a tuple with the start and end index of the middle area.
 */
 func partitionDutchFlag<T: Comparable>(_ a: inout [T], low: Int, high: Int, pivotIndex: Int) -> (Int, Int) {
+print(">>> Entering partitionDutchFlag(a=\(a),low=\(low),high=\(high),pivotIndex=\(pivotIndex))")
   let pivot = a[pivotIndex]
 
   var smaller = low
@@ -159,6 +180,7 @@ func partitionDutchFlag<T: Comparable>(_ a: inout [T], low: Int, high: Int, pivo
       larger -= 1
     }
   }
+print("<<< Exiting partitionDutchFlag(a=\(a),low=\(low),high=\(high),pivotIndex=\(pivotIndex))")
   return (smaller, larger)
 }
 
@@ -167,12 +189,15 @@ partitionDutchFlag(&list5, low: 0, high: list5.count - 1, pivotIndex: 10)
 list5
 
 func quicksortDutchFlag<T: Comparable>(_ a: inout [T], low: Int, high: Int) {
+print(">>> Entering quicksortDutchFlag(a=\(a),low=\(low),high=\(high))")
   if low < high {
     let pivotIndex = random(min: low, max: high)
     let (p, q) = partitionDutchFlag(&a, low: low, high: high, pivotIndex: pivotIndex)
     quicksortDutchFlag(&a, low: low, high: p - 1)
     quicksortDutchFlag(&a, low: q + 1, high: high)
   }
+	print("quicksortDutchFlag(a=\(a),low=\(low),high=\(high)): pivotIndex → \(pivotIndex)")
+print("<<< Exiting quicksortDutchFlag(a=\(a),low=\(low),high=\(high))")
 }
 
 quicksortDutchFlag(&list5, low: 0, high: list5.count - 1)

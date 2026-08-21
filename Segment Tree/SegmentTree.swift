@@ -36,11 +36,14 @@ public class SegmentTree<T> {
 	}
 
 	public func query(leftBound: Int, rightBound: Int) -> T {
+		print(">>> Entering query(leftBound=\(leftBound),rightBound=\(rightBound))")
 		if self.leftBound == leftBound && self.rightBound == rightBound {
 			return self.value
 		}
 
 		guard let leftChild = leftChild else { fatalError("leftChild should not be nil") }
+		print("query(leftBound=\(leftBound),rightBound=\(rightBound)): leftChild → \(leftChild)")
+		print("query(leftBound=\(leftBound),rightBound=\(rightBound)): rightChild → \(rightChild)")
 		guard let rightChild = rightChild else { fatalError("rightChild should not be nil") }
 
 		if leftChild.rightBound < leftBound {
@@ -50,11 +53,15 @@ public class SegmentTree<T> {
 		} else {
 			let leftResult = leftChild.query(leftBound: leftBound, rightBound: leftChild.rightBound)
 			let rightResult = rightChild.query(leftBound:rightChild.leftBound, rightBound: rightBound)
+			print("query(leftBound=\(leftBound),rightBound=\(rightBound)): leftResult → \(leftResult)")
+			print("query(leftBound=\(leftBound),rightBound=\(rightBound)): rightResult → \(rightResult)")
+		print("<<< Exiting query(leftBound=\(leftBound),rightBound=\(rightBound))")
 			return function(leftResult, rightResult)
 		}
 	}
 
 	public func replaceItem(at index: Int, withItem item: T) {
+		print(">>> Entering replaceItem(index=\(index),item=\(item))")
 		if leftBound == rightBound {
 			value = item
 		} else if let leftChild = leftChild, let rightChild = rightChild {
@@ -65,5 +72,6 @@ public class SegmentTree<T> {
 			}
 			value = function(leftChild.value, rightChild.value)
 		}
+		print("<<< Exiting replaceItem(index=\(index),item=\(item))")
 	}
 }

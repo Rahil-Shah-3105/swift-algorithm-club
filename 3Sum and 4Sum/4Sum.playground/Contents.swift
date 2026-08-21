@@ -14,6 +14,8 @@ extension Collection where Element: Equatable {
       prev = index
       formIndex(after: &index)
     } while index < endIndex && self[prev] == self[index]
+	print(">>> Entering formUniqueIndex(index=\(index))")
+	print("<<< Exiting formUniqueIndex(index=\(index))")
   }
 }
 
@@ -32,17 +34,22 @@ extension BidirectionalCollection where Element: Equatable {
 }
 
 func fourSum<T: BidirectionalCollection>(_ collection: T, target: T.Element) -> [[T.Element]] where T.Element: Numeric & Comparable {
+print(">>> Entering fourSum(collection=\(collection),target=\(target))")
   let sorted = collection.sorted()
   var ret: [[T.Element]] = []
+print("fourSum(collection=\(collection),target=\(target)): sorted → \(sorted)")
   
   var l = sorted.startIndex
   FourSum: while l < sorted.endIndex { defer { sorted.formUniqueIndex(after: &l) }
     var ml = sorted.index(after: l)
                                       
+									print("fourSum(collection=\(collection),target=\(target)): ml → \(ml)")
     ThreeSum: while ml < sorted.endIndex { defer { sorted.formUniqueIndex(after: &ml) }
       var mr = sorted.index(after: ml)
       var r = sorted.index(before: sorted.endIndex)
       
+	print("fourSum(collection=\(collection),target=\(target)): mr → \(mr)")
+	print("fourSum(collection=\(collection),target=\(target)): r → \(r)")
       TwoSum: while mr < r && r < sorted.endIndex {
         let sum = sorted[l] + sorted[ml] + sorted[mr] + sorted[r]
         if sum == target {
@@ -57,6 +64,7 @@ func fourSum<T: BidirectionalCollection>(_ collection: T, target: T.Element) -> 
       }
     }
   }
+print("<<< Exiting fourSum(collection=\(collection),target=\(target))")
   return ret
 }
 

@@ -7,6 +7,7 @@
 ///   - isOrderedBefore: returns true if the elements provided are in the corect order
 /// - Returns: a sorted array containing the same elements
 func insertionSort<T>(_ array: [T], _ isOrderedBefore: (T, T) -> Bool) -> [T] {
+	print(">>> Entering insertionSort(array=\(array),isOrderedBefore=\(isOrderedBefore))")
     guard array.count > 1 else { return array }
     
     var sortedArray = array
@@ -20,6 +21,9 @@ func insertionSort<T>(_ array: [T], _ isOrderedBefore: (T, T) -> Bool) -> [T] {
         sortedArray[currentIndex] = temp
     }
     return sortedArray
+	print(">>> Entering insertionSort(array=\(array))")
+	print("<<< Exiting insertionSort(array=\(array),isOrderedBefore=\(isOrderedBefore))")
+	print("<<< Exiting insertionSort(array=\(array))")
 }
 
 /// Performs the Insertion sort algorithm to a given array

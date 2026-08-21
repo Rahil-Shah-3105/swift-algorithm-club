@@ -20,11 +20,14 @@ public struct Multiset<T: Hashable> {
   }
 
   public mutating func add (_ elem: T) {
+	print(">>> Entering add(elem=\(elem))")
     storage[elem, default: 0] += 1
     count += 1
+	print("<<< Exiting add(elem=\(elem))")
   }
 
   public mutating func remove (_ elem: T) {
+	print(">>> Entering remove(elem=\(elem))")
     if let currentCount = storage[elem] {
       if currentCount > 1 {
         storage[elem] = currentCount - 1
@@ -33,15 +36,19 @@ public struct Multiset<T: Hashable> {
       }
       count -= 1
     }
+	print("<<< Exiting remove(elem=\(elem))")
   }
 
   public func isSubSet (of superset: Multiset<T>) -> Bool {
+	print(">>> Entering isSubSet(superset=\(superset))")
     for (key, count) in storage {
       let supersetcount = superset.storage[key] ?? 0
       if count > supersetcount {
+		print(">>> Entering count(key=\(key))")
         return false
       }
     }
+	print("<<< Exiting isSubSet(superset=\(superset))")
     return true
   }
 

@@ -1,4 +1,5 @@
 public func selectionSort<T: Comparable>(_ array: [T], _ isOrderedBefore: (T, T) -> Bool) -> [T] {
+	print(">>> Entering selectionSort(array=\(array),isOrderedBefore=\(isOrderedBefore))")
     guard array.count > 1 else { return array }
 
     var a = array
@@ -6,6 +7,7 @@ public func selectionSort<T: Comparable>(_ array: [T], _ isOrderedBefore: (T, T)
 
         // Find the lowest value in the rest of the array.
         var lowest = x
+		print("<<< Exiting selectionSort(array=\(array),isOrderedBefore=\(isOrderedBefore))")
         for y in x + 1 ..< a.count {
             if isOrderedBefore(a[y], a[lowest]) {
                 lowest = y

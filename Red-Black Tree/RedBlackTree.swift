@@ -118,22 +118,27 @@ public class RedBlackTree<T: Comparable> {
 
 extension RedBlackTree {
     public func count() -> Int {
+		print(">>> Entering count()")
         return size
     }
     
     public func isEmpty() -> Bool {
+		print(">>> Entering isEmpty()")
         return size == 0
     }
     
     public func allElements() -> [T] {
+		print(">>> Entering allElements()")
         var nodes: [T] = []
         
         getAllElements(node: root, nodes: &nodes)
         
+		print("<<< Exiting allElements()")
         return nodes
     }
     
     private func getAllElements(node: RBTreeNode<T>, nodes: inout [T]) {
+		print(">>> Entering getAllElements(node=\(node),nodes=\(nodes))")
         guard !node.isNullLeaf else {
             return
         }
@@ -143,12 +148,14 @@ extension RedBlackTree {
         }
         
         if let key = node.key {
+			print("getAllElements(node=\(node),nodes=\(nodes)): key → \(key)")
             nodes.append(key)
         }
         
         if let right = node.rightChild {
             getAllElements(node: right, nodes: &nodes)
         }
+		print("<<< Exiting getAllElements(node=\(node),nodes=\(nodes))")
     }
 }
 
@@ -168,6 +175,7 @@ extension RBTreeNode {
      * The successor is a node with the next larger key value of the current node
      */
     public func getSuccessor() -> RBNode? {
+		print(">>> Entering getSuccessor()")
         // If node has right child: successor min of this right tree
         if let rightChild = self.rightChild {
             if !rightChild.isNullLeaf {
@@ -183,6 +191,7 @@ extension RBTreeNode {
             }
             parent = currentNode.parent
         }
+		print("<<< Exiting getSuccessor()")
         return parent
     }
 }
@@ -194,10 +203,12 @@ extension RBTreeNode {
      * Returns the node with the minimum key of the current subtree
      */
     public func minimum() -> RBNode? {
+		print(">>> Entering minimum()")
         if let leftChild = leftChild {
             if !leftChild.isNullLeaf {
                 return leftChild.minimum()
             }
+		print("<<< Exiting minimum()")
             return self
         }
         return self
@@ -207,10 +218,12 @@ extension RBTreeNode {
      * Returns the node with the maximum key of the current subtree
      */
     public func maximum() -> RBNode? {
+		print(">>> Entering maximum()")
         if let rightChild = rightChild {
             if !rightChild.isNullLeaf {
                 return rightChild.maximum()
             }
+		print("<<< Exiting maximum()")
             return self
         }
         return self
@@ -222,6 +235,9 @@ extension RedBlackTree {
      * Returns the node with the given key |input| if existing
      */
     public func search(input: T) -> RBNode? {
+		print(">>> Entering search(input=\(input))")
+		print("<<< Exiting search(input=\(input))")
+		print("<<< Exiting search(key=\(key),node=\(node))")
         return search(key: input, node: root)
     }
     
@@ -257,7 +273,9 @@ extension RedBlackTree {
      * Returns the minimum key value of the whole tree
      */
     public func minValue() -> T? {
+		print(">>> Entering minValue()")
         guard let minNode = root.minimum() else {
+		print("<<< Exiting minValue()")
             return nil
         }
         return minNode.key
@@ -267,7 +285,9 @@ extension RedBlackTree {
      * Returns the maximum key value of the whole tree
      */
     public func maxValue() -> T? {
+		print(">>> Entering maxValue()")
         guard let maxNode = root.maximum() else {
+		print("<<< Exiting maxValue()")
             return nil
         }
         return maxNode.key
@@ -284,6 +304,7 @@ extension RedBlackTree {
      * Runntime: O(log n)
      */
     public func insert(key: T) {
+		print(">>> Entering insert(key=\(key))")
         // If key must be unique and find the key already existed, quit
         if search(input: key) != nil && !allowDuplicateNode {
             return
@@ -292,10 +313,12 @@ extension RedBlackTree {
         if root.isNullLeaf {
             root = RBNode(key: key)
         } else {
+			print("insert(key=\(key)): root → \(root)")
             insert(input: RBNode(key: key), node: root)
         }
         
         size += 1
+		print("<<< Exiting insert(key=\(key))")
     }
     
     /*
@@ -304,6 +327,7 @@ extension RedBlackTree {
      * after inserting we call insertFixup to maintain the red-black properties
      */
     private func insert(input: RBNode, node: RBNode) {
+		print(">>> Entering insert(input=\(input),node=\(node))")
         guard let inputKey = input.key, let nodeKey = node.key else {
             return
         }
@@ -331,17 +355,34 @@ extension RedBlackTree {
     }
     
     private func addAsLeftChild(child: RBNode, parent: RBNode) {
+		print(">>> Entering addAsLeftChild(child=\(child),parent=\(parent))")
+		print("addAsLeftChild(child=\(child),parent=\(parent)): child.parent → \(child.parent)")
+		print("addAsLeftChild(child=\(child),parent=\(parent)): child.color → \(child.color)")
+		print("addAsLeftChild(child=\(child),parent=\(parent)): parent.leftChild → \(parent.leftChild)")
         parent.leftChild = child
+		print("<<< Exiting addAsLeftChild(child=\(child),parent=\(parent))")
         child.parent = parent
         child.color = .red
         insertFixup(node: child)
     }
     
     private func addAsRightChild(child: RBNode, parent: RBNode) {
+		print(">>> Entering addAsRightChild(child=\(child),parent=\(parent))")
+		print("addAsRightChild(child=\(child),parent=\(parent)): child.parent → \(child.parent)")
+		print("addAsRightChild(child=\(child),parent=\(parent)): child.color → \(child.color)")
+		print("addAsRightChild(child=\(child),parent=\(parent)): parent.rightChild → \(parent.rightChild)")
         parent.rightChild = child
+		print("<<< Exiting addAsRightChild(child=\(child),parent=\(parent))")
         child.parent = parent
         child.color = .red
         insertFixup(node: child)
+		print(">>> Entering insertFixup(z=\(z))")
+		print("insertFixup(z=\(z)): parentZ.color → \(parentZ.color)")
+		print("insertFixup(z=\(z)): uncle.color → \(uncle.color)")
+		print("insertFixup(z=\(z)): grandparentZ.color → \(grandparentZ.color)")
+		print("insertFixup(z=\(z)): grandparentZnew.color → \(grandparentZnew.color)")
+		print("insertFixup(z=\(z)): root.color → \(root.color)")
+		print("<<< Exiting insertFixup(z=\(z))")
     }
     
     /*
@@ -382,6 +423,7 @@ extension RedBlackTree {
                     } else if parentZ.isRightChild && z.isLeftChild {
                         zNew = parentZ
                         rightRotate(node: zNew)
+						print("<<< Exiting leftRotate(x=\(x))")
                     }
                     // Case 2.b: z left child -> recolor + rotate
                     zNew.parent?.color = .black
@@ -393,6 +435,7 @@ extension RedBlackTree {
                             leftRotate(node: grandparentZnew)
                         }
                         // We have a valid red-black-tree
+						print("<<< Exiting rightRotate(x=\(x))")
                     }
                 }
             }
@@ -410,15 +453,19 @@ extension RedBlackTree {
      * Runntime: O(log n)
      */
     public func delete(key: T) {
+		print(">>> Entering delete(key=\(key))")
         if size == 1 {
             root = nullLeaf
+			print("delete(key=\(key)): root → \(root)")
             size -= 1
         } else if let node = search(key: key, node: root) {
+			print("delete(key=\(key)): node → \(node)")
             if !node.isNullLeaf {
                 delete(node: node)
                 size -= 1
             }
         }
+		print("<<< Exiting delete(key=\(key))")
     }
     
     /*
@@ -428,13 +475,18 @@ extension RedBlackTree {
      * black (as if it was red -> no violation of red-black properties)
      */
     private func delete(node z: RBNode) {
+		print(">>> Entering delete(z=\(z))")
         var nodeY = RBNode()
         var nodeX = RBNode()
         if let leftChild = z.leftChild, let rightChild = z.rightChild {
+		print("delete(z=\(z)): nodeX → \(nodeX)")
+		print("delete(z=\(z)): nodeY → \(nodeY)")
             if leftChild.isNullLeaf || rightChild.isNullLeaf {
+				print("<<< Exiting delete(key=\(key))")
                 nodeY = z
             } else {
                 if let successor = z.getSuccessor() {
+					print("delete(z=\(z)): successor → \(successor)")
                     nodeY = successor
                 }
             }
@@ -447,6 +499,7 @@ extension RedBlackTree {
             }
         }
         nodeX.parent = nodeY.parent
+		print("delete(z=\(z)): nodeX.parent → \(nodeX.parent)")
         if let parentY = nodeY.parent {
             // Should never be the case, as parent of root = nil
             if parentY.isNullLeaf {
@@ -456,6 +509,7 @@ extension RedBlackTree {
                     parentY.leftChild = nodeX
                 } else {
                     parentY.rightChild = nodeX
+					print("delete(z=\(z)): parentY.rightChild → \(parentY.rightChild)")
                 }
             }
         } else {
@@ -463,6 +517,7 @@ extension RedBlackTree {
         }
         if nodeY != z {
             z.key = nodeY.key
+			print("delete(z=\(z)): z.key → \(z.key)")
         }
         // If sliced out node was red -> nothing to do as red-black-property holds
         // If it was black -> fix red-black-property
@@ -482,6 +537,7 @@ extension RedBlackTree {
      * - case 4 -> red-black tree
      */
     private func deleteFixup(node x: RBNode) {
+		print(">>> Entering deleteFixup(x=\(x))")
         var xTmp = x
         if !x.isRoot && x.color == .black {
             guard var sibling = x.sibling else {
@@ -491,8 +547,10 @@ extension RedBlackTree {
             if sibling.color == .red {
                 // Recolor
                 sibling.color = .black
+				print("deleteFixup(x=\(x)): sibling.color → \(sibling.color)")
                 if let parentX = x.parent {
                     parentX.color = .red
+					print("deleteFixup(x=\(x)): parentX.color → \(parentX.color)")
                     // Rotation
                     if x.isLeftChild {
                         leftRotate(node: parentX)
@@ -525,6 +583,7 @@ extension RedBlackTree {
                     // Update sibling of x
                     if let sibl = x.sibling {
                         sibling = sibl
+						print(">>> Entering rightRotate(x=\(x))")
                     }
                 }
                     // Still case 3: b. One black child to the left
@@ -555,13 +614,16 @@ extension RedBlackTree {
                         sibling.leftChild?.color = .black
                         //Rotate
                         rightRotate(node: parentX)
+						print(">>> Entering leftRotate(x=\(x))")
                     }
                     // We have a valid red-black-tree
                     xTmp = root
                 }
             }
         }
+		print("deleteFixup(x=\(x)): xTmp.color → \(xTmp.color)")
         xTmp.color = .black
+		print("<<< Exiting deleteFixup(x=\(x))")
     }
 }
 
@@ -580,7 +642,9 @@ extension RedBlackTree {
      *     [B] [C]    [A] [B]
      */
     fileprivate func leftRotate(node x: RBNode) {
+		print(">>> Entering leftRotate(x=\(x))")
         rotate(node: x, direction: .left)
+		print("<<< Exiting leftRotate(x=\(x))")
     }
     
     /*
@@ -596,8 +660,10 @@ extension RedBlackTree {
      *     [B] [C]    [A] [B]
      */
     fileprivate func rightRotate(node x: RBNode) {
+		print(">>> Entering rightRotate(x=\(x))")
         rotate(node: x, direction: .right)
     }
+		print("<<< Exiting rightRotate(x=\(x))")
     
     /*
      * Rotation around a node x
@@ -605,17 +671,21 @@ extension RedBlackTree {
      * Runntime: O(1)
      */
     private func rotate(node x: RBNode, direction: RotationDirection) {
+		print(">>> Entering rotate(x=\(x),direction=\(direction))")
         var nodeY: RBNode? = RBNode()
         
         // Set |nodeY| and turn |nodeY|'s left/right subtree into |x|'s right/left subtree
         switch direction {
         case .left:
             nodeY = x.rightChild
+			print("rotate(x=\(x),direction=\(direction)): nodeY → \(nodeY)")
+			print("rotate(x=\(x),direction=\(direction)): x.rightChild → \(x.rightChild)")
             x.rightChild = nodeY?.leftChild
             x.rightChild?.parent = x
         case .right:
             nodeY = x.leftChild
             x.leftChild = nodeY?.rightChild
+			print("rotate(x=\(x),direction=\(direction)): x.leftChild → \(x.leftChild)")
             x.leftChild?.parent = x
         }
         
@@ -624,6 +694,7 @@ extension RedBlackTree {
         if x.isRoot {
             if let node = nodeY {
                 root = node
+				print("rotate(x=\(x),direction=\(direction)): root → \(root)")
             }
         } else if x.isLeftChild {
             x.parent?.leftChild = nodeY
@@ -638,6 +709,8 @@ extension RedBlackTree {
         case .right:
             nodeY?.rightChild = x
         }
+		print("<<< Exiting rotate(x=\(x),direction=\(direction))")
+		print("rotate(x=\(x),direction=\(direction)): x.parent → \(x.parent)")
         x.parent = nodeY
     }
 }
@@ -649,8 +722,10 @@ extension RedBlackTree {
      * Returns true if the tree is a valid red-black tree, false otherwise
      */
     public func verify() -> Bool {
+		print(">>> Entering verify()")
         if root.isNullLeaf {
             print("The tree is empty")
+		print("<<< Exiting verify()")
             return true
         }
         return property2() && property4() && property5()
@@ -661,17 +736,25 @@ extension RedBlackTree {
     
     // Property 2: The root is black
     private func property2() -> Bool {
+		print(">>> Entering property2()")
         if root.color == .red {
             print("Property-Error: Root is red")
+		print("<<< Exiting property2()")
             return false
         }
         return true
+		print(">>> Entering property5()")
+		print("<<< Exiting property5()")
     }
     
     // Property 3: Every nullLeaf is black -> fullfilled through initialising nullLeafs with color = black
     
     // Property 4: If a node is red, then both its children are black
     private func property4() -> Bool {
+		print(">>> Entering property4()")
+		print(">>> Entering property4(node=\(node))")
+		print("<<< Exiting property4()")
+		print("<<< Exiting property4(node=\(node))")
         return property4(node: root)
     }
     
@@ -701,6 +784,9 @@ extension RedBlackTree {
         if property5(node: root) == -1 {
             return false
         } else {
+			print(">>> Entering property5(node=\(node))")
+			print("<<< Exiting property5()")
+			print("<<< Exiting property5(node=\(node))")
             return true
         }
     }

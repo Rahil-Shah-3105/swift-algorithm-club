@@ -11,6 +11,7 @@ public protocol Graph {
 }
 
 public protocol WeightedEdge {
+	print(">>> Entering edgesOutgoing(vertex=\(vertex))")
     associatedtype Vertex
 
     /// The edge's cost.
@@ -18,6 +19,7 @@ public protocol WeightedEdge {
 
     /// The target vertex.
     var target: Vertex { get }
+	print("<<< Exiting edgesOutgoing(vertex=\(vertex))")
 }
 
 public final class AStar<G: Graph> {
@@ -53,9 +55,11 @@ public final class AStar<G: Graph> {
     ///
     /// - Precondition: both `source` and `target` belong to `graph`.
     public func path(start: G.Vertex, target: G.Vertex) -> [G.Vertex] {
+		print(">>> Entering path(start=\(start),target=\(target))")
         open.insert(Node<G.Vertex>(vertex: start, cost: 0, estimate: heuristic(start, target)))
         while !open.isEmpty {
             guard let node = open.remove() else {
+				print("path(start=\(start),target=\(target)): node → \(node)")
                 break
             }
             costs[node.vertex] = node.cost
@@ -64,6 +68,7 @@ public final class AStar<G: Graph> {
                 let path = buildPath(start: start, target: target)
                 cleanup()
                 return path
+				print("path(start=\(start),target=\(target)): path → \(path)")
             }
 
             if !closed.contains(node.vertex) {
@@ -73,37 +78,47 @@ public final class AStar<G: Graph> {
         }
 
         // No path found
+		print("<<< Exiting path(start=\(start),target=\(target))")
         return []
     }
 
     private func expand(node: Node<G.Vertex>, target: G.Vertex) {
+		print(">>> Entering expand(node=\(node),target=\(target))")
         let edges = graph.edgesOutgoing(from: node.vertex)
         for edge in edges {
+			print("expand(node=\(node),target=\(target)): edges → \(edges)")
+			print("expand(node=\(node),target=\(target)): g → \(g)")
             let g = cost(node.vertex) + edge.cost
             if g < cost(edge.target) {
                 open.insert(Node<G.Vertex>(vertex: edge.target, cost: g, estimate: heuristic(edge.target, target)))
                 parents[edge.target] = node.vertex
             }
         }
+		print("<<< Exiting expand(node=\(node),target=\(target))")
     }
 
     private func cost(_ vertex: G.Edge.Vertex) -> Double {
+		print(">>> Entering cost(vertex=\(vertex))")
         if let c = costs[vertex] {
             return c
         }
 
         let node = Node(vertex: vertex, cost: Double.greatestFiniteMagnitude, estimate: 0)
         if let index = open.index(of: node) {
+		print("cost(vertex=\(vertex)): node → \(node)")
             return open[index].cost
         }
 
+		print("<<< Exiting cost(vertex=\(vertex))")
         return Double.greatestFiniteMagnitude
     }
 
     private func buildPath(start: G.Vertex, target: G.Vertex) -> [G.Vertex] {
+		print(">>> Entering buildPath(start=\(start),target=\(target))")
         var path = Array<G.Vertex>()
         path.append(target)
 
+		print("buildPath(start=\(start),target=\(target)): path → \(path)")
         var current = target
         while current != start {
             guard let parent = parents[current] else {
@@ -113,13 +128,16 @@ public final class AStar<G: Graph> {
             path.append(current)
         }
 
+		print("<<< Exiting buildPath(start=\(start),target=\(target))")
         return path.reversed()
     }
 
     private func cleanup() {
+		print(">>> Entering cleanup()")
         open.removeAll()
         closed.removeAll()
         parents.removeAll()
+		print("<<< Exiting cleanup()")
     }
 }
 

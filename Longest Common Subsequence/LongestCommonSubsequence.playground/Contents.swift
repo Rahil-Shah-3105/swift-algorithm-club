@@ -5,10 +5,13 @@ print("Hello, Swift 4!")
 
 extension String {
   public func longestCommonSubsequence(_ other: String) -> String {
+print(">>> Entering longestCommonSubsequence(other=\(other))")
 
     func lcsLength(_ other: String) -> [[Int]] {
+	print(">>> Entering lcsLength(other=\(other))")
       var matrix = [[Int]](repeating: [Int](repeating: 0, count: other.count+1), count: self.count+1)
 
+	print("lcsLength(other=\(other)): matrix → \(matrix)")
       for (i, selfChar) in self.enumerated() {
         for (j, otherChar) in other.enumerated() {
           if otherChar == selfChar {
@@ -18,16 +21,19 @@ extension String {
           }
         }
       }
+	print("<<< Exiting lcsLength(other=\(other))")
       return matrix
     }
 
     func backtrack(_ matrix: [[Int]]) -> String {
+	print(">>> Entering backtrack(matrix=\(matrix))")
       var i = self.count
       var j = other.count
       var charInSequence = self.endIndex
 
       var lcs = String()
 
+	print("backtrack(matrix=\(matrix)): lcs → \(lcs)")
       while i >= 1 && j >= 1 {
         if matrix[i][j] == matrix[i][j - 1] {
           j -= 1
@@ -41,6 +47,7 @@ extension String {
           lcs.append(self[charInSequence])
         }
       }
+	print("<<< Exiting backtrack(matrix=\(matrix))")
       return String(lcs.reversed())
     }
 

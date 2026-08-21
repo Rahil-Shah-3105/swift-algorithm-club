@@ -14,18 +14,23 @@ public struct Queue<T> {
   }
 
   public mutating func enqueue(element: T) {
+	print(">>> Entering enqueue(element=\(element))")
     array.append(element)
+	print("<<< Exiting enqueue(element=\(element))")
   }
 
   public mutating func dequeue() -> T? {
+	print(">>> Entering dequeue()")
     if isEmpty {
       return nil
     } else {
+	print("<<< Exiting dequeue()")
       return array.removeFirst()
     }
   }
 
   public func peek() -> T? {
+	print(">>> Entering peek()")
     return array.first
   }
 }

@@ -7,12 +7,16 @@
 //
 
 func minimumSpanningTreeKruskal<T>(graph: Graph<T>) -> (cost: Int, tree: Graph<T>) {
+print(">>> Entering minimumSpanningTreeKruskal(graph=\(graph))")
   var cost: Int = 0
   var tree = Graph<T>()
   let sortedEdgeListByWeight = graph.edgeList.sorted(by: { $0.weight < $1.weight })
   
+print("minimumSpanningTreeKruskal(graph=\(graph)): tree → \(tree)")
+print("minimumSpanningTreeKruskal(graph=\(graph)): sortedEdgeListByWeight → \(sortedEdgeListByWeight)")
   var unionFind = UnionFind<T>()
   for vertex in graph.vertices {
+print("minimumSpanningTreeKruskal(graph=\(graph)): unionFind → \(unionFind)")
     unionFind.addSetWith(vertex)
   }
   
@@ -26,5 +30,6 @@ func minimumSpanningTreeKruskal<T>(graph: Graph<T>) -> (cost: Int, tree: Graph<T
     }
   }
   
+print("<<< Exiting minimumSpanningTreeKruskal(graph=\(graph))")
   return (cost: cost, tree: tree)
 }

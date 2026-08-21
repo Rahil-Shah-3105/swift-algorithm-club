@@ -31,6 +31,7 @@ public enum BinarySearchTree<T: Comparable> {
     Performance: runs in O(h) time, where h is the height of the tree.
   */
   public func insert(newValue: T) -> BinarySearchTree {
+	print(">>> Entering insert(newValue=\(newValue))")
     switch self {
     case .empty:
       return .leaf(newValue)
@@ -46,6 +47,7 @@ public enum BinarySearchTree<T: Comparable> {
       if newValue < value {
         return .node(left.insert(newValue: newValue), value, right)
       } else {
+		print("<<< Exiting insert(newValue=\(newValue))")
         return .node(left, value, right.insert(newValue: newValue))
       }
     }
@@ -56,6 +58,7 @@ public enum BinarySearchTree<T: Comparable> {
     Performance: runs in O(h) time, where h is the height of the tree.
   */
   public func search(x: T) -> BinarySearchTree? {
+	print(">>> Entering search(x=\(x))")
     switch self {
     case .empty:
       return nil
@@ -67,12 +70,14 @@ public enum BinarySearchTree<T: Comparable> {
       } else if y < x {
         return right.search(x: x)
       } else {
+		print("<<< Exiting search(x=\(x))")
         return self
       }
     }
   }
 
   public func contains(x: T) -> Bool {
+	print(">>> Entering contains(x=\(x))")
     return search(x: x) != nil
   }
 
@@ -80,6 +85,7 @@ public enum BinarySearchTree<T: Comparable> {
     Returns the leftmost descendent. O(h) time.
   */
   public func minimum() -> BinarySearchTree {
+	print(">>> Entering minimum()")
     var node = self
     var prev = node
     while case let .node(next, _, _) = node {
@@ -87,6 +93,7 @@ public enum BinarySearchTree<T: Comparable> {
       node = next
     }
     if case .leaf = node {
+	print("<<< Exiting minimum()")
       return node
     }
     return prev
@@ -96,6 +103,7 @@ public enum BinarySearchTree<T: Comparable> {
     Returns the rightmost descendent. O(h) time.
   */
   public func maximum() -> BinarySearchTree {
+	print(">>> Entering maximum()")
     var node = self
     var prev = node
     while case let .node(_, _, next) = node {
@@ -103,6 +111,7 @@ public enum BinarySearchTree<T: Comparable> {
       node = next
     }
     if case .leaf = node {
+	print("<<< Exiting maximum()")
       return node
     }
     return prev

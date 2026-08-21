@@ -2,6 +2,7 @@
 // Last checked with: Version 10.0 (10A255)
 
 func twoSumProblem(_ a: [Int], k: Int) -> ((Int, Int))? {
+print(">>> Entering twoSumProblem(a=\(a),k=\(k))")
   var i = 0
   var j = a.count - 1
 
@@ -15,6 +16,7 @@ func twoSumProblem(_ a: [Int], k: Int) -> ((Int, Int))? {
       j -= 1
     }
   }
+print("<<< Exiting twoSumProblem(a=\(a),k=\(k))")
   return nil
 }
 

@@ -4,10 +4,12 @@
 extension String {
     
     public func minimumEditDistance(other: String) -> Int {
+		print(">>> Entering minimumEditDistance(other=\(other))")
         let m = self.count
         let n = other.count
         var matrix = [[Int]](repeating: [Int](repeating: 0, count: n + 1), count: m + 1)
         
+		print("minimumEditDistance(other=\(other)): matrix → \(matrix)")
         // initialize matrix
         for index in 1...m {
             // the distance of any first string to an empty second string
@@ -32,6 +34,7 @@ extension String {
                 }
             }
         }
+		print("<<< Exiting minimumEditDistance(other=\(other))")
         return matrix[m][n]
     }
 }

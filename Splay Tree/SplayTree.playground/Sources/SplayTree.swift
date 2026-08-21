@@ -33,6 +33,7 @@ public enum SplayOperation {
         while (node.parent != nil) {
             operation(forNode: node).apply(onNode: node)
         }
+		print("<<< Exiting splay(node=\(node))")
     }
     
     /**
@@ -45,11 +46,13 @@ public enum SplayOperation {
      - Operation     Case zigZag - zigZig - zig
      */
     public static func operation<T>(forNode node: Node<T>) -> SplayOperation {
+		print(">>> Entering operation(node=\(node))")
         
         if let parent = node.parent, let _ = parent.parent {
             if (node.isLeftChild && parent.isRightChild) || (node.isRightChild && parent.isLeftChild) {
                 return .zigZag
             }
+		print("<<< Exiting operation(node=\(node))")
             return .zigZig
         }
         return .zig
@@ -63,6 +66,7 @@ public enum SplayOperation {
      - onNode    Node to splay up. Should be alwayas the node that needs to be splayed, neither its parent neither it's grandparent
      */
     public func apply<T>(onNode node: Node<T>) {
+		print(">>> Entering apply(node=\(node))")
         switch self {
         case .zigZag:
             assert(node.parent != nil && node.parent!.parent != nil, "Should be at least 2 nodes up in the tree")
@@ -78,6 +82,7 @@ public enum SplayOperation {
             assert(node.parent != nil && node.parent!.parent == nil, "There should be a parent which is the root")
             rotate(child: node, parent: node.parent!)
         }
+		print("<<< Exiting apply(node=\(node))")
     }
     
     /**
@@ -85,6 +90,7 @@ public enum SplayOperation {
      re-arranging the children properly
      */
     public func rotate<T>(child: Node<T>, parent: Node<T>) {
+		print(">>> Entering rotate(child=\(child),parent=\(parent))")
         
         assert(child.parent != nil && child.parent!.value == parent.value, "Parent and child.parent should match here")
         
@@ -93,11 +99,14 @@ public enum SplayOperation {
         if child.isLeftChild {
             
             grandchildToMode = child.right
+			print("rotate(child=\(child),parent=\(parent)): grandchildToMode → \(grandchildToMode)")
+			print("rotate(child=\(child),parent=\(parent)): parent.left → \(parent.left)")
             parent.left = grandchildToMode
             grandchildToMode?.parent = parent
             
             let grandParent = parent.parent
             child.parent = grandParent
+			print("rotate(child=\(child),parent=\(parent)): child.parent → \(child.parent)")
             
             if parent.isLeftChild {
                 grandParent?.left = child
@@ -106,6 +115,8 @@ public enum SplayOperation {
             }
             
             child.right = parent
+			print("rotate(child=\(child),parent=\(parent)): child.right → \(child.right)")
+			print("rotate(child=\(child),parent=\(parent)): parent.parent → \(parent.parent)")
             parent.parent = child
             
             
@@ -113,6 +124,7 @@ public enum SplayOperation {
             
             grandchildToMode = child.left
             parent.right = grandchildToMode
+			print("rotate(child=\(child),parent=\(parent)): parent.right → \(parent.right)")
             grandchildToMode?.parent = parent
             
             let grandParent = parent.parent
@@ -125,11 +137,13 @@ public enum SplayOperation {
             }
             
             child.left = parent
+			print("rotate(child=\(child),parent=\(parent)): child.left → \(child.left)")
             parent.parent = child
             
         }
         
         
+		print("<<< Exiting rotate(child=\(child),parent=\(parent))")
     }
 }
 
@@ -214,12 +228,18 @@ public class SplayTree<T: Comparable> {
     }
     
     public func minimum() -> Node<T>? {
+		print(">>> Entering minimum()")
         root = root?.minimum(splayed: true)
+		print("minimum(): root → \(root)")
+		print("<<< Exiting minimum(splayed=\(splayed))")
         return root
     }
     
     public func maximum() -> Node<T>? {
+		print(">>> Entering maximum()")
         root = root?.maximum(splayed: true)
+		print("maximum(): root → \(root)")
+		print("<<< Exiting maximum(splayed=\(splayed))")
         return root
     }
     
@@ -239,6 +259,7 @@ extension Node {
      - Node inserted
      */
     public func insert(value: T) -> Node {
+		print(">>> Entering insert(value=\(value))")
         if let selfValue = self.value {
             if value < selfValue {
                 if let left = left {
@@ -269,6 +290,7 @@ extension Node {
                 }
             }
         }
+		print("<<< Exiting insert(value=\(value))")
         return self
     }
 }
@@ -290,15 +312,21 @@ extension Node {
      
      */
     fileprivate func remove(value: T) -> Node<T>? {
+		print(">>> Entering remove(value=\(value))")
         guard let target = search(value: value) else { return self }
         
+		print("remove(value=\(value)): target → \(target)")
         if let left = target.left, let right = target.right {
             let largestOfLeftChild = left.maximum()
             left.parent = nil
+			print("remove(value=\(value)): largestOfLeftChild → \(largestOfLeftChild)")
+			print("remove(value=\(value)): left.parent → \(left.parent)")
+			print("remove(value=\(value)): right.parent → \(right.parent)")
             right.parent = nil
             
             SplayOperation.splay(node: largestOfLeftChild)
             largestOfLeftChild.right = right
+			print("remove(value=\(value)): largestOfLeftChild.right → \(largestOfLeftChild.right)")
             
             return largestOfLeftChild
             
@@ -311,20 +339,26 @@ extension Node {
             return right
             
         } else {
+			print(">>> Entering search(value=\(value))")
+			print("<<< Exiting search(value=\(value))")
             return nil
+		print("<<< Exiting remove(value=\(value))")
         }
     }
     
     private func replace(node: Node<T>, with newNode: Node<T>?) {
+		print(">>> Entering replace(node=\(node),newNode=\(newNode))")
         guard let sourceParent = sourceNode.parent else { return }
         
         if sourceNode.isLeftChild {
             sourceParent.left = newNode
         } else {
             sourceParent.right = newNode
+			print("replace(node=\(node),newNode=\(newNode)): sourceParent.right → \(sourceParent.right)")
         }
         
         newNode?.parent = sourceParent
+		print("<<< Exiting replace(node=\(node),newNode=\(newNode))")
     }
 }
 
@@ -363,6 +397,7 @@ extension Node {
     }
     
     public func contains(value: T) -> Bool {
+		print(">>> Entering contains(value=\(value))")
         return search(value: value) != nil
     }
     
@@ -403,12 +438,14 @@ extension Node {
      Takes O(h) time.
      */
     public func depth() -> Int {
+		print(">>> Entering depth()")
         var node = self
         var edges = 0
         while case let parent? = node.parent {
             node = parent
             edges += 1
         }
+		print("<<< Exiting depth()")
         return edges
     }
     
@@ -417,9 +454,11 @@ extension Node {
      Since this looks at all children of this node, performance is O(n).
      */
     public func height() -> Int {
+		print(">>> Entering height()")
         if isLeaf {
             return 0
         } else {
+			print("<<< Exiting height()")
             return 1 + max(left?.height() ?? 0, right?.height() ?? 0)
         }
     }
@@ -428,6 +467,7 @@ extension Node {
      Finds the node whose value precedes our value in sorted order.
      */
     public func predecessor() -> Node<T>? {
+		print(">>> Entering predecessor()")
         if let left = left {
             return left.maximum()
         } else {
@@ -436,6 +476,7 @@ extension Node {
                 if parent.value! < value! { return parent }
                 node = parent
             }
+			print("<<< Exiting predecessor()")
             return nil
         }
     }
@@ -444,6 +485,7 @@ extension Node {
      Finds the node whose value succeeds our value in sorted order.
      */
     public func successor() -> Node<T>? {
+		print(">>> Entering successor()")
         if let right = right {
             return right.minimum()
         } else {
@@ -452,6 +494,7 @@ extension Node {
                 if parent.value! > value! { return parent }
                 node = parent
             }
+			print("<<< Exiting successor()")
             return nil
         }
     }
@@ -461,31 +504,42 @@ extension Node {
 extension Node {
     
     public func traverseInOrder(process: (T) -> Void) {
+		print(">>> Entering traverseInOrder(process=\(process))")
         left?.traverseInOrder(process: process)
         process(value!)
         right?.traverseInOrder(process: process)
+		print("<<< Exiting traverseInOrder(process=\(process))")
     }
     
     public func traversePreOrder(process: (T) -> Void) {
+		print(">>> Entering traversePreOrder(process=\(process))")
         process(value!)
         left?.traversePreOrder(process: process)
         right?.traversePreOrder(process: process)
+		print("<<< Exiting traversePreOrder(process=\(process))")
     }
     
     public func traversePostOrder(process: (T) -> Void) {
+		print(">>> Entering traversePostOrder(process=\(process))")
         left?.traversePostOrder(process: process)
         right?.traversePostOrder(process: process)
         process(value!)
+		print("<<< Exiting traversePostOrder(process=\(process))")
     }
     
     /*
      Performs an in-order traversal and collects the results in an array.
      */
     public func map(formula: (T) -> T) -> [T] {
+		print(">>> Entering map(formula=\(formula))")
         var a = [T]()
         if let left = left { a += left.map(formula: formula) }
+		print("map(formula=\(formula)): left → \(left)")
+		print("map(formula=\(formula)): a → \(a)")
+		print("map(formula=\(formula)): right → \(right)")
         a.append(formula(value!))
         if let right = right { a += right.map(formula: formula) }
+		print("<<< Exiting map(formula=\(formula))")
         return a
     }
 }
@@ -496,10 +550,14 @@ extension Node {
 extension Node {
     
     public func isBST(minValue: T, maxValue: T) -> Bool {
+		print(">>> Entering isBST(minValue=\(minValue),maxValue=\(maxValue))")
         if let value = value {
             if value < minValue || value > maxValue { return false }
             let leftBST = left?.isBST(minValue: minValue, maxValue: value) ?? true
+			print("isBST(minValue=\(minValue),maxValue=\(maxValue)): leftBST → \(leftBST)")
+			print("isBST(minValue=\(minValue),maxValue=\(maxValue)): rightBST → \(rightBST)")
             let rightBST = right?.isBST(minValue: value, maxValue: maxValue) ?? true
+		print("<<< Exiting isBST(minValue=\(minValue),maxValue=\(maxValue))")
             return leftBST && rightBST
         }
         return false
@@ -546,6 +604,7 @@ extension Node: CustomDebugStringConvertible {
     }
     
     public func toArray() -> [T] {
+		print(">>> Entering toArray()")
         return map { $0 }
     }
 }
