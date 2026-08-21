@@ -11,10 +11,12 @@ struct Point2D: Equatable {
     
     // returns true if point is on or right of line
     func isRight(of line: Line2D) -> Bool {
+		print(">>> Entering isRight(line=\(line))")
         switch line.slope {
         case .finite:
             let y = line.y(at: self.x)
             switch line.direction {
+			print("isRight(line=\(line)): y → \(y)")
             case .increasing:
                 return y >= self.y
             case .decreasing:
@@ -25,12 +27,14 @@ struct Point2D: Equatable {
             case .increasing:
                 return self.x >= offset
             case .decreasing:
+				print("<<< Exiting isRight(line=\(line))")
                 return self.x <= offset
             }
         }
     }
     
     func isLeft(of line: Line2D) -> Bool {
+		print(">>> Entering isLeft(line=\(line))")
         return !self.isRight(of: line)
     }
 }

@@ -31,12 +31,15 @@ extension BellmanFord: SSSPAlgorithm {
    shortest paths and their total weights, or `nil` if a negative weight cycle exists
  */
   public static func apply(_ graph: AbstractGraph<T>, source: Vertex<Q>) -> BellmanFordResult<T>? {
+	print(">>> Entering apply(graph=\(graph),source=\(source))")
     let vertices = graph.vertices
     let edges = graph.edges
 
     var predecessors = Array<Int?>(repeating: nil, count: vertices.count)
     var weights = Array(repeating: Double.infinity, count: vertices.count)
     predecessors[source.index] = source.index
+	print("apply(graph=\(graph),source=\(source)): predecessors → \(predecessors)")
+	print("apply(graph=\(graph),source=\(source)): weights → \(weights)")
     weights[source.index] = 0
 
     for _ in 0 ..< vertices.count - 1 {
@@ -66,6 +69,7 @@ extension BellmanFord: SSSPAlgorithm {
       }
     }
 
+	print("<<< Exiting apply(graph=\(graph),source=\(source))")
     return BellmanFordResult(predecessors: predecessors, weights: weights)
   }
 
@@ -93,9 +97,11 @@ extension BellmanFordResult: SSSPResult {
    - complexity: `Θ(1)` time/space
    */
   public func distance(to: Vertex<T>) -> Double? {
+	print(">>> Entering distance(to=\(to))")
     let distance = weights[to.index]
 
     guard distance != Double.infinity else {
+	print("<<< Exiting distance(to=\(to))")
       return nil
     }
 
@@ -108,14 +114,20 @@ extension BellmanFordResult: SSSPResult {
    - complexity: `Θ(V)` time, `Θ(V^2)` space
    */
   public func path(to: Vertex<T>, inGraph graph: AbstractGraph<T>) -> [T]? {
+	print(">>> Entering path(to=\(to),graph=\(graph))")
     guard weights[to.index] != Double.infinity else {
       return nil
     }
 
     guard let path = recursePath(to: to, inGraph: graph, path: [to]) else {
+	print("path(to=\(to),graph=\(graph)): path → \(path)")
+	print(">>> Entering recursePath(to=\(to),graph=\(graph),path=\(path))")
+	print("recursePath(to=\(to),graph=\(graph),path=\(path)): buildPath → \(buildPath)")
+	print("<<< Exiting recursePath(to=\(to),graph=\(graph),path=\(path))")
       return nil
     }
 
+	print("<<< Exiting path(to=\(to),graph=\(graph))")
     return path.map { vertex in
       return vertex.data
     }

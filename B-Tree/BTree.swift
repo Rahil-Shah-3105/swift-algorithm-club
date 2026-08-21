@@ -70,6 +70,7 @@ extension BTreeNode {
    *    - key: the key of the value to be returned
    */
   func value(for key: Key) -> Value? {
+	print(">>> Entering value(key=\(key))")
     var index = keys.startIndex
 
     while (index + 1) < keys.endIndex && keys[index] < key {
@@ -81,6 +82,7 @@ extension BTreeNode {
     } else if key < keys[index] {
       return children?[index].value(for: key)
     } else {
+	print("<<< Exiting value(key=\(key))")
       return children?[(index + 1)].value(for: key)
     }
   }
@@ -97,12 +99,14 @@ extension BTreeNode {
    *    - process: the closure to be executed for every key
    */
   func traverseKeysInOrder(_ process: (Key) -> Void) {
+	print(">>> Entering traverseKeysInOrder(process=\(process))")
     for i in 0..<numberOfKeys {
       children?[i].traverseKeysInOrder(process)
       process(keys[i])
     }
 
     children?.last?.traverseKeysInOrder(process)
+	print("<<< Exiting traverseKeysInOrder(process=\(process))")
   }
 }
 
@@ -118,6 +122,7 @@ extension BTreeNode {
    *    - key: the key for the `value`
    */
   func insert(_ value: Value, for key: Key) {
+	print(">>> Entering insert(value=\(value),key=\(key))")
     var index = keys.startIndex
 
     while index < keys.endIndex && keys[index] < key {
@@ -139,6 +144,7 @@ extension BTreeNode {
         split(child: children![index], atIndex: index)
       }
     }
+	print("<<< Exiting insert(value=\(value),key=\(key))")
   }
 
   /**
@@ -151,6 +157,7 @@ extension BTreeNode {
    *    - index: the index of the key, which will be moved up to the parent
    */
   private func split(child: BTreeNode, atIndex index: Int) {
+	print(">>> Entering split(child=\(child),index=\(index))")
     let middleIndex = child.numberOfKeys / 2
     keys.insert(child.keys[middleIndex], at: index)
     values.insert(child.values[middleIndex], at: index)
@@ -173,6 +180,7 @@ extension BTreeNode {
       )
       child.children!.removeSubrange(child.children!.indices.suffix(from: (middleIndex + 1)))
     }
+	print("<<< Exiting split(child=\(child),index=\(index))")
   }
 }
 
@@ -207,6 +215,7 @@ extension BTreeNode {
    *    - key: the key to be removed
    */
   func remove(_ key: Key) {
+	print(">>> Entering remove(key=\(key))")
     var index = keys.startIndex
 
     while (index + 1) < keys.endIndex && keys[index] < key {
@@ -250,6 +259,7 @@ extension BTreeNode {
         print("The key:\(key) is not in the tree")
       }
     }
+	print("<<< Exiting remove(key=\(key))")
   }
 
   /**
@@ -264,6 +274,7 @@ extension BTreeNode {
    *    - index: the index of the child to be fixed in the current node
    */
   private func fix(childWithTooFewKeys child: BTreeNode, atIndex index: Int) {
+print(">>> Entering fix(child=\(child),index=\(index))")
 
     if (index - 1) >= 0 && children![(index - 1)].numberOfKeys > owner.order {
       move(keyAtIndex: (index - 1), to: child, from: children![(index - 1)], at: .left)
@@ -274,6 +285,7 @@ extension BTreeNode {
     } else {
       merge(child: child, atIndex: index, to: .right)
     }
+	print("<<< Exiting fix(child=\(child),index=\(index))")
   }
 
   /**
@@ -288,6 +300,7 @@ extension BTreeNode {
    */
   private func move(keyAtIndex index: Int, to targetNode: BTreeNode,
                                   from node: BTreeNode, at position: BTreeNodePosition) {
+								print(">>> Entering move(index=\(index),targetNode=\(targetNode),node=\(node),position=\(position))")
     switch position {
     case .left:
       targetNode.keys.insert(keys[index], at: targetNode.keys.startIndex)
@@ -315,6 +328,7 @@ extension BTreeNode {
         node.children!.removeFirst()
       }
     }
+	print("<<< Exiting move(index=\(index),targetNode=\(targetNode),node=\(node),position=\(position))")
   }
 
   /**
@@ -326,6 +340,7 @@ extension BTreeNode {
    *    - position: the position of the node to merge into
    */
   private func merge(child: BTreeNode, atIndex index: Int, to position: BTreeNodePosition) {
+	print(">>> Entering merge(child=\(child),index=\(index),position=\(position))")
     switch position {
     case .left:
       // We can merge to the left sibling
@@ -362,6 +377,7 @@ extension BTreeNode {
       }
     }
     children!.remove(at: index)
+	print("<<< Exiting merge(child=\(child),index=\(index),position=\(position))")
   }
 }
 
@@ -514,6 +530,7 @@ extension BTree {
    *    The root node of the tree contains `order` * 2 keys.
    */
   private func splitRoot() {
+	print(">>> Entering splitRoot()")
     let middleIndexOfOldRoot = rootNode.numberOfKeys / 2
 
     let newRoot = BTreeNode<Key, Value>(
@@ -544,6 +561,8 @@ extension BTree {
 
     newRoot.children!.append(newRightChild)
     rootNode = newRoot
+	print("<<< Exiting splitRoot()")
+	print("splitRoot(): rootNode → \(rootNode)")
   }
 }
 

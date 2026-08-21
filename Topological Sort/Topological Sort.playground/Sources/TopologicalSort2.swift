@@ -1,8 +1,10 @@
 extension Graph {
   /* Topological sort using Kahn's algorithm. */
   public func topologicalSortKahn() -> [Node] {
+	print(">>> Entering topologicalSortKahn()")
     var nodes = calculateInDegreeOfNodes()
 
+	print("topologicalSortKahn(): nodes → \(nodes)")
     // Find vertices with no predecessors and puts them into a new list.
     // These are the "leaders". The leaders array eventually becomes the
     // topologically sorted list.
@@ -19,8 +21,10 @@ extension Graph {
     var l = 0
     while l < leaders.count {
       if let edges = adjacencyList(forNode: leaders[l]) {
+		print("topologicalSortKahn(): edges → \(edges)")
         for neighbor in edges {
           if let count = nodes[neighbor] {
+			print("topologicalSortKahn(): count → \(count)")
             nodes[neighbor] = count - 1
             if count == 1 {             // this leader was the last predecessor
               leaders.append(neighbor)  // so neighbor is now a leader itself
@@ -36,6 +40,7 @@ extension Graph {
       print("Error: graphs with cycles are not allowed")
     }
 
+	print("<<< Exiting topologicalSortKahn()")
     return leaders
   }
 }

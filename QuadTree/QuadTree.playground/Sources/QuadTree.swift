@@ -61,6 +61,7 @@ public struct Rect {
   }
 
   func containts(point: Point) -> Bool {
+	print(">>> Entering containts(point=\(point))")
     return (minX <= point.x && point.x <= maxX) &&
       (minY <= point.y && point.y <= maxY)
   }
@@ -82,8 +83,10 @@ public struct Rect {
   }
 
   func intersects(rect: Rect) -> Bool {
+print(">>> Entering intersects(rect=\(rect))")
 
     func lineSegmentsIntersect(lStart: Double, lEnd: Double, rStart: Double, rEnd: Double) -> Bool {
+	print(">>> Entering lineSegmentsIntersect(lStart=\(lStart),lEnd=\(lEnd),rStart=\(rStart),rEnd=\(rEnd))")
       return max(lStart, rStart) <= min(lEnd, rEnd)
     }
     // to intersect, both horizontal and vertical projections need to intersect
@@ -137,6 +140,7 @@ class QuadTreeNode {
       }
 
       mutating func next() -> QuadTreeNode? {
+	print(">>> Entering next()")
 
         defer { index += 1 }
 
@@ -147,10 +151,12 @@ class QuadTreeNode {
         case 3: return children.rightBottom
         default: return nil
         }
+		print("<<< Exiting next()")
       }
     }
 
     public func makeIterator() -> ChildrenIterator {
+	print(">>> Entering makeIterator()")
       return ChildrenIterator(children: self)
     }
   }
@@ -170,24 +176,31 @@ class QuadTreeNode {
   }
 
   private func recursiveDescription(withTabCount count: Int) -> String {
+	print(">>> Entering recursiveDescription(count=\(count))")
     let indent = String(repeating: "\t", count: count)
     var result = "\(indent)" + description + "\n"
     switch type {
     case .internal(let children):
+	print("recursiveDescription(count=\(count)): indent → \(indent)")
+	print("recursiveDescription(count=\(count)): result → \(result)")
       for child in children {
         result += child.recursiveDescription(withTabCount: count + 1)
       }
     default:
       break
     }
+	print("<<< Exiting recursiveDescription(count=\(count))")
     return result
   }
+print(">>> Entering points(rect=\(rect))")
+print("<<< Exiting points(rect=\(rect))")
 }
 
 extension QuadTreeNode: PointsContainer {
 
   @discardableResult
   func add(point: Point) -> Bool {
+	print(">>> Entering add(point=\(point))")
     if !rect.containts(point: point) {
       return false
     }
@@ -209,16 +222,20 @@ extension QuadTreeNode: PointsContainer {
         subdivide()
       }
     }
+	print("<<< Exiting add(point=\(point))")
     return true
   }
 
   private func subdivide() {
+	print(">>> Entering subdivide()")
     switch type {
     case .leaf:
       type = .internal(children: Children(parentNode: self))
     case .internal:
+	print("subdivide(): type → \(type)")
       preconditionFailure("Calling subdivide on an internal node")
     }
+	print("<<< Exiting subdivide()")
   }
 
   func points(inRect rect: Rect) -> [Point] {
@@ -249,6 +266,7 @@ extension QuadTreeNode: PointsContainer {
       }
     }
 
+	print("<<< Exiting points(rect=\(rect))")
     return result
   }
 }

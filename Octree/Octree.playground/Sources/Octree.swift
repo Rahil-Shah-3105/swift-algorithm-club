@@ -60,6 +60,8 @@ public struct Box: CustomStringConvertible {
     }
     
     public func contains(_ point: vector_double3) -> Bool {
+		print(">>> Entering contains(point=\(point))")
+		print(">>> Entering contains(box=\(box))")
         return (boxMin.x <= point.x && point.x <= boxMax.x) && (boxMin.y <= point.y && point.y <= boxMax.y) && (boxMin.z <= point.z && point.z <= boxMax.z)
     }
     
@@ -71,9 +73,11 @@ public struct Box: CustomStringConvertible {
                 self.boxMax.x >= box.boxMax.x &&
                 self.boxMax.y >= box.boxMax.y &&
                 self.boxMax.z >= box.boxMax.z
+				print("<<< Exiting contains(box=\(box))")
     }
     
     public func isContained(in box: Box) -> Bool {
+		print(">>> Entering isContained(box=\(box))")
         return
             self.boxMin.x >= box.boxMin.x &&
                 self.boxMin.y >= box.boxMin.y &&
@@ -81,12 +85,14 @@ public struct Box: CustomStringConvertible {
                 self.boxMax.x <= box.boxMax.x &&
                 self.boxMax.y <= box.boxMax.y &&
                 self.boxMax.z <= box.boxMax.z
+				print("<<< Exiting isContained(box=\(box))")
     }
     
     /* This intersect function does not handle all possibilities such as two beams
      of different diameter crossing each other half way. But it does cover all cases
      needed for an octree as the bounding box has to contain the given intersect box */
     public func intersects(_ box: Box) -> Bool {
+		print(">>> Entering intersects(box=\(box))")
         let corners = [
             vector_double3(boxMin.x, boxMax.y, boxMax.z), //frontLeftTop
             vector_double3(boxMin.x, boxMin.y, boxMax.z), //frontLeftBottom
@@ -102,6 +108,7 @@ public struct Box: CustomStringConvertible {
                 return true
             }
         }
+		print("<<< Exiting intersects(box=\(box))")
         return false
     }
     
@@ -135,16 +142,20 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
     }
     
     private func recursiveDescription(withTabCount count: Int) -> String {
+		print(">>> Entering recursiveDescription(count=\(count))")
         let indent = String(repeating: "\t", count: count)
         var result = "\(indent)" + description + "\n"
         switch type {
         case .internal(let children):
+			print("recursiveDescription(count=\(count)): indent → \(indent)")
+			print("recursiveDescription(count=\(count)): result → \(result)")
             for child in children {
                 result += child.recursiveDescription(withTabCount: count + 1)
             }
         default:
             break
         }
+		print("<<< Exiting recursiveDescription(count=\(count))")
         return result
     }
     
@@ -178,6 +189,7 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
             }
             
             mutating func next() -> OctreeNode? {
+				print(">>> Entering next()")
                 defer { index += 1 }
                 switch index {
                 case 0: return children.frontLeftTop
@@ -190,10 +202,12 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
                 case 7: return children.backRightBottom
                 default: return nil
                 }
+				print("<<< Exiting next()")
             }
         }
         
         func makeIterator() -> ChildrenIterator {
+			print(">>> Entering makeIterator()")
             return ChildrenIterator(children: self)
         }
     }
@@ -204,10 +218,12 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
     
     @discardableResult
     func add(_ element: T, at point: vector_double3) -> OctreeNode {
+		print("<<< Exiting add(elements=\(elements),point=\(point))")
         return tryAdd(element, at: point)!
     }
     
     private func tryAdd(_ element: T, at point: vector_double3) -> OctreeNode? {
+		print(">>> Entering tryAdd(element=\(element),point=\(point))")
         if !box.contains(point) {
             return nil
         }
@@ -217,6 +233,7 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
             // pass the point to one of the children
             for child in children {
                 if let child = child.tryAdd(element, at: point) {
+					print("tryAdd(element=\(element),point=\(point)): child → \(child)")
                     return child
                 }
             }
@@ -233,10 +250,18 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
                 }
             } else {
                 self.elements = [element]
+				print("tryAdd(element=\(element),point=\(point)): self.elements → \(self.elements)")
+				print("tryAdd(element=\(element),point=\(point)): self.point → \(self.point)")
                 self.point = point
+				print(">>> Entering subdivide(element=\(element),point=\(point))")
+				print("subdivide(element=\(element),point=\(point)): type → \(type)")
+				print("subdivide(element=\(element),point=\(point)): self.elements → \(self.elements)")
+				print("subdivide(element=\(element),point=\(point)): self.point → \(self.point)")
+				print("<<< Exiting subdivide(element=\(element),point=\(point))")
                 return self
             }
         }
+		print("<<< Exiting tryAdd(element=\(element),point=\(point))")
     }
     
     func add(_ elements: [T], at point: vector_double3) {
@@ -247,6 +272,7 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
     
     @discardableResult
     func remove(_ element: T) -> Bool {
+		print(">>> Entering remove(element=\(element))")
         switch type {
         case .leaf:
             if let elements = self.elements {
@@ -257,9 +283,12 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
                     // if elements is now empty remove it
                     if self.elements.isEmpty {
                         self.elements = nil
+						print("remove(element=\(element)): self.elements → \(self.elements)")
                     }
                     return true
                 }
+				print(">>> Entering elements(point=\(point))")
+				print("<<< Exiting elements(point=\(point))")
             }
             return false
         case .internal(let children):
@@ -268,11 +297,13 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
                     return true
                 }
             }
+			print("<<< Exiting remove(element=\(element))")
             return false
         }
     }
     
     func elements(at point: vector_double3) -> [T]? {
+		print(">>> Entering elements(point=\(point))")
         switch type {
         case .leaf:
             if self.point == point {
@@ -286,6 +317,9 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
             }
         }
         // tree does not contain given point
+		print(">>> Entering elements(box=\(box))")
+		print("<<< Exiting elements(point=\(point))")
+		print("<<< Exiting elements(box=\(box))")
         return nil
     }
     

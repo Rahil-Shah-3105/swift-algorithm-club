@@ -42,6 +42,7 @@ extension Character {
 
 // Find first position of pattern in the text using Rabin Karp algorithm
 public func search(text: String, pattern: String) -> Int {
+	print(">>> Entering search(text=\(text),pattern=\(pattern))")
     // convert to array of ints
     let patternArray = pattern.characters.flatMap { $0.asInt }
     let textArray = text.characters.flatMap { $0.asInt }
@@ -52,12 +53,17 @@ public func search(text: String, pattern: String) -> Int {
 
     let patternHash = hash(array: patternArray)
     var endIdx = patternArray.count - 1
+	print("search(text=\(text),pattern=\(pattern)): patternHash → <redacted>")
     let firstChars = Array(textArray[0...endIdx])
     let firstHash = hash(array: firstChars)
 
+	print("search(text=\(text),pattern=\(pattern)): firstChars → \(firstChars)")
+	print("search(text=\(text),pattern=\(pattern)): firstHash → <redacted>")
     if patternHash == firstHash {
         // Verify this was not a hash collison
         if firstChars == patternArray {
+			print(">>> Entering hash(array=\(array))")
+			print("<<< Exiting hash(array=\(array))")
             return 0
         }
     }
@@ -72,6 +78,7 @@ public func search(text: String, pattern: String) -> Int {
           dropped: textArray[idx - 1],
           added: textArray[endIdx],
           patternSize: patternArray.count - 1
+		print("search(text=\(text),pattern=\(pattern)): window → \(window)")
         )
 
         if windowHash == patternHash {
@@ -83,6 +90,7 @@ public func search(text: String, pattern: String) -> Int {
         prevHash = windowHash
     }
 
+	print("<<< Exiting search(text=\(text),pattern=\(pattern))")
     return -1
 }
 
@@ -98,8 +106,11 @@ public func hash(array: Array<Int>) -> Double {
 }
 
 public func nextHash(prevHash: Double, dropped: Int, added: Int, patternSize: Int) -> Double {
+	print(">>> Entering nextHash(prevHash=<redacted>,dropped=\(dropped),added=\(added),patternSize=\(patternSize))")
     let oldHash = prevHash - (Double(dropped) *
       (Double(Constants.hashMultiplier) ** patternSize))
+	print("nextHash(prevHash=<redacted>,dropped=\(dropped),added=\(added),patternSize=\(patternSize)): oldHash → <redacted>")
+	print("<<< Exiting nextHash(prevHash=<redacted>,dropped=\(dropped),added=\(added),patternSize=\(patternSize))")
     return Double(Constants.hashMultiplier) * oldHash + Double(added)
 }
 

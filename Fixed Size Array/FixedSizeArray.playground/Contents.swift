@@ -24,25 +24,33 @@ struct FixedSizeArray<T> {
   }
 
   mutating func append(_ newElement: T) {
+	print(">>> Entering append(newElement=\(newElement))")
     assert(count < maxSize)
     array[count] = newElement
     count += 1
+	print("<<< Exiting append(newElement=\(newElement))")
   }
 
   mutating func removeAt(index: Int) -> T {
+	print(">>> Entering removeAt(index=\(index))")
     assert(index >= 0)
     assert(index < count)
     count -= 1
     let result = array[index]
+	print("removeAt(index=\(index)): result → \(result)")
     array[index] = array[count]
     array[count] = defaultValue
+	print("<<< Exiting removeAt(index=\(index))")
     return result
   }
 
   mutating func removeAll() {
+	print(">>> Entering removeAll()")
     for i in 0..<count {
       array[i] = defaultValue
     }
+	print("<<< Exiting removeAll()")
+	print("removeAll(): count → \(count)")
     count = 0
   }
 }

@@ -1,13 +1,18 @@
 import Foundation
 
 private func shiftDown<T>(_ elements: inout [T], _ index: Int, _ range: Range<Int>, by areInIncreasingOrder: (T, T) -> Bool) {
+	print(">>> Entering shiftDown(elements=\(elements),index=\(index),range=\(range),areInIncreasingOrder=\(areInIncreasingOrder))")
     let countToIndex = elements.distance(from: range.lowerBound, to: index)
     let countFromIndex = elements.distance(from: index, to: range.upperBound)
     
+	print("shiftDown(elements=\(elements),index=\(index),range=\(range),areInIncreasingOrder=\(areInIncreasingOrder)): countFromIndex → \(countFromIndex)")
+	print("shiftDown(elements=\(elements),index=\(index),range=\(range),areInIncreasingOrder=\(areInIncreasingOrder)): countToIndex → \(countToIndex)")
     guard countToIndex + 1 < countFromIndex else { return }
     
+	print("shiftDown(elements=\(elements),index=\(index),range=\(range),areInIncreasingOrder=\(areInIncreasingOrder)): left → \(left)")
     let left = elements.index(index, offsetBy: countToIndex + 1)
     var largest = index
+	print("<<< Exiting shiftDown(elements=\(elements),index=\(index),range=\(range),areInIncreasingOrder=\(areInIncreasingOrder))")
     if areInIncreasingOrder(elements[largest], elements[left]) {
         largest = left
     }
@@ -27,16 +32,20 @@ private func shiftDown<T>(_ elements: inout [T], _ index: Int, _ range: Range<In
 }
 
 private func heapify<T>(_ list: inout [T], _ range: Range<Int>, by areInIncreasingOrder: (T, T) -> Bool) {
+	print(">>> Entering heapify(list=\(list),range=\(range),areInIncreasingOrder=\(areInIncreasingOrder))")
     let root = range.lowerBound
     var node = list.index(root, offsetBy: list.distance(from: range.lowerBound, to: range.upperBound)/2)
     
+	print("heapify(list=\(list),range=\(range),areInIncreasingOrder=\(areInIncreasingOrder)): node → \(node)")
     while node != root {
         list.formIndex(before: &node)
         shiftDown(&list, node, range, by: areInIncreasingOrder)
     }
+	print("<<< Exiting heapify(list=\(list),range=\(range),areInIncreasingOrder=\(areInIncreasingOrder))")
 }
 
 public func heapsort<T>(for array: inout [T], range: Range<Int>, by areInIncreasingOrder: (T, T) -> Bool) {
+	print(">>> Entering heapsort(array=\(array),range=\(range),areInIncreasingOrder=\(areInIncreasingOrder))")
     var hi = range.upperBound
     let lo = range.lowerBound
     heapify(&array, range, by: areInIncreasingOrder)
@@ -47,4 +56,5 @@ public func heapsort<T>(for array: inout [T], range: Range<Int>, by areInIncreas
         shiftDown(&array, lo, lo..<hi, by: areInIncreasingOrder)
         array.formIndex(before: &hi)
     }
+	print("<<< Exiting heapsort(array=\(array),range=\(range),areInIncreasingOrder=\(areInIncreasingOrder))")
 }

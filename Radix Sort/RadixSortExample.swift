@@ -9,6 +9,7 @@
 import Foundation
 
 func radixSort1(_ arr: inout [Int]) {
+print(">>> Entering radixSort1(arr=\(arr))")
 
     var temp = [[Int]](repeating: [], count: 10)
 
@@ -26,4 +27,5 @@ func radixSort1(_ arr: inout [Int]) {
     }
 
     arr = temp[0]
+	print("<<< Exiting radixSort1(arr=\(arr))")
 }

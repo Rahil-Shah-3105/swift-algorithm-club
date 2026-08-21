@@ -10,6 +10,7 @@
  - Returns: The natural gcd of m and n.
  */
 public func gcd(_ m: Int, _ n: Int, using gcdAlgorithm: (Int, Int) -> (Int) = gcdIterativeEuklid) -> Int {
+	print(">>> Entering gcd(m=\(m),n=\(n),gcdAlgorithm=\(gcdAlgorithm))")
     return gcdAlgorithm(m, n)
 }
 
@@ -23,6 +24,7 @@ public func gcd(_ m: Int, _ n: Int, using gcdAlgorithm: (Int, Int) -> (Int) = gc
  - Returns: The natural gcd of m and n.
  */
 public func gcdIterativeEuklid(_ m: Int, _ n: Int) -> Int {
+	print(">>> Entering gcdIterativeEuklid(m=\(m),n=\(n))")
     var a: Int = 0
     var b: Int = max(m, n)
     var r: Int = min(m, n)
@@ -32,6 +34,7 @@ public func gcdIterativeEuklid(_ m: Int, _ n: Int) -> Int {
         b = r
         r = a % b
     }
+	print("<<< Exiting gcdIterativeEuklid(m=\(m),n=\(n))")
     return b
 }
 
@@ -49,10 +52,12 @@ public func gcdIterativeEuklid(_ m: Int, _ n: Int) -> Int {
  elimination is not mutually exclusive to recursion.
  */
 public func gcdRecursiveEuklid(_ m: Int, _ n: Int) -> Int {
+	print(">>> Entering gcdRecursiveEuklid(m=\(m),n=\(n))")
     let r: Int = m % n
     if r != 0 {
         return gcdRecursiveEuklid(n, r)
     } else {
+		print("<<< Exiting gcdRecursiveEuklid(m=\(m),n=\(n))")
         return n
     }
 }
@@ -74,8 +79,10 @@ public func gcdRecursiveEuklid(_ m: Int, _ n: Int) -> Int {
  large integers
  */
 public func gcdBinaryRecursiveStein(_ m: Int, _ n: Int) -> Int {
+	print(">>> Entering gcdBinaryRecursiveStein(m=\(m),n=\(n))")
     if let easySolution = findEasySolution(m, n) { return easySolution }
     
+	print("gcdBinaryRecursiveStein(m=\(m),n=\(n)): easySolution → \(easySolution)")
     if (m & 1) == 0 {
         // m is even
         if (n & 1) == 1 {
@@ -93,6 +100,7 @@ public func gcdBinaryRecursiveStein(_ m: Int, _ n: Int) -> Int {
         return gcdBinaryRecursiveStein((m - n) >> 1, n)
     } else {
         // reduce larger argument
+		print("<<< Exiting gcdBinaryRecursiveStein(m=\(m),n=\(n))")
         return gcdBinaryRecursiveStein((n - m) >> 1, m)
     }
 }
@@ -107,6 +115,7 @@ public func gcdBinaryRecursiveStein(_ m: Int, _ n: Int) -> Int {
  before even starting more difficult operations.
  */
 func findEasySolution(_ m: Int, _ n: Int) -> Int? {
+	print(">>> Entering findEasySolution(m=\(m),n=\(n))")
     if m == n {
         return m
     }
@@ -114,6 +123,7 @@ func findEasySolution(_ m: Int, _ n: Int) -> Int? {
         return n
     }
     if n == 0 {
+	print("<<< Exiting findEasySolution(m=\(m),n=\(n))")
         return m
     }
     return nil
@@ -138,6 +148,8 @@ public enum LCMError: Error {
  an unsigned integer
  */
 public func lcm(_ m: Int, _ n: Int, using gcdAlgorithm: (Int, Int) -> (Int) = gcdIterativeEuklid) throws -> Int {
+	print(">>> Entering lcm(m=\(m),n=\(n),gcdAlgorithm=\(gcdAlgorithm))")
     guard m & n != 0 else { throw LCMError.divisionByZero }
+	print("<<< Exiting lcm(m=\(m),n=\(n),gcdAlgorithm=\(gcdAlgorithm))")
     return m / gcdAlgorithm(m, n) * n
 }

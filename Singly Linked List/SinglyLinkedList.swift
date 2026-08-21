@@ -94,8 +94,11 @@ public struct SinglyLinkedList<T> {
   ///
   /// - Parameter value: value to be added
   public mutating func append(value: T) {
+	print(">>> Entering append(value=\(value))")
+	print("append(value=\(value)): node → \(node)")
     let node = SinglyLinkedListNode<T>(value: value)
     append(node: node)
+	print("<<< Exiting append(value=\(value))")
   }
   
   
@@ -103,12 +106,16 @@ public struct SinglyLinkedList<T> {
   ///
   /// - Parameter value: value to be added as the new head of the list
   public mutating func prepend(value: T) {
+	print(">>> Entering prepend(value=\(value))")
+	print("prepend(value=\(value)): node → \(node)")
     let node = SinglyLinkedListNode<T>(value: value)
     prepend(node: node)
+	print("<<< Exiting prepend(value=\(value))")
   }
   
   
   public mutating func deleteItem(at index:Int) -> T {
+	print(">>> Entering deleteItem(index=\(index))")
     precondition((index >= 0) && (index < count))
     
     var previous: SinglyLinkedListNode<T>? = nil
@@ -118,22 +125,27 @@ public struct SinglyLinkedList<T> {
     
     while i < index {
       previous = current
+	print("deleteItem(index=\(index)): previous → \(previous)")
       current = current?.next
       i += 1
     }
     
     // Current is now the element to delete (at index position.tag)
     elementToDelete = current!
+	print("deleteItem(index=\(index)): elementToDelete → \(elementToDelete)")
     if storage.head === current {
       storageForWritting.head = current?.next
+	print("deleteItem(index=\(index)): storageForWritting.head → \(storageForWritting.head)")
     }
     
     if storage.tail === current {
       storageForWritting.tail = previous
+	print("deleteItem(index=\(index)): storageForWritting.tail → \(storageForWritting.tail)")
     }
     
     previous?.next = current?.next
     
+	print("<<< Exiting deleteItem(index=\(index))")
     return elementToDelete.value
   }
   
@@ -145,6 +157,7 @@ public struct SinglyLinkedList<T> {
   ///
   /// - Parameter kthToLast: 1 <= k <= N
   private func find(kthToLast: UInt, startingAt node: SinglyLinkedListNode<T>?, count: UInt) -> SinglyLinkedListNode<T>? {
+	print(">>> Entering find(kthToLast=\(kthToLast),node=\(node),count=\(count))")
     guard kthToLast <= count else {
       return nil
     }
@@ -156,6 +169,8 @@ public struct SinglyLinkedList<T> {
     let i = (count - kthToLast)
     
     if i == 0 {
+	print("<<< Exiting find(kthToLast=\(kthToLast),node=\(node),count=\(count))")
+	print("<<< Exiting find(key=\(key))")
       return node
     }
     
@@ -183,13 +198,18 @@ private extension SinglyLinkedList {
   ///
   /// - Parameter node: the node that will be the new head of the list.
   private mutating func prepend(node: SinglyLinkedListNode<T>) {
+	print(">>> Entering prepend(node=\(node))")
     let (tailFromNewNode, _) = findTail(in: node)
     tailFromNewNode.next = storageForWritting.head
+	print("prepend(node=\(node)): tailFromNewNode.next → \(tailFromNewNode.next)")
+	print("prepend(node=\(node)): storageForWritting.head → \(storageForWritting.head)")
     storageForWritting.head = node
     
     if storage.tail == nil {
       storageForWritting.tail = tailFromNewNode
+	print("prepend(node=\(node)): storageForWritting.tail → \(storageForWritting.tail)")
     }
+	print("<<< Exiting prepend(node=\(node))")
   }
   
   /// Appends a new node to the list. This method can easily break value semantics. It is left
@@ -198,6 +218,7 @@ private extension SinglyLinkedList {
   ///   This is a private method, therefore this can only happen directly under the control of this class.
   /// - Parameter node: node to be appended. (It can be a list, even contain loops).
   private mutating func append(node: SinglyLinkedListNode<T>) {
+	print(">>> Entering append(node=\(node))")
     if storage.tail != nil {
       // Copy on write: we are about to modify next a property in
       // a potentially shared node. Make sure it's new if necessary.
@@ -209,15 +230,18 @@ private extension SinglyLinkedList {
       // Otherwise the state would be inconsistent.
       // This will be checked when adding and deleting nodes.
       storageForWritting.head = node
+	print("append(node=\(node)): storageForWritting.head → \(storageForWritting.head)")
       let (tail, _) = findTail(in: node)
       storageForWritting.tail = tail // There
     }
+	print("<<< Exiting append(node=\(node))")
   }
   
   /// Creates a copy of the linked list in a diffent memory location.
   ///
   /// - Returns: The copy to a new storage or a reference to the old one if no copy was necessary.
   private func copyStorage() -> IndirectStorage<T> {
+	print(">>> Entering copyStorage()")
     // If the list is empty, next time an item will be created, it won't affect
     // other instances of the list that came from copies derived from value types.
     // like assignments or parameters
@@ -230,6 +254,7 @@ private extension SinglyLinkedList {
     // we just make a copy of the reference.
     let copiedHead = SinglyLinkedListNode<T>(value: storage.head!.value)
     var previousCopied: SinglyLinkedListNode<T> = copiedHead
+	print("copyStorage(): copiedHead → \(copiedHead)")
     
     // Iterate through current list of nodes and copy them.
     var current: SinglyLinkedListNode<T>? = storage.head?.next
@@ -238,14 +263,19 @@ private extension SinglyLinkedList {
       // Create a copy
       let currentCopy = SinglyLinkedListNode<T>(value: current!.value)
       
+	print("copyStorage(): currentCopy → \(currentCopy)")
       // Create links
       previousCopied.next = currentCopy
+	print("copyStorage(): previousCopied.next → \(previousCopied.next)")
       
       // Update pointers
       current = current?.next
+	print("copyStorage(): current → \(current)")
+	print("copyStorage(): previousCopied → \(previousCopied)")
       previousCopied = currentCopy
     }
     
+	print("<<< Exiting copyStorage()")
     return IndirectStorage(head: copiedHead, tail: previousCopied)
   }
 }
@@ -259,6 +289,7 @@ extension SinglyLinkedList where T: Comparable {
   ///
   /// - Parameter v: value of the node to be deleted.
   public mutating func deleteNode(withValue v: T) {
+	print(">>> Entering deleteNode(v=\(v))")
     
     guard storage.head != nil else {
       return
@@ -269,6 +300,7 @@ extension SinglyLinkedList where T: Comparable {
     
     while (current != nil) && (current?.value != v) {
       previous = current
+	print("deleteNode(v=\(v)): previous → \(previous)")
       current = current?.next
     }
     
@@ -276,21 +308,26 @@ extension SinglyLinkedList where T: Comparable {
       
       if storage.head === foundNode {
         storageForWritting.head = foundNode.next
+		print("deleteNode(v=\(v)): storageForWritting.head → \(storageForWritting.head)")
       }
       
       if storage.tail === foundNode {
         storage.tail = previous
+		print("deleteNode(v=\(v)): storage.tail → \(storage.tail)")
       }
       
       previous?.next = foundNode.next
       foundNode.next = nil
+	print("deleteNode(v=\(v)): foundNode.next → \(foundNode.next)")
     }
+	print("<<< Exiting deleteNode(v=\(v))")
   }
   
   
   /// Deletes duplicates without using additional structures like a set to keep track the visited nodes.
   /// - Complexity: O(N^2)
   public mutating func deleteDuplicatesInPlace() {
+	print(">>> Entering deleteDuplicatesInPlace()")
     // Copy on write: this updates storage if necessary.
     var current = storageForWritting.head
     
@@ -303,20 +340,24 @@ extension SinglyLinkedList where T: Comparable {
           
           if storage.head === next {
             storage.head = next?.next
+			print("deleteDuplicatesInPlace(): storage.head → \(storage.head)")
           }
           
           if storage.tail === next {
             storage.tail = previous
+			print("deleteDuplicatesInPlace(): storage.tail → \(storage.tail)")
           }
           
           // Delete next
           previous?.next = next?.next
         }
         previous = next
+		print("deleteDuplicatesInPlace(): previous → \(previous)")
         next = next?.next
       }
       current = current?.next
     }
+	print("<<< Exiting deleteDuplicatesInPlace()")
   }
 }
 
@@ -352,6 +393,7 @@ extension SinglyLinkedList : Collection {
   }
   
   public func index(after idx: Index) -> Index {
+	print(">>> Entering index(idx=\(idx))")
     return SinglyLinkedListIndex<T>(node: idx.node?.next, tag: idx.tag+1)
   }
 }
@@ -419,20 +461,24 @@ extension SinglyLinkedList where T : KeyValuePair {
 // MARK: - HELPERS -
 
 func findTail<T>(in node: SinglyLinkedListNode<T>) -> (tail: SinglyLinkedListNode<T>, count: Int) {
+print(">>> Entering findTail(node=\(node))")
   // Assign the tail
   // Note that the passed node can already be linking to other nodes,
   // so the tail needs to be calculated.
   var current: SinglyLinkedListNode<T>? = node
   var count = 1
+print("findTail(node=\(node)): count → \(count)")
   
   while current?.next != nil {
     current = current?.next
+	print("findTail(node=\(node)): current → \(current)")
     count += 1
   }
   
   if current != nil {
     return (tail: current!, count: count)
   } else {
+print("<<< Exiting findTail(node=\(node))")
     return (tail: node, count: 1)
   }
 }

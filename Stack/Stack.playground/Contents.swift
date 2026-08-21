@@ -41,7 +41,9 @@ public struct Stack<T> {
      - Parameter element: The item being pushed.
   */
   public mutating func push(_ element: T) {
+	print(">>> Entering push(element=\(element))")
     array.append(element)
+	print("<<< Exiting push(element=\(element))")
   }
 
   /**
@@ -50,6 +52,7 @@ public struct Stack<T> {
      - Returns: The item at the top of the stack.
   */
   public mutating func pop() -> T? {
+	print(">>> Entering pop()")
     return array.popLast()
   }
 

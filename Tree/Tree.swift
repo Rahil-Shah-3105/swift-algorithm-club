@@ -9,8 +9,11 @@ public class TreeNode<T> {
     }
 
     public func addChild(_ node: TreeNode<T>) {
+		print(">>> Entering addChild(node=\(node))")
+		print("addChild(node=\(node)): node.parent → \(node.parent)")
         children.append(node)
         node.parent = self
+		print("<<< Exiting addChild(node=\(node))")
     }
 }
 
@@ -26,14 +29,17 @@ extension TreeNode: CustomStringConvertible {
 
 extension TreeNode where T: Equatable {
     public func search(_ value: T) -> TreeNode? {
+		print(">>> Entering search(value=\(value))")
         if value == self.value {
             return self
         }
         for child in children {
             if let found = child.search(value) {
+				print("search(value=\(value)): found → \(found)")
                 return found
             }
         }
+		print("<<< Exiting search(value=\(value))")
         return nil
     }
 }

@@ -3,6 +3,7 @@
  */
 
 func minimumMaximum<T: Comparable>(_ array: [T]) -> (minimum: T, maximum: T)? {
+	print(">>> Entering minimumMaximum(array=\(array))")
     guard var minimum = array.first else { return nil }
     var maximum = minimum
 
@@ -11,6 +12,7 @@ func minimumMaximum<T: Comparable>(_ array: [T]) -> (minimum: T, maximum: T)? {
     for i in stride(from: start, to: array.count, by: 2) {
         let pair = (array[i], array[i+1])
 
+		print("minimumMaximum(array=\(array)): pair → \(pair)")
         if pair.0 > pair.1 {
             if pair.0 > maximum {
                 maximum = pair.0
@@ -28,5 +30,6 @@ func minimumMaximum<T: Comparable>(_ array: [T]) -> (minimum: T, maximum: T)? {
         }
     }
 
+	print("<<< Exiting minimumMaximum(array=\(array))")
     return (minimum, maximum)
 }

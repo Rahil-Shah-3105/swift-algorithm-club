@@ -17,7 +17,9 @@ private class EdgeList<T> where T: Hashable {
   }
 
   func addEdge(_ edge: Edge<T>) {
+	print(">>> Entering addEdge(edge=\(edge))")
     edges?.append(edge)
+	print("<<< Exiting addEdge(edge=\(edge))")
   }
 
 }
@@ -57,6 +59,7 @@ open class AdjacencyListGraph<T>: AbstractGraph<T> where T: Hashable {
   }
 
   open override func createVertex(_ data: T) -> Vertex<T> {
+	print(">>> Entering createVertex(data=\(data))")
     // check if the vertex already exists
     let matchingVertices = vertices.filter { vertex in
       return vertex.data == data
@@ -69,26 +72,35 @@ open class AdjacencyListGraph<T>: AbstractGraph<T> where T: Hashable {
     // if the vertex doesn't exist, create a new one
     let vertex = Vertex(data: data, index: adjacencyList.count)
     adjacencyList.append(EdgeList(vertex: vertex))
+	print("createVertex(data=\(data)): vertex → \(vertex)")
+	print("<<< Exiting createVertex(data=\(data))")
     return vertex
   }
 
   open override func addDirectedEdge(_ from: Vertex<T>, to: Vertex<T>, withWeight weight: Double?) {
+	print(">>> Entering addDirectedEdge(from=\(from),to=\(to),weight=\(weight))")
     // works
     let edge = Edge(from: from, to: to, weight: weight)
     let edgeList = adjacencyList[from.index]
+	print("addDirectedEdge(from=\(from),to=\(to),weight=\(weight)): edge → \(edge)")
     if edgeList.edges != nil {
         edgeList.addEdge(edge)
     } else {
         edgeList.edges = [edge]
+		print("addDirectedEdge(from=\(from),to=\(to),weight=\(weight)): edgeList.edges → \(edgeList.edges)")
     }
+	print("<<< Exiting addDirectedEdge(from=\(from),to=\(to),weight=\(weight))")
   }
 
   open override func addUndirectedEdge(_ vertices: (Vertex<T>, Vertex<T>), withWeight weight: Double?) {
+	print(">>> Entering addUndirectedEdge(vertices=\(vertices),weight=\(weight))")
     addDirectedEdge(vertices.0, to: vertices.1, withWeight: weight)
     addDirectedEdge(vertices.1, to: vertices.0, withWeight: weight)
+	print("<<< Exiting addUndirectedEdge(vertices=\(vertices),weight=\(weight))")
   }
 
   open override func weightFrom(_ sourceVertex: Vertex<T>, to destinationVertex: Vertex<T>) -> Double? {
+	print(">>> Entering weightFrom(sourceVertex=\(sourceVertex),destinationVertex=\(destinationVertex))")
     guard let edges = adjacencyList[sourceVertex.index].edges else {
       return nil
     }
@@ -99,10 +111,12 @@ open class AdjacencyListGraph<T>: AbstractGraph<T> where T: Hashable {
       }
     }
 
+	print("<<< Exiting weightFrom(sourceVertex=\(sourceVertex),destinationVertex=\(destinationVertex))")
     return nil
   }
 
   open override func edgesFrom(_ sourceVertex: Vertex<T>) -> [Edge<T>] {
+	print(">>> Entering edgesFrom(sourceVertex=\(sourceVertex))")
     return adjacencyList[sourceVertex.index].edges ?? []
   }
 

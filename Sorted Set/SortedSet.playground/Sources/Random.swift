@@ -2,6 +2,9 @@ import Foundation
 
 // Returns a random number between the given range.
 public func random(min: Int, max: Int) -> Int {
+print(">>> Entering random(min=\(min),max=\(max))")
+print("<<< Exiting random(min=\(min),max=\(max))")
+print("<<< Exiting random(length=\(length))")
   return min + Int(arc4random_uniform(UInt32(max - min + 1)))
 }
 

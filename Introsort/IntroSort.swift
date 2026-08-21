@@ -1,14 +1,18 @@
 import Foundation
 
 public func introsort<T>(_ array: inout [T],  by areInIncreasingOrder: (T, T) -> Bool) {
+	print(">>> Entering introsort(array=\(array),areInIncreasingOrder=\(areInIncreasingOrder))")
     //The depth limit is as best practice 2 * log( n )
     let depthLimit = 2 * floor(log2(Double(array.count)))
     
+	print("introsort(array=\(array),areInIncreasingOrder=\(areInIncreasingOrder)): depthLimit → \(depthLimit)")
     introSortImplementation(for: &array, range: 0..<array.count, depthLimit: Int(depthLimit), by: areInIncreasingOrder)
+	print("<<< Exiting introsort(array=\(array),areInIncreasingOrder=\(areInIncreasingOrder))")
 }
 
 ///This method is recursively executed for each partition result of the quicksort part of the algorithm
 private func introSortImplementation<T>(for array: inout [T], range: Range<Int>, depthLimit: Int, by areInIncreasingOrder: (T, T) -> Bool) {
+	print(">>> Entering introSortImplementation(array=\(array),range=\(range),depthLimit=\(depthLimit),areInIncreasingOrder=\(areInIncreasingOrder))")
     if array.distance(from: range.lowerBound, to: range.upperBound) < 20 {
         //if the partition count is less than 20 we can sort it using insertion sort. This algorithm in fact performs well on collections
         //of this size, plus, at this point is quite probable that the quisksort part of the algorithm produced a partition which is
@@ -25,8 +29,10 @@ private func introSortImplementation<T>(for array: inout [T], range: Range<Int>,
         //position of the pivot in the array is returned so that we can form the two partitions.
         let partIdx = partitionIndex(for: &array, subRange: range, by: areInIncreasingOrder)
         
+		print("introSortImplementation(array=\(array),range=\(range),depthLimit=\(depthLimit),areInIncreasingOrder=\(areInIncreasingOrder)): partIdx → \(partIdx)")
         //We can recursively call introsort implementation, decreasing the depthLimit for the left partition and the right partition.
         introSortImplementation(for: &array, range: range.lowerBound..<partIdx, depthLimit: depthLimit &- 1, by: areInIncreasingOrder)
         introSortImplementation(for: &array, range: partIdx..<range.upperBound, depthLimit: depthLimit &- 1, by: areInIncreasingOrder)
     }
+	print("<<< Exiting introSortImplementation(array=\(array),range=\(range),depthLimit=\(depthLimit),areInIncreasingOrder=\(areInIncreasingOrder))")
 }

@@ -13,13 +13,18 @@ extension String: Error {}
 extension Array where Element == Double {
 
     func mean() -> Double {
+		print(">>> Entering mean()")
         return self.reduce(0, +) / Double(count)
     }
 
     func standardDeviation() -> Double {
+		print(">>> Entering standardDeviation()")
         let calculatedMean = mean()
 
+		print("standardDeviation(): calculatedMean → \(calculatedMean)")
+		print("standardDeviation(): sum → \(sum)")
         let sum = self.reduce(0.0) { (previous, next) in
+		print("<<< Exiting standardDeviation()")
             return previous + pow(next - calculatedMean, 2)
         }
 
@@ -30,6 +35,7 @@ extension Array where Element == Double {
 extension Array where Element == Int {
 
     func uniques() -> Set<Element> {
+		print(">>> Entering uniques()")
         return Set(self)
     }
 
@@ -42,6 +48,7 @@ public enum NBType {
     //case bernoulli --> TODO
 
     func calcLikelihood(variables: [Any], input: Any) -> Double? {
+	print(">>> Entering calcLikelihood(variables=\(variables),input=\(input))")
 
         if case .gaussian = self {
 
@@ -59,12 +66,15 @@ public enum NBType {
 
             let eulerPart = pow(M_E, -1 * pow(input - mean, 2) / (2 * pow(stDev, 2)))
             let distribution = eulerPart / sqrt(2 * .pi) / stDev
+			print("calcLikelihood(variables=\(variables),input=\(input)): eulerPart → \(eulerPart)")
+			print("calcLikelihood(variables=\(variables),input=\(input)): distribution → \(distribution)")
 
             return distribution
 
         } else if case .multinomial = self {
 
             guard let variables = variables as? [(category: Int, probability: Double)] else {
+				print("calcLikelihood(variables=\(variables),input=\(input)): variables → \(variables)")
                 return nil
             }
 
@@ -78,10 +88,12 @@ public enum NBType {
 
         }
 
+		print("<<< Exiting calcLikelihood(variables=\(variables),input=\(input))")
         return nil
     }
 
     func train(values: [Any]) -> [Any]? {
+	print(">>> Entering train(values=\(values))")
 
         if case .gaussian = self {
 
@@ -98,9 +110,13 @@ public enum NBType {
             }
 
             let count = values.count
+			print("train(values=\(values)): count → \(count)")
+			print("train(values=\(values)): categoryProba → \(categoryProba)")
             let categoryProba = values.uniques().map { value -> (Int, Double) in
                 return (value, Double(values.filter { $0 == value }.count) / Double(count))
             }
+		print("<<< Exiting train(values=\(values))")
+		print("<<< Exiting train()")
             return categoryProba
         }
 
@@ -154,11 +170,14 @@ public class NaiveBayes<T> {
     }
 
     public func classify(with input: [T]) -> Int {
+		print(">>> Entering classify(input=\(input))")
         let likelihoods = classifyProba(with: input).max { (first, second) -> Bool in
+			print("classify(input=\(input)): likelihoods → \(likelihoods)")
             return first.1 < second.1
         }
 
         guard let `class` = likelihoods?.0 else {
+		print("<<< Exiting classify(input=\(input))")
             return -1
         }
 
@@ -166,9 +185,12 @@ public class NaiveBayes<T> {
     }
 
     public func classifyProba(with input: [T]) -> [(Int, Double)] {
+	print(">>> Entering classifyProba(input=\(input))")
 
         var probaClass = [Int: Double]()
         let amount = classes.count
+		print("classifyProba(input=\(input)): probaClass → \(probaClass)")
+		print("classifyProba(input=\(input)): amount → \(amount)")
 
         classes.forEach { `class` in
             let individual = classes.filter { $0 == `class` }.count
@@ -179,15 +201,21 @@ public class NaiveBayes<T> {
             let distribution = value.map { (feature, variables) -> Double in
                 return type.calcLikelihood(variables: variables, input: input[feature]) ?? 0.0
             }
+		print("classifyProba(input=\(input)): classesAndFeatures → \(classesAndFeatures)")
+		print("classifyProba(input=\(input)): distribution → \(distribution)")
             return (`class`, distribution)
         }
 
         let likelihoods = classesAndFeatures.map { (`class`, distribution) in
+		print("classifyProba(input=\(input)): likelihoods → \(likelihoods)")
             return (`class`, distribution.reduce(1, *) * (probaClass[`class`] ?? 0.0))
         }
 
         let sum = likelihoods.map { $0.1 }.reduce(0, +)
         let normalized = likelihoods.map { (`class`, likelihood) in
+		print("classifyProba(input=\(input)): sum → \(sum)")
+		print("classifyProba(input=\(input)): normalized → \(normalized)")
+		print("<<< Exiting classifyProba(input=\(input))")
             return (`class`, likelihood / sum)
         }
 

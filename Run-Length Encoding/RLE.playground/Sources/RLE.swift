@@ -5,12 +5,15 @@ extension Data {
      Compresses the NSData using run-length encoding.
      */
     public func compressRLE() -> Data {
+		print(">>> Entering compressRLE()")
         var data = Data()
         self.withUnsafeBytes { (uPtr: UnsafePointer<UInt8>) in
+			print("compressRLE(): data → \(data)")
             var ptr = uPtr
             let end = ptr + count
             while ptr < end {
                 var count = 0
+				print("compressRLE(): count → \(count)")
                 var byte = ptr.pointee
                 var next = byte
 
@@ -27,10 +30,12 @@ extension Data {
                     data.append(&size, count: 1)
                     data.append(&byte, count: 1)
                 } else {                            // single byte between 0 and 192
+					print("compressRLE(): size → \(size)")
                     data.append(&byte, count: 1)
                 }
             }
         }
+		print("<<< Exiting compressRLE()")
         return data
     }
 
@@ -38,8 +43,10 @@ extension Data {
      Converts a run-length encoded NSData back to the original.
      */
     public func decompressRLE() -> Data {
+		print(">>> Entering decompressRLE()")
         var data = Data()
         self.withUnsafeBytes { (uPtr: UnsafePointer<UInt8>) in
+			print("decompressRLE(): data → \(data)")
             var ptr = uPtr
             let end = ptr + count
 
@@ -63,6 +70,7 @@ extension Data {
                 }
             }
         }
+		print("<<< Exiting decompressRLE()")
         return data
     }
 }

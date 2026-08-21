@@ -19,10 +19,13 @@ public struct Queue<T> {
   }
 
   public mutating func enqueue(_ element: T) {
+	print(">>> Entering enqueue(element=\(element))")
     array.append(element)
+	print("<<< Exiting enqueue(element=\(element))")
   }
 
   public mutating func dequeue() -> T? {
+	print(">>> Entering dequeue()")
     guard let element = array[guarded: head] else { return nil }
 
     array[head] = nil
@@ -30,10 +33,13 @@ public struct Queue<T> {
 
     let percentage = Double(head)/Double(array.count)
     if array.count > 50 && percentage > 0.25 {
+	print("dequeue(): percentage → \(percentage)")
       array.removeFirst(head)
       head = 0
+	print("dequeue(): head → \(head)")
     }
 
+	print("<<< Exiting dequeue()")
     return element
   }
 

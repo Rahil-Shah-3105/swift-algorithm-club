@@ -2,6 +2,7 @@
 
 // Simple little debug function to make testing output pretty
 func check(_ tree: ThreadedBinaryTree<Int>?) {
+print(">>> Entering check(tree=\(tree))")
   if let tree = tree {
     print("\(tree.count) Total Nodes:")
     print(tree)
@@ -25,6 +26,7 @@ func check(_ tree: ThreadedBinaryTree<Int>?) {
     } else {
       print("This tree is nil.")
     }
+	print("<<< Exiting check(tree=\(tree))")
 }
 
 print("\nTree with Single Node")

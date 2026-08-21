@@ -8,6 +8,7 @@
 import Foundation
 
 public func combSort<T: Comparable>(_ input: [T]) -> [T] {
+	print(">>> Entering combSort(input=\(input))")
     var copy: [T] = input
     var gap = copy.count
     let shrink = 1.3
@@ -26,11 +27,14 @@ public func combSort<T: Comparable>(_ input: [T]) -> [T] {
             index += 1
         }
     }
+	print("<<< Exiting combSort(input=\(input))")
     return copy
 }
 
 fileprivate func swap<T: Comparable>(a: inout T, b: inout T) {
+	print(">>> Entering swap(a=\(a),b=\(b))")
     let temp = a
     a = b
     b = temp
+	print("<<< Exiting swap(a=\(a),b=\(b))")
 }

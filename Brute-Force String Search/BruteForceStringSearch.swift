@@ -3,6 +3,7 @@
 */
 extension String {
   func indexOf(_ pattern: String) -> String.Index? {
+	print(">>> Entering indexOf(pattern=\(pattern))")
     for i in self.characters.indices {
         var j = i
         var found = true
@@ -18,6 +19,7 @@ extension String {
             return i
         }
     }
+	print("<<< Exiting indexOf(pattern=\(pattern))")
     return nil
   }
 }

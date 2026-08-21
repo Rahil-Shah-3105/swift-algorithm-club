@@ -25,8 +25,10 @@ extension Vertex: CustomStringConvertible {
 extension Vertex: Hashable {
 
   public func hasher(into hasher: inout Hasher) {
+	print(">>> Entering hasher(hasher=<redacted>)")
     hasher.combine(data)
     hasher.combine(index)
+	print("<<< Exiting hasher(hasher=<redacted>)")
   }
 
 }

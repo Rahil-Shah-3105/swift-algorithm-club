@@ -33,6 +33,7 @@ public indirect enum Treap<Key: Comparable, Element> {
   }
 
   internal func get(_ key: Key) -> Element? {
+	print(">>> Entering get(key=\(key))")
     switch self {
     case .empty:
       return nil
@@ -43,11 +44,13 @@ public indirect enum Treap<Key: Comparable, Element> {
     case let .node(treeKey, _, _, _, right) where key > treeKey:
       return right.get(key)
     default:
+	print("<<< Exiting get(key=\(key))")
       return nil
     }
   }
 
   public func contains(_ key: Key) -> Bool {
+	print(">>> Entering contains(key=\(key))")
     switch self {
     case .empty:
       return false
@@ -58,6 +61,7 @@ public indirect enum Treap<Key: Comparable, Element> {
     case let .node(treeKey, _, _, _, right) where key > treeKey:
       return right.contains(key)
     default:
+	print("<<< Exiting contains(key=\(key))")
       return false
     }
   }
@@ -82,7 +86,9 @@ public indirect enum Treap<Key: Comparable, Element> {
   }
 
   fileprivate static func countHelper(_ treap: Treap<Key, Element>) -> Int {
+	print(">>> Entering countHelper(treap=\(treap))")
     if case let .node(_, _, _, left, right) = treap {
+	print("<<< Exiting countHelper(treap=\(treap))")
       return countHelper(left) + 1 + countHelper(right)
     }
 
@@ -91,25 +97,30 @@ public indirect enum Treap<Key: Comparable, Element> {
 }
 
 internal func leftRotate<Key: Comparable, Element>(_ tree: Treap<Key, Element>) -> Treap<Key, Element> {
+print(">>> Entering leftRotate(tree=\(tree))")
   if case let .node(key, val, p, .node(leftKey, leftVal, leftP, leftLeft, leftRight), right) = tree {
     return .node(key: leftKey, val: leftVal, p: leftP, left: leftLeft,
                  right: Treap.node(key: key, val: val, p: p, left: leftRight, right: right))
   } else {
+print("<<< Exiting leftRotate(tree=\(tree))")
     return .empty
   }
 }
 
 internal func rightRotate<Key: Comparable, Element>(_ tree: Treap<Key, Element>) -> Treap<Key, Element> {
+print(">>> Entering rightRotate(tree=\(tree))")
   if case let .node(key, val, p, left, .node(rightKey, rightVal, rightP, rightLeft, rightRight)) = tree {
     return .node(key: rightKey, val: rightVal, p: rightP,
                  left: Treap.node(key: key, val: val, p: p, left: left, right: rightLeft), right: rightRight)
   } else {
+print("<<< Exiting rightRotate(tree=\(tree))")
     return .empty
   }
 }
 
 public extension Treap {
   internal func set(key: Key, val: Element, p: Int = Int(arc4random())) -> Treap {
+	print(">>> Entering set(key=\(key),val=\(val),p=\(p))")
     switch self {
     case .empty:
       return .node(key: key, val: val, p: p, left: .empty, right: .empty)
@@ -118,12 +129,14 @@ public extension Treap {
     case let .node(nodeKey, _, nodeP, left, right) where key == nodeKey:
       return .node(key: key, val: val, p: nodeP, left: left, right: right)
     default: // should never happen
+	print("<<< Exiting set(key=\(key),val=\(val),p=\(p))")
       return .empty
     }
   }
 
   fileprivate func insertAndBalance(_ nodeKey: Key, _ nodeVal: Element, _ nodeP: Int, _ left: Treap,
                                     _ right: Treap, _ key: Key, _ val: Element, _ p: Int) -> Treap {
+									print(">>> Entering insertAndBalance(nodeKey=\(nodeKey),nodeVal=\(nodeVal),nodeP=\(nodeP),left=\(left),right=\(right),key=\(key),val=\(val),p=\(p))")
     let newChild: Treap<Key, Element>
     let newNode: Treap<Key, Element>
     let rotate: (Treap) -> Treap
@@ -145,19 +158,23 @@ public extension Treap {
     if case let .node(_, _, newChildP, _, _) = newChild, newChildP < nodeP {
       return rotate(newNode)
     } else {
+	print("<<< Exiting insertAndBalance(nodeKey=\(nodeKey),nodeVal=\(nodeVal),nodeP=\(nodeP),left=\(left),right=\(right),key=\(key),val=\(val),p=\(p))")
       return newNode
     }
   }
 
   internal func delete(key: Key) throws -> Treap {
+	print(">>> Entering delete(key=\(key))")
     switch self {
     case .empty:
+	print("Throwing NSError from delete(key=\(key))")
       throw NSError(domain: "com.wta.treap.errorDomain", code: -1, userInfo: nil)
     case let .node(nodeKey, val, p, left, right) where key < nodeKey:
       return try Treap.node(key: nodeKey, val: val, p: p, left: left.delete(key: key), right: right)
     case let .node(nodeKey, val, p, left, right) where key > nodeKey:
       return try Treap.node(key: nodeKey, val: val, p: p, left: left, right: right.delete(key: key))
     case let .node(_, _, _, left, right):
+	print("<<< Exiting delete(key=\(key))")
       return merge(left, right: right)
     }
   }

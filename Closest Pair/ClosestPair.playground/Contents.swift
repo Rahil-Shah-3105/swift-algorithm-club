@@ -1,13 +1,18 @@
 //Created by Ahmed Nader (github: AhmedNader42) on 4/4/18.
 
 func ClosestPairOf(points: [Point]) -> (minimum:Double, firstPoint:Point, secondPoint:Point) {
+	print(">>> Entering ClosestPairOf(points=\(points))")
     var innerPoints = mergeSort(points, sortAccording : true)
     let result = ClosestPair(&innerPoints, innerPoints.count)
+	print("ClosestPairOf(points=\(points)): result → \(result)")
+	print("ClosestPairOf(points=\(points)): innerPoints → \(innerPoints)")
+	print("<<< Exiting ClosestPairOf(points=\(points))")
     return (result.minValue, result.firstPoint, result.secondPoint)
 }
 
 func ClosestPair(_ p : inout [Point],_ n : Int) -> (minValue: Double,firstPoint: Point,secondPoint: Point)
 {
+	print(">>> Entering ClosestPair(p=\(p),n=\(n))")
     // Brute force if only 3 points (To end recursion)
     if n <= 3
     {
@@ -24,7 +29,10 @@ func ClosestPair(_ p : inout [Point],_ n : Int) -> (minValue: Double,firstPoint:
                 {
                     minDist = dist(p[i], p[j])
                     newFirst = p[i]
+					print("ClosestPair(p=\(p),n=\(n)): newFirst → \(newFirst)")
+					print("ClosestPair(p=\(p),n=\(n)): newSecond → \(newSecond)")
                     newSecond = p[j]
+					print("<<< Exiting dist(a=\(a),b=\(b))")
                 }
                 j+=1
             }
@@ -43,6 +51,8 @@ func ClosestPair(_ p : inout [Point],_ n : Int) -> (minValue: Double,firstPoint:
     var leftSide = [Point]()
     var rightSide = [Point]()
     for s in 0..<mid
+	print("ClosestPair(p=\(p),n=\(n)): leftSide → \(leftSide)")
+	print("ClosestPair(p=\(p),n=\(n)): rightSide → \(rightSide)")
     {
         leftSide.append(p[s])
     }
@@ -55,11 +65,14 @@ func ClosestPair(_ p : inout [Point],_ n : Int) -> (minValue: Double,firstPoint:
     // Recurse on the left and right part of the array.
     let valueFromLeft = ClosestPair(&leftSide, mid)
     let minLeft:Double = valueFromLeft.minValue
+	print("ClosestPair(p=\(p),n=\(n)): valueFromLeft → \(valueFromLeft)")
     let valueFromRight = ClosestPair(&rightSide, n-mid)
     let minRight:Double = valueFromRight.minValue
+	print("ClosestPair(p=\(p),n=\(n)): valueFromRight → \(valueFromRight)")
     
     // Starting current min must be the largest possible to not affect the real calculations.
     var min = Double.infinity
+	print("ClosestPair(p=\(p),n=\(n)): min → \(min)")
     
     var first:Point
     var second:Point
@@ -68,6 +81,8 @@ func ClosestPair(_ p : inout [Point],_ n : Int) -> (minValue: Double,firstPoint:
     if minLeft < minRight {
         min = minLeft
         first = valueFromLeft.firstPoint
+		print("ClosestPair(p=\(p),n=\(n)): first → \(first)")
+		print("ClosestPair(p=\(p),n=\(n)): second → \(second)")
         second = valueFromLeft.secondPoint
     }
     else {
@@ -82,6 +97,7 @@ func ClosestPair(_ p : inout [Point],_ n : Int) -> (minValue: Double,firstPoint:
     
     var strip = [Point]()
     
+	print("ClosestPair(p=\(p),n=\(n)): strip → \(strip)")
     // If the value is less than the min distance away in X from the line then take it into consideration.
     var i=0, j = 0
     while i<n
@@ -111,7 +127,11 @@ func ClosestPair(_ p : inout [Point],_ n : Int) -> (minValue: Double,firstPoint:
             {
                 temp = dist(strip[i], strip[x])
                 tempFirst = strip[i]
+				print("ClosestPair(p=\(p),n=\(n)): tempFirst → \(tempFirst)")
+				print("ClosestPair(p=\(p),n=\(n)): tempSecond → \(tempSecond)")
                 tempSecond = strip[x]
+				print(">>> Entering dist(a=\(a),b=\(b))")
+				print("<<< Exiting dist(a=\(a),b=\(b))")
             }
             x+=1
         }
@@ -124,6 +144,7 @@ func ClosestPair(_ p : inout [Point],_ n : Int) -> (minValue: Double,firstPoint:
         first = tempFirst
         second = tempSecond
     }
+	print("<<< Exiting ClosestPair(p=\(p),n=\(n))")
     return (min, first, second)
 }
 
@@ -134,15 +155,20 @@ func ClosestPair(_ p : inout [Point],_ n : Int) -> (minValue: Double,firstPoint:
 // minor addition)
 // sortAccodrding : true -> x, false -> y.
 func mergeSort(_ array: [Point], sortAccording : Bool) -> [Point] {
+	print(">>> Entering mergeSort(array=\(array),sortAccording=\(sortAccording))")
     guard array.count > 1 else { return array }
     let middleIndex = array.count / 2
     let leftArray = mergeSort(Array(array[0..<middleIndex]), sortAccording: sortAccording)
     let rightArray = mergeSort(Array(array[middleIndex..<array.count]), sortAccording: sortAccording)
+	print("mergeSort(array=\(array),sortAccording=\(sortAccording)): leftArray → \(leftArray)")
+	print("mergeSort(array=\(array),sortAccording=\(sortAccording)): rightArray → \(rightArray)")
+	print("<<< Exiting mergeSort(array=\(array),sortAccording=\(sortAccording))")
     return merge(leftPile: leftArray, rightPile: rightArray, sortAccording: sortAccording)
 }
 
 
 private func merge(leftPile: [Point], rightPile: [Point], sortAccording: Bool) -> [Point] {
+	print(">>> Entering merge(leftPile=\(leftPile),rightPile=\(rightPile),sortAccording=\(sortAccording))")
     
     var compare : (Point, Point) -> Bool
     
@@ -150,6 +176,7 @@ private func merge(leftPile: [Point], rightPile: [Point], sortAccording: Bool) -
     if sortAccording
     {
         compare = { p1,p2 in
+		print("merge(leftPile=\(leftPile),rightPile=\(rightPile),sortAccording=\(sortAccording)): compare → \(compare)")
             return p1.x < p2.x
         }
     }
@@ -164,6 +191,7 @@ private func merge(leftPile: [Point], rightPile: [Point], sortAccording: Bool) -
     var rightIndex = 0
     var orderedPile = [Point]()
     if orderedPile.capacity < leftPile.count + rightPile.count {
+	print("merge(leftPile=\(leftPile),rightPile=\(rightPile),sortAccording=\(sortAccording)): orderedPile → \(orderedPile)")
         orderedPile.reserveCapacity(leftPile.count + rightPile.count)
     }
     
@@ -185,6 +213,7 @@ private func merge(leftPile: [Point], rightPile: [Point], sortAccording: Bool) -
             rightIndex += 1
         }
     }
+	print("<<< Exiting merge(leftPile=\(leftPile),rightPile=\(rightPile),sortAccording=\(sortAccording))")
     return orderedPile
 }
 
@@ -203,7 +232,9 @@ struct Point
 // Get the distance between two points a, b.
 func dist(_ a: Point,_ b: Point) -> Double
 {
+	print(">>> Entering dist(a=\(a),b=\(b))")
     let equation:Double = (((a.x-b.x)*(a.x-b.x))) + (((a.y-b.y)*(a.y-b.y)))
+	print("<<< Exiting dist(a=\(a),b=\(b))")
     return equation.squareRoot()
 }
 

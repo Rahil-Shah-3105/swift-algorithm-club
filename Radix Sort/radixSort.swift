@@ -6,6 +6,7 @@
 
 // NOTE: This implementation does not handle negative numbers
 func radixSort(_ array: inout [Int] ) {
+print(">>> Entering radixSort(array=\(array))")
   let radix = 10  //Here we define our radix to be 10
   var done = false
   var index: Int
@@ -22,6 +23,7 @@ func radixSort(_ array: inout [Int] ) {
 
     for number in array {
       index = number / digit  //Which bucket will we access?
+	print("radixSort(array=\(array)): index → \(index)")
       buckets[index % radix].append(number)
       if done && index > 0 {  //If we arent done, continue to finish, otherwise we are done
         done = false
@@ -40,4 +42,5 @@ func radixSort(_ array: inout [Int] ) {
 
     digit *= radix  //Move to the next digit
   }
+print("<<< Exiting radixSort(array=\(array))")
 }

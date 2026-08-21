@@ -7,8 +7,10 @@
 //
 
 func slowSort(_ i: Int, _ j: Int, _ numberList: inout [Int]) {
+print(">>> Entering slowSort(i=\(i),j=\(j),numberList=\(numberList))")
   guard if i < j else { return }
   let m = (i+j)/2
+print("slowSort(i=\(i),j=\(j),numberList=\(numberList)): m → \(m)")
   slowSort(i, m, &numberList)
   slowSort(m+1, j, &numberList)
   if numberList[j] < numberList[m] {
@@ -17,4 +19,5 @@ func slowSort(_ i: Int, _ j: Int, _ numberList: inout [Int]) {
     numberList[m] = temp
   }
   slowSort(i, j-1, &numberList)
+print("<<< Exiting slowSort(i=\(i),j=\(j),numberList=\(numberList))")
 }

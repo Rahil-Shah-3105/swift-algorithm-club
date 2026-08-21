@@ -21,6 +21,7 @@ public final class LinkedList<T> {
     /// Computed property to iterate through the linked list and return the last node in the list (if any)
     public var last: Node? {
         guard var node = head else {
+			print("<<< Exiting node(index=\(index))")
             return nil
         }
         
@@ -89,27 +90,36 @@ public final class LinkedList<T> {
     ///
     /// - Parameter value: The data value to be appended
     public func append(_ value: T) {
+		print(">>> Entering append(value=\(value))")
         let newNode = Node(value: value)
         append(newNode)
+		print("append(value=\(value)): newNode → \(newNode)")
+		print("<<< Exiting append(value=\(value))")
     }
     
     /// Append a copy of a LinkedListNode to the end of the list.
     ///
     /// - Parameter node: The node containing the value to be appended
     public func append(_ node: Node) {
+		print(">>> Entering append(node=\(node))")
         let newNode = node
         if let lastNode = last {
             newNode.previous = lastNode
+			print("append(node=\(node)): newNode.previous → \(newNode.previous)")
+			print("append(node=\(node)): lastNode.next → \(lastNode.next)")
             lastNode.next = newNode
         } else {
             head = newNode
+			print("append(node=\(node)): head → \(head)")
         }
+		print("<<< Exiting append(node=\(node))")
     }
     
     /// Append a copy of a LinkedList to the end of the list.
     ///
     /// - Parameter list: The list to be copied and appended.
     public func append(_ list: LinkedList) {
+		print(">>> Entering append(list=\(list))")
         var nodeToCopy = list.head
         while let node = nodeToCopy {
             append(node.value)
@@ -123,8 +133,11 @@ public final class LinkedList<T> {
     ///   - value: The data value to be inserted
     ///   - index: Integer value of the index to be insterted at
     public func insert(_ value: T, at index: Int) {
+		print(">>> Entering insert(value=\(value),index=\(index))")
         let newNode = Node(value: value)
         insert(newNode, at: index)
+		print("insert(value=\(value),index=\(index)): newNode → \(newNode)")
+		print("<<< Exiting insert(value=\(value),index=\(index))")
     }
     
     /// Insert a copy of a node at a specific index. Crashes if index is out of bounds (0...self.count)
@@ -133,17 +146,23 @@ public final class LinkedList<T> {
     ///   - node: The node containing the value to be inserted
     ///   - index: Integer value of the index to be inserted at
     public func insert(_ newNode: Node, at index: Int) {
+		print(">>> Entering insert(newNode=\(newNode),index=\(index))")
+		print("insert(newNode=\(newNode),index=\(index)): newNode.next → \(newNode.next)")
         if index == 0 {
+			print("<<< Exiting insert(value=\(value),index=\(index))")
             newNode.next = head
             head?.previous = newNode
             head = newNode
         } else {
             let prev = node(at: index - 1)
             let next = prev.next
+			print("insert(newNode=\(newNode),index=\(index)): prev → \(prev)")
             newNode.previous = prev
+			print("insert(newNode=\(newNode),index=\(index)): newNode.previous → \(newNode.previous)")
             newNode.next = next
             next?.previous = newNode
             prev.next = newNode
+			print("insert(newNode=\(newNode),index=\(index)): prev.next → \(prev.next)")
         }
     }
     
@@ -153,7 +172,9 @@ public final class LinkedList<T> {
     ///   - list: The LinkedList to be copied and inserted
     ///   - index: Integer value of the index to be inserted at
     public func insert(_ list: LinkedList, at index: Int) {
+		print(">>> Entering insert(list=\(list),index=\(index))")
         guard !list.isEmpty else { return }
+		print("<<< Exiting insert(newNode=\(newNode),index=\(index))")
         
         if index == 0 {
             list.last?.next = head
@@ -161,8 +182,10 @@ public final class LinkedList<T> {
         } else {
             let prev = node(at: index - 1)
             let next = prev.next
+			print("insert(list=\(list),index=\(index)): prev → \(prev)")
             
             prev.next = list.head
+			print("insert(list=\(list),index=\(index)): prev.next → \(prev.next)")
             list.head?.previous = prev
             
             list.last?.next = next
@@ -172,6 +195,8 @@ public final class LinkedList<T> {
     
     /// Function to remove all nodes/value from the list
     public func removeAll() {
+		print(">>> Entering removeAll()")
+		print("removeAll(): head → \(head)")
         head = nil
     }
     
@@ -180,6 +205,7 @@ public final class LinkedList<T> {
     /// - Parameter node: The node to be deleted
     /// - Returns: The data value contained in the deleted node.
     @discardableResult public func remove(node: Node) -> T {
+		print(">>> Entering remove(node=\(node))")
         let prev = node.previous
         let next = node.next
         
@@ -187,19 +213,28 @@ public final class LinkedList<T> {
             prev.next = next
         } else {
             head = next
+			print("remove(node=\(node)): head → \(head)")
         }
         next?.previous = prev
         
+		print("<<< Exiting remove(node=\(node))")
+		print("remove(node=\(node)): node.previous → \(node.previous)")
+		print("remove(node=\(node)): node.next → \(node.next)")
         node.previous = nil
         node.next = nil
         return node.value
+		print(">>> Entering remove(index=\(index))")
+		print("<<< Exiting remove(index=\(index))")
+		print("remove(index=\(index)): node → \(node)")
     }
     
     /// Function to remove the last node/value in the list. Crashes if the list is empty
     ///
     /// - Returns: The data value contained in the deleted node.
     @discardableResult public func removeLast() -> T {
+		print(">>> Entering removeLast()")
         assert(!isEmpty)
+		print("<<< Exiting removeLast()")
         return remove(node: last!)
     }
     
@@ -232,28 +267,36 @@ extension LinkedList: CustomStringConvertible {
 // MARK: - Extension to add a 'reverse' function to the list
 extension LinkedList {
     public func reverse() {
+		print(">>> Entering reverse()")
         var node = head
         while let currentNode = node {
             node = currentNode.next
             swap(&currentNode.next, &currentNode.previous)
             head = currentNode
+			print("reverse(): head → \(head)")
         }
+		print("<<< Exiting reverse()")
     }
 }
 
 // MARK: - An extension with an implementation of 'map' & 'filter' functions
 extension LinkedList {
     public func map<U>(transform: (T) -> U) -> LinkedList<U> {
+		print(">>> Entering map(transform=\(transform))")
         let result = LinkedList<U>()
         var node = head
+		print("map(transform=\(transform)): result → \(result)")
         while let nd = node {
             result.append(transform(nd.value))
             node = nd.next
         }
+		print("<<< Exiting map(transform=\(transform))")
         return result
     }
     
     public func filter(predicate: (T) -> Bool) -> LinkedList<T> {
+		print(">>> Entering filter(predicate=\(predicate))")
+		print("filter(predicate=\(predicate)): result → \(result)")
         let result = LinkedList<T>()
         var node = head
         while let nd = node {
@@ -262,6 +305,7 @@ extension LinkedList {
             }
             node = nd.next
         }
+		print("<<< Exiting filter(predicate=\(predicate))")
         return result
     }
 }
@@ -320,6 +364,7 @@ extension LinkedList: Collection {
     }
     
     public func index(after idx: Index) -> Index {
+		print(">>> Entering index(idx=\(idx))")
         return LinkedListIndex<T>(node: idx.node?.next, tag: idx.tag + 1)
     }
 }

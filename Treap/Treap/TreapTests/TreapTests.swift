@@ -29,23 +29,30 @@ import XCTest
 class TreapTests: XCTestCase {
 
   override func setUp() {
+	print(">>> Entering setUp()")
     super.setUp()
     // Put setup code here. This method is called before the invocation of each test method in the class.
+	print("<<< Exiting setUp()")
   }
 
   override func tearDown() {
+	print(">>> Entering tearDown()")
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     super.tearDown()
+	print("<<< Exiting tearDown()")
   }
 
   func testSwift4() {
+	print(">>> Entering testSwift4()")
     // last checked with Xcode 9.0b4
     #if swift(>=4.0)
       print("Hello, Swift 4!")
     #endif
+	print("<<< Exiting testSwift4()")
   }
 
   func testSanity() {
+	print(">>> Entering testSanity()")
     var treap = Treap<Int, String>.empty
     treap = treap.set(key: 5, val: "a").set(key: 7, val: "b")
     XCTAssert(treap.get(5) == "a")
@@ -57,24 +64,30 @@ class TreapTests: XCTestCase {
     treap = try! treap.delete(key: 5)
     XCTAssert(!treap.contains(5))
     XCTAssert(treap.contains(7))
+	print("<<< Exiting testSanity()")
   }
 
   func testFairlyBalanced() {
+	print(">>> Entering testFairlyBalanced()")
     var treap = Treap<Int, Int?>.empty
     for i in 0..<1000 {
       treap = treap.set(key: i, val: nil)
     }
     let depth = treap.depth
     XCTAssert(depth < 30, "treap.depth was \(depth)")
+	print("<<< Exiting testFairlyBalanced()")
   }
 
   func testFairlyBalancedCollection() {
+	print(">>> Entering testFairlyBalancedCollection()")
     var treap = Treap<Int, Int?>()
     for i in 0..<1000 {
+	print("testFairlyBalancedCollection(): treap → \(treap)")
       treap[i] = Optional<Int>.none
     }
     let depth = treap.depth
     XCTAssert(depth > 0 && depth < 30)
+	print("<<< Exiting testFairlyBalancedCollection()")
   }
 
 }

@@ -41,11 +41,15 @@ public class Graph {
     }
 
     public func removeGraph() {
+		print(">>> Entering removeGraph()")
+		print("removeGraph(): startVertex → \(startVertex)")
         _vertices.removeAll()
         startVertex = nil
+		print("<<< Exiting removeGraph()")
     }
 
     public func createNewGraph() {
+		print(">>> Entering createNewGraph()")
         guard _vertices.isEmpty, startVertex == nil else {
             assertionFailure("Clear graph before creating new one")
             return
@@ -55,48 +59,72 @@ public class Graph {
         let offset = Int(arc4random_uniform(UInt32(_vertices.count)))
         let index = _vertices.index(_vertices.startIndex, offsetBy: offset)
         startVertex =  _vertices[index]
+		print("createNewGraph(): offset → \(offset)")
         setVertexLevels()
+		print("<<< Exiting createNewGraph()")
     }
     
     private func clearCache() {
+		print(">>> Entering clearCache()")
         _vertices.forEach { $0.clearCache() }
+		print("<<< Exiting clearCache()")
+		print(">>> Entering setVertexLevels()")
+		print("setVertexLevels(): startVertex.levelChecked → \(startVertex.levelChecked)")
+		print("setVertexLevels(): neighbor.levelChecked → \(neighbor.levelChecked)")
+		print("setVertexLevels(): neighbor.level → \(neighbor.level)")
+		print("<<< Exiting setVertexLevels()")
     }
 
     public func reset() {
+		print(">>> Entering reset()")
         for vertex in _vertices {
             vertex.clearCache()
         }
+		print("<<< Exiting reset()")
     }
 
     private func createNotConnectedVertices() {
+		print(">>> Entering createNotConnectedVertices()")
         for i in 0..<verticesCount {
             let vertex = Vertex(identifier: "\(i)")
             _vertices.insert(vertex)
         }
+			print("createNotConnectedVertices(): vertex → \(vertex)")
+		print("<<< Exiting createNotConnectedVertices()")
     }
 
     private func setupConnections() {
+		print(">>> Entering setupConnections()")
         for vertex in _vertices {
             let randomEdgesCount = arc4random_uniform(4) + 1
+			print("setupConnections(): randomEdgesCount → \(randomEdgesCount)")
             for _ in 0..<randomEdgesCount {
                 let randomWeight = Double(arc4random_uniform(10))
                 let neighbor = randomVertex(except: vertex)
                 let edge1 = Edge(vertex: neighbor, weight: randomWeight)
                 if vertex.edges.contains(where: { $0.neighbor == neighbor }) {
+				print("setupConnections(): randomWeight → \(randomWeight)")
+				print("setupConnections(): neighbor → \(neighbor)")
+				print("setupConnections(): edge1 → \(edge1)")
                     continue
                 }
                 let edge2 = Edge(vertex: vertex, weight: randomWeight)
                 vertex.edges.append(edge1)
                 neighbor.edges.append(edge2)
             }
+				print("setupConnections(): edge2 → \(edge2)")
         }
+		print("<<< Exiting setupConnections()")
     }
 
     private func randomVertex(except vertex: Vertex) -> Vertex {
+		print(">>> Entering randomVertex(vertex=\(vertex))")
         var newSet = _vertices
         newSet.remove(vertex)
         let offset = Int(arc4random_uniform(UInt32(newSet.count)))
         let index = newSet.index(newSet.startIndex, offsetBy: offset)
+		print("randomVertex(vertex=\(vertex)): offset → \(offset)")
+		print("<<< Exiting randomVertex(vertex=\(vertex))")
         return newSet[index]
     }
 
@@ -125,12 +153,14 @@ public class Graph {
     }
 
     public func findShortestPathsWithVisualization(completion: () -> Void) {
+		print(">>> Entering findShortestPathsWithVisualization(completion=\(completion))")
         guard let startVertex = self.startVertex else {
             assertionFailure("start vertex is nil")
             return
         }
         clearCache()
         startVertex.pathLengthFromStart = 0
+		print("findShortestPathsWithVisualization(completion=\(completion)): startVertex.pathLengthFromStart → \(startVertex.pathLengthFromStart)")
         startVertex.pathVerticesFromStart.append(startVertex)
         var currentVertex: Vertex? = startVertex
 
@@ -149,10 +179,12 @@ public class Graph {
             DispatchQueue.main.async {
                 vertex.setVisitedColor()
             }
+				print("findShortestPathsWithVisualization(completion=\(completion)): vertex → \(vertex)")
             usleep(750000)
             vertex.visited = true
             let filteredEdges = vertex.edges.filter { !$0.neighbor.visited }
             for edge in filteredEdges {
+				print("findShortestPathsWithVisualization(completion=\(completion)): vertex.visited → \(vertex.visited)")
                 let neighbor = edge.neighbor
                 let weight = edge.weight
                 let edgeRepresentation = edge.edgeRepresentation
@@ -172,6 +204,7 @@ public class Graph {
                                                        edgePathLength: weight,
                                                        endVertexPathLength: neighbor.pathLengthFromStart)
                 }
+					print("findShortestPathsWithVisualization(completion=\(completion)): neighbor → \(neighbor)")
                 usleep(_visualizationOneSleepDuration)
 
 
@@ -187,6 +220,8 @@ public class Graph {
                         break breakableLoop
                     }
                     neighbor.pathLengthFromStart = theoreticNewWeight
+					print("findShortestPathsWithVisualization(completion=\(completion)): neighbor.pathLengthFromStart → \(neighbor.pathLengthFromStart)")
+					print("findShortestPathsWithVisualization(completion=\(completion)): neighbor.pathVerticesFromStart → \(neighbor.pathVerticesFromStart)")
                     neighbor.pathVerticesFromStart = vertex.pathVerticesFromStart
                     neighbor.pathVerticesFromStart.append(neighbor)
                 }
@@ -201,6 +236,7 @@ public class Graph {
             }
             if totalVertices.isEmpty {
                 currentVertex = nil
+				print("findShortestPathsWithVisualization(completion=\(completion)): currentVertex → \(currentVertex)")
                 break
             }
             currentVertex = totalVertices.min { $0.pathLengthFromStart < $1.pathLengthFromStart }
@@ -212,18 +248,23 @@ public class Graph {
         } else {
             completion()
         }
+		print("<<< Exiting findShortestPathsWithVisualization(completion=\(completion))")
     }
 
     public func parseNeighborsFor(vertex: Vertex, completion: @escaping () -> ()) {
+		print(">>> Entering parseNeighborsFor(vertex=\(vertex),completion=\(completion))")
         DispatchQueue.main.async {
             vertex.setVisitedColor()
         }
+			print("parseNeighborsFor(vertex=\(vertex),completion=\(completion)): vertex → \(vertex)")
         DispatchQueue.global(qos: .background).async {
             vertex.visited = true
+			print("parseNeighborsFor(vertex=\(vertex),completion=\(completion)): vertex.visited → \(vertex.visited)")
 
             let nonVisitedVertices = self._vertices.filter { $0.visited == false }
             if nonVisitedVertices.isEmpty {
                 self.state = .completed
+				print("parseNeighborsFor(vertex=\(vertex),completion=\(completion)): self.state → \(self.state)")
                 DispatchQueue.main.async {
                     self.delegate?.didCompleteGraphParsing()
                 }
@@ -250,6 +291,7 @@ public class Graph {
                                                        edgePathLength: weight,
                                                        endVertexPathLength: neighbor.pathLengthFromStart)
                 }
+					print("parseNeighborsFor(vertex=\(vertex),completion=\(completion)): neighbor → \(neighbor)")
                 usleep(self._interactiveOneSleepDuration)
                 
                 let theoreticNewWeight = vertex.pathLengthFromStart + weight
@@ -263,6 +305,8 @@ public class Graph {
                         break breakableLoop
                     }
                     neighbor.pathLengthFromStart = theoreticNewWeight
+					print("parseNeighborsFor(vertex=\(vertex),completion=\(completion)): neighbor.pathLengthFromStart → \(neighbor.pathLengthFromStart)")
+					print("parseNeighborsFor(vertex=\(vertex),completion=\(completion)): neighbor.pathVerticesFromStart → \(neighbor.pathVerticesFromStart)")
                     neighbor.pathVerticesFromStart = vertex.pathVerticesFromStart
                     neighbor.pathVerticesFromStart.append(neighbor)
                 }
@@ -293,12 +337,16 @@ public class Graph {
                 completion()
             }
         }
+		print("<<< Exiting parseNeighborsFor(vertex=\(vertex),completion=\(completion))")
     }
 
     public func didTapVertex(vertex: Vertex) {
+		print(">>> Entering didTapVertex(vertex=\(vertex))")
+		print("didTapVertex(vertex=\(vertex)): state → \(state)")
         if nextVertices.contains(vertex) {
             delegate?.willStartVertexNeighborsChecking()
             state = .parsing
+			print("<<< Exiting didTapVertex(vertex=\(vertex))")
             parseNeighborsFor(vertex: vertex) {
                 self.state = .interactiveVisualization
                 self.delegate?.didFinishVertexNeighborsChecking()

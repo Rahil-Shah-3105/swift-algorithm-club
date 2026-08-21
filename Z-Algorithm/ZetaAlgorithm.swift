@@ -11,9 +11,11 @@ import Foundation
 extension String {
 
   func indexesOf(pattern: String) -> [Int]? {
+	print(">>> Entering indexesOf(pattern=\(pattern))")
     let patternLength = pattern.count
     let zeta = ZetaAlgorithm(ptrn: pattern + "💲" + self)
 
+	print("indexesOf(pattern=\(pattern)): zeta → \(zeta)")
     guard zeta != nil else {
       return nil
     }
@@ -28,6 +30,7 @@ extension String {
     }
 
     guard !indexes.isEmpty else {
+	print("<<< Exiting indexesOf(pattern=\(pattern))")
       return nil
     }
 

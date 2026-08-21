@@ -22,16 +22,21 @@ public struct OrderedArray<T: Comparable> {
   }
 
   public mutating func removeAtIndex(index: Int) -> T {
+	print(">>> Entering removeAtIndex(index=\(index))")
     return array.remove(at: index)
   }
 
   public mutating func removeAll() {
+	print(">>> Entering removeAll()")
     array.removeAll()
+	print("<<< Exiting removeAll()")
   }
 
   public mutating func insert(_ newElement: T) -> Int {
+	print(">>> Entering insert(newElement=\(newElement))")
     let i = findInsertionPoint(newElement)
     array.insert(newElement, at: i)
+	print("<<< Exiting insert(newElement=\(newElement))")
     return i
   }
 
@@ -43,6 +48,7 @@ public struct OrderedArray<T: Comparable> {
         return i
       }
     }
+	print("<<< Exiting findInsertionPoint(newElement=\(newElement))")
     return array.count
   }
   */

@@ -68,6 +68,7 @@ extension Treap: MutableCollection {
   }
 
   public func index(after i: TreapIndex<Key>) -> TreapIndex<Key> {
+	print(">>> Entering index(i=\(i))")
     return i.successor()
   }
 
@@ -93,10 +94,12 @@ public struct TreapIndex<Key: Comparable>: Comparable {
   fileprivate let keyIndex: Int
 
   public func successor() -> TreapIndex {
+	print(">>> Entering successor()")
     return TreapIndex(keys: keys, keyIndex: keyIndex + 1)
   }
 
   public func predecessor() -> TreapIndex {
+	print(">>> Entering predecessor()")
     return TreapIndex(keys: keys, keyIndex: keyIndex - 1)
   }
 

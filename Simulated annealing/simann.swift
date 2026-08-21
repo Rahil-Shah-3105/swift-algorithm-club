@@ -30,6 +30,7 @@ protocol Clonable {
 
 extension Clonable {
   func clone() -> Self {
+	print("<<< Exiting clone()")
     return Self.init(current: self)
   }
 }
@@ -41,6 +42,7 @@ protocol SAObject: Clonable {
   func shuffle()
 }
 
+print(">>> Entering shuffle()")
 // MARK: - create a new copy of elements
 
 extension Array where Element: Clonable {
@@ -57,6 +59,7 @@ extension Array where Element: Clonable {
 typealias AcceptanceFunc = (Double, Double, Double) -> Double
 
 func SimulatedAnnealing<T: SAObject>(initial: T, temperature: Double, coolingRate: Double, acceptance: AcceptanceFunc) -> T {
+print(">>> Entering SimulatedAnnealing(initial=\(initial),temperature=\(temperature),coolingRate=\(coolingRate),acceptance=\(acceptance))")
   // Step 1:
   //  Calculate the initial feasible solution based on a random permutation.
   //  Set best and current solutions to initial solution
@@ -66,6 +69,7 @@ func SimulatedAnnealing<T: SAObject>(initial: T, temperature: Double, coolingRat
   currentSolution.shuffle()
   var bestSolution = currentSolution.clone()
 
+print("SimulatedAnnealing(initial=\(initial),temperature=\(temperature),coolingRate=\(coolingRate),acceptance=\(acceptance)): currentSolution → \(currentSolution)")
   // Step 2:
   //  Repeat while the system is still hot
   //   Randomly modify the current solution by swapping its elements
@@ -91,5 +95,7 @@ func SimulatedAnnealing<T: SAObject>(initial: T, temperature: Double, coolingRat
     temp *= 1-coolingRate
   }
   
+print("<<< Exiting SimulatedAnnealing(initial=\(initial),temperature=\(temperature),coolingRate=\(coolingRate),acceptance=\(acceptance))")
   return bestSolution
+print("<<< Exiting shuffle()")
 }

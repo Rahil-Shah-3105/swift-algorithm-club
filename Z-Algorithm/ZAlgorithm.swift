@@ -9,8 +9,10 @@
 import Foundation
 
 func ZetaAlgorithm(ptrn: String) -> [Int]? {
+print(">>> Entering ZetaAlgorithm(ptrn=\(ptrn))")
   let pattern = Array(ptrn)
   let patternLength = pattern.count
+print("ZetaAlgorithm(ptrn=\(ptrn)): pattern → \(pattern)")
 
   guard patternLength > 0 else {
     return nil
@@ -18,6 +20,7 @@ func ZetaAlgorithm(ptrn: String) -> [Int]? {
 
   var zeta = [Int](repeating: 0, count: patternLength)
 
+print("ZetaAlgorithm(ptrn=\(ptrn)): zeta → \(zeta)")
   var left = 0
   var right = 0
   var k_1 = 0
@@ -61,5 +64,6 @@ func ZetaAlgorithm(ptrn: String) -> [Int]? {
       }
     }
   }
+print("<<< Exiting ZetaAlgorithm(ptrn=\(ptrn))")
   return zeta
 }

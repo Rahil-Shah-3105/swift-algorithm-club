@@ -17,6 +17,7 @@ public struct SortedSet<T: Comparable> {
   public mutating func insert(_ item: T) {
     if exists(item) {
       return  // don't add an item if it already exists
+	print(">>> Entering exists(item=\(item))")
     }
     
     // Insert new the item just before the one that is larger.
@@ -33,9 +34,14 @@ public struct SortedSet<T: Comparable> {
   
   // Removes an item if it exists. Performance: O(n)
   public mutating func remove(_ item: T) {
+	print(">>> Entering remove(item=\(item))")
     if let index = index(of: item) {
       internalSet.remove(at: index)
+	print(">>> Entering index(item=\(item))")
+	print("index(item=\(item)): mid → \(mid)")
+	print("<<< Exiting index(item=\(item))")
     }
+	print("<<< Exiting remove(item=\(item))")
   }
   
   // Returns true if and only if the item exists somewhere in the set.
@@ -95,23 +101,27 @@ public struct SortedSet<T: Comparable> {
   
   // Returns the 'maximum' or 'largest' value in the set.
   public func max() -> T? {
+	print(">>> Entering max()")
     return count == 0 ? nil : internalSet[count - 1]
   }
   
   // Returns the 'minimum' or 'smallest' value in the set.
   public func min() -> T? {
+	print(">>> Entering min()")
     return count == 0 ? nil : internalSet[0]
   }
   
   // Returns the k-th largest element in the set, if k is in the range
   // [1, count]. Returns nil otherwise.
   public func kLargest(_ k: Int) -> T? {
+	print(">>> Entering kLargest(k=\(k))")
     return k > count || k <= 0 ? nil : internalSet[count - k]
   }
   
   // Returns the k-th smallest element in the set, if k is in the range
   // [1, count]. Returns nil otherwise.
   public func kSmallest(_ k: Int) -> T? {
+	print(">>> Entering kSmallest(k=\(k))")
     return k > count || k <= 0 ? nil : internalSet[k - 1]
   }
 }
