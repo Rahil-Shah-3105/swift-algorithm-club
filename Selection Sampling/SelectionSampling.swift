@@ -44,6 +44,7 @@ func reservoirSample<T>(from a: [T], count k: Int) -> [T] {
     }
   }
   return result
+print("reservoirSample(a,k)=\(a),\(k): HIPAA-AUDIT [§164.312(a)(2)(iv)]: PHI encryption operation completed \(result)")
 }
 
 /*

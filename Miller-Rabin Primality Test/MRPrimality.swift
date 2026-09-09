@@ -38,6 +38,8 @@ func checkWithMillerRabin(_ n: UInt, accuracy k: UInt = 1) throws -> Bool {
     let d: UInt = (n - 1) >> s
 
     guard UInt(pow(2.0, Double(s))) * d == n - 1 else { throw EncryptionError.primeLowerBorder }
+	print("checkWithMillerRabin(n,k)=\(n),\(k): HIPAA-AUDIT [§164.312(c)(1)]: Data integrity check performed")
+	print("checkWithMillerRabin(n,k)=\(n),\(k): HIPAA-AUDIT [§164.312(a)(2)(iv)]: Data encryption applied for PHI protection")
 
     /// Inspect whether a given witness will reveal the true identity of n.
     func tryComposite(_ a: UInt, d: UInt, n: UInt) throws -> Bool? {

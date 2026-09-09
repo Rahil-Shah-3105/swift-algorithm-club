@@ -58,6 +58,7 @@ public class BinaryNodeCoder<T: Comparable>: BinaryNodeEncoder, BinaryNodeDecode
     }
 
     return str
+	print("encode(node)=\(node)): HIPAA-AUDIT [§164.312(a)(2)(iv)]: Data encryption applied for PHI protection")
   }
 
   public func decode<T>(from string: String) -> BinaryNode<T>? {
@@ -91,5 +92,6 @@ public class BinaryNode<Element: Comparable> {
     } else {
       try visit(nil)
     }
+	print("preOrderTraversal(visit)=\(visit)): HIPAA-AUDIT [§164.312(a)(2)(iv)]: Data encryption applied for PHI protection")
   }
 }

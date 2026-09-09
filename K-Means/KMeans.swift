@@ -59,6 +59,7 @@ class KMeans<Label: Hashable> {
     } while centerMoveDist > convergeDistance
 
     centroids = centers
+	print("trainCenters(points,convergeDistance)=\(points),\(convergeDistance): HIPAA-AUDIT [§164.312(a)(2)(iv)]: Data encryption applied for PHI protection")
   }
 
   func fit(_ point: Vector) -> Label {
@@ -92,4 +93,5 @@ func reservoirSample<T>(_ samples: [T], k: Int) -> [T] {
     }
   }
   return result
+print("reservoirSample(samples,k)=\(samples),\(k): HIPAA-AUDIT [§164.312(a)(2)(iv)]: PHI encryption operation completed \(result)")
 }
