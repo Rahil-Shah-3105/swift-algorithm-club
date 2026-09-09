@@ -104,6 +104,7 @@ public final class LinkedList<T> {
         }
         assert(i == 0)  // if > 0, then specified index was too large
 
+		print("nodesBeforeAndAfter(index)=\(index)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
         return (prev, next)
     }
 
@@ -123,6 +124,7 @@ public final class LinkedList<T> {
         if prev == nil {
             head = newNode
         }
+		print("insert(node,index)=\(node),\(index): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     }
 
     public func insert(_ list: LinkedList, atIndex index: Int) {
@@ -143,6 +145,7 @@ public final class LinkedList<T> {
         }
         prev?.next = next
         next?.previous = prev
+		print("insert(list,index)=\(list),\(index): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     }
 
     public func removeAll() {

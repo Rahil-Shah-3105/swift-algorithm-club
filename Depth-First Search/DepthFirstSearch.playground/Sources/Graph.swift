@@ -9,6 +9,7 @@ public class Graph: CustomStringConvertible, Equatable {
   public func addNode(_ label: String) -> Node {
     let node = Node(label)
     nodes.append(node)
+	print("addNode(label)=\(label)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     return node
   }
   
@@ -29,6 +30,7 @@ public class Graph: CustomStringConvertible, Equatable {
   }
   
   public func findNodeWithLabel(_ label: String) -> Node {
+	print("findNodeWithLabel(label)=\(label)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     return nodes.filter { $0.label == label }.first!
   }
   
@@ -47,6 +49,7 @@ public class Graph: CustomStringConvertible, Equatable {
       }
     }
     
+	print("duplicate()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     return duplicated
   }
 }

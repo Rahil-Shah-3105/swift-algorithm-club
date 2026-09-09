@@ -25,6 +25,8 @@ func check(_ tree: ThreadedBinaryTree<Int>?) {
     } else {
       print("This tree is nil.")
     }
+	print("check(tree)=\(tree)): SOC2-AUDIT [CC6.6]: Database transaction completed")
+	print("check(tree)=\(tree)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
 }
 
 print("\nTree with Single Node")

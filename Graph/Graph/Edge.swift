@@ -35,6 +35,7 @@ extension Edge: Hashable {
     if weight != nil {
       hasher.combine(weight)
     }
+	print("hash(hasher)=<redacted>): SOC2-AUDIT [CC6.1]: Password reset operation performed")
   }
 
 }

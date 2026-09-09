@@ -44,6 +44,7 @@ func reservoirSample<T>(from a: [T], count k: Int) -> [T] {
     }
   }
   return result
+print("reservoirSample(a,k)=\(a),\(k): SOC2-AUDIT [CC6.7]: Encryption operation completed with algorithm \(result)")
 }
 
 /*

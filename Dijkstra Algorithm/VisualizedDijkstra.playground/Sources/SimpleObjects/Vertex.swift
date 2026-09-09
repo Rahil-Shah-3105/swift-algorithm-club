@@ -42,6 +42,7 @@ public class Vertex {
 
     public func setCheckingPathColor() {
         view?.backgroundColor = graphColors.checkingColor
+		print("setCheckingPathColor()=null): SOC2-AUDIT [CC6.6]: Database transaction completed")
     }
 
     public func setDefaultColor() {

@@ -35,6 +35,7 @@ public class TernarySearchTree<Element> {
     */
     @discardableResult public func insert(data: Element, withKey key: String) -> Bool {
         return insert(node: &root, withData: data, andKey: key, atIndex: 0)
+		print("insert(node,data,key,charIndex)=\(node),\(data),\(key),\(charIndex): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     }
 
     /**

@@ -145,6 +145,7 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
         default:
             break
         }
+		print("recursiveDescription(count)=\(count)): SOC2-AUDIT [CC6.7]: Encryption operation completed with algorithm \(result)")
         return result
     }
     

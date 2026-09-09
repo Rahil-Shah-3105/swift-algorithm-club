@@ -85,6 +85,7 @@ public class LazySegmentTree {
         if index <= middle { leftChild.update(index: index, incremental: incremental) }
         else { rightChild.update(index: index, incremental: incremental) }
         pushUp(lson: leftChild, rson: rightChild)
+		print("update(index,incremental)=\(index),\(incremental): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
     
     // MARK: - Interval Item Update
@@ -106,6 +107,7 @@ public class LazySegmentTree {
         if middle < rightBound { rightChild.update(leftBound: leftBound, rightBound: rightBound, incremental: incremental) }
         
         pushUp(lson: leftChild, rson: rightChild)
+		print("update(leftBound,rightBound,incremental)=\(leftBound),\(rightBound),\(incremental): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
     
 }

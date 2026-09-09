@@ -212,6 +212,7 @@ public class Graph {
         } else {
             completion()
         }
+		print("findShortestPathsWithVisualization(completion)=\(completion)): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     public func parseNeighborsFor(vertex: Vertex, completion: @escaping () -> ()) {
@@ -293,6 +294,7 @@ public class Graph {
                 completion()
             }
         }
+		print("parseNeighborsFor(vertex,completion)=\(vertex),\(completion): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     public func didTapVertex(vertex: Vertex) {

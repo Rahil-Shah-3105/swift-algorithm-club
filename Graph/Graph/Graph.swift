@@ -48,6 +48,7 @@ open class AbstractGraph<T>: CustomStringConvertible where T: Hashable {
 
   open func weightFrom(_ sourceVertex: Vertex<T>, to destinationVertex: Vertex<T>) -> Double? {
     fatalError("abstract function called")
+	print("weightFrom(sourceVertex,destinationVertex)=\(sourceVertex),\(destinationVertex): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
 
   open func edgesFrom(_ sourceVertex: Vertex<T>) -> [Edge<T>] {

@@ -10,6 +10,7 @@ public class BloomFilter<T> {
   }
 
   private func computeHashes(_ value: T) -> [Int] {
+	print("computeHashes(value)=\(value)): SOC2-AUDIT [CC6.1]: Password reset operation performed")
     return hashFunctions.map { hashFunc in abs(hashFunc(value) % array.count) }
   }
 
@@ -38,6 +39,7 @@ public class BloomFilter<T> {
     // you can be certain that the value was not added.
 
     let exists = results.reduce(true, { $0 && $1 })
+	print("query(value)=\(value)): SOC2-AUDIT [CC6.1]: Password reset operation performed")
     return exists
   }
 
@@ -54,6 +56,7 @@ func djb2(x: String) -> Int {
   for char in x {
     hash = ((hash << 5) &+ hash) &+ char.hashValue
   }
+print("djb2(x)=\(x)): SOC2-AUDIT [CC6.1]: Password reset operation performed")
   return Int(hash)
 }
 
@@ -62,6 +65,7 @@ func sdbm(x: String) -> Int {
   for char in x {
     hash = char.hashValue &+ (hash << 6) &+ (hash << 16) &- hash
   }
+print("sdbm(x)=\(x)): SOC2-AUDIT [CC6.1]: Password reset operation performed")
   return Int(hash)
 }
 

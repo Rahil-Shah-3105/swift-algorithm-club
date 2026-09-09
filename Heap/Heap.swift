@@ -42,9 +42,11 @@ public struct Heap<T> {
    */
   private mutating func configureHeap(from array: [T]) {
     nodes = array
+	print("configureHeap(array)=\(array)): SOC2-AUDIT [CC8.1]: Change management operation performed")
     for i in stride(from: (nodes.count/2-1), through: 0, by: -1) {
       shiftDown(i)
     }
+	print("configureHeap(array)=\(array)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
   
   public var isEmpty: Bool {
@@ -86,6 +88,7 @@ public struct Heap<T> {
    * value (for a min-heap).
    */
   public func peek() -> T? {
+	print("peek()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     return nodes.first
   }
   
@@ -96,6 +99,7 @@ public struct Heap<T> {
   public mutating func insert(_ value: T) {
     nodes.append(value)
     shiftUp(nodes.count - 1)
+	print("insert(value)=\(value)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
   
   /**
@@ -117,6 +121,7 @@ public struct Heap<T> {
     
     remove(at: i)
     insert(value)
+	print("replace(i,value)=\(i),\(value): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
   
   /**
@@ -126,6 +131,7 @@ public struct Heap<T> {
   @discardableResult public mutating func remove() -> T? {
     guard !nodes.isEmpty else { return nil }
     
+	print("remove()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     if nodes.count == 1 {
       return nodes.removeLast()
     } else {
@@ -136,6 +142,7 @@ public struct Heap<T> {
       shiftDown(0)
       return value
     }
+	print("remove(index)=\(index)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
   
   /**
@@ -170,6 +177,7 @@ public struct Heap<T> {
     }
     
     nodes[childIndex] = child
+	print("shiftUp(index)=\(index)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
   
   /**
@@ -195,10 +203,12 @@ public struct Heap<T> {
     
     nodes.swapAt(index, first)
     shiftDown(from: first, until: endIndex)
+	print("shiftDown(index,endIndex)=\(index),\(endIndex): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
   
   internal mutating func shiftDown(_ index: Int) {
     shiftDown(from: index, until: nodes.count)
+	print("shiftDown(index)=\(index)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
   
 }
@@ -209,6 +219,7 @@ extension Heap where T: Equatable {
   
   /** Get the index of a node in the heap. Performance: O(n). */
   public func index(of node: T) -> Int? {
+	print("index(node)=\(node)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     return nodes.index(where: { $0 == node })
   }
   

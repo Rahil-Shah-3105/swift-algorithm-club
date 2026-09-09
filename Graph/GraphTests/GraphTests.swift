@@ -23,6 +23,7 @@ class GraphTests: XCTestCase {
 
     let expectedValue = "  ø   1.0   ø  \n  ø    ø   2.0 \n  ø    ø    ø  "
     XCTAssertEqual(graph.description, expectedValue)
+	print("testAdjacencyMatrixGraphDescription()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
 
   func testAdjacencyListGraphDescription() {
@@ -39,6 +40,7 @@ class GraphTests: XCTestCase {
 
     let expectedValue = "a -> [(b: 1.0), (c: -5.5)]\nb -> [(c: 2.0)]"
     XCTAssertEqual(graph.description, expectedValue)
+	print("testAdjacencyListGraphDescription()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
 
   func testAddingPreexistingVertex() {

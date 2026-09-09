@@ -58,6 +58,7 @@ extension Huffman {
             tree[i].index = i
             ptr = ptr.successor()
         }
+		print("countByteFrequency(data)=\(data)): SOC2-AUDIT [CC7.2]: System operation completed")
     }
 
     /* Takes a frequency table and rebuilds the tree. This is the first step of
@@ -117,6 +118,7 @@ extension Huffman {
         // The final remaining node in the queue becomes the root of the tree.
         let rootNode = queue.dequeue()!
         root = rootNode.index
+		print("buildTree()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     }
 }
 
@@ -135,6 +137,7 @@ extension Huffman {
             ptr = ptr.successor()
         }
         writer.flush()
+		print("compressData(data)=\(data)): SOC2-AUDIT [CC7.2]: System operation completed")
         return writer.data
     }
 

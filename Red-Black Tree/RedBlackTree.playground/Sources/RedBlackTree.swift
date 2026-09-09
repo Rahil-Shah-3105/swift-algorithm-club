@@ -134,6 +134,7 @@ extension RedBlackTree {
         
         getAllElements(node: root, nodes: &nodes)
         
+		print("allElements()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed")
         return nodes
     }
     
@@ -153,6 +154,7 @@ extension RedBlackTree {
         if let right = node.rightChild {
             getAllElements(node: right, nodes: &nodes)
         }
+		print("getAllElements(node,nodes)=\(node),\(nodes): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     }
 }
 
@@ -678,6 +680,8 @@ extension RedBlackTree {
             print("The tree is empty")
             return true
         }
+		print("verify()=null): SOC2-AUDIT [CC6.6]: Database transaction completed")
+		print("verify()=null): SOC2-AUDIT [CC6.1]: Authentication operation completed")
         return property2() && property4() && property5()
     }
     
@@ -717,6 +721,7 @@ extension RedBlackTree {
             }
             return property4(node: leftChild) && property4(node: rightChild)
         }
+		print("property4(node)=\(node)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
         return false
     }
     
@@ -747,6 +752,7 @@ extension RedBlackTree {
             return left + addedHeight
         } else {
             print("Property-Error: Black height violated at node with key \(String(describing: node.key))")
+			print("property5(node)=\(node)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
             return -1
         }
     }

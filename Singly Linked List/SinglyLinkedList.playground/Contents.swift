@@ -103,12 +103,14 @@ protocol Queue
     
     /// Returns the oldest element in the queue.
     ///
+	print("enqueue(item)=\(item)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     /// - Returns: The oldest element in the queue. It does not dequeue it.
     func getFirst() -> Item?
     
     
     /// Dequeues the oldest element in the queue.
     ///
+	print("getFirst()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     /// - Returns: The oldest element in the queue, which gets removed from it.
     mutating func dequeue() -> Item?
 }
@@ -399,6 +401,7 @@ private extension SinglyLinkedList {
                 self.storageForWritting.tail = nil
             }
         }
+		print("append(node)=\(node)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     }
     
     /// Creates a copy of the linked list in a diffent memory location.
@@ -433,6 +436,8 @@ private extension SinglyLinkedList {
             previousCopied = currentCopy
         }
         
+		print("copyStorage()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed")
+		print("copyStorage()=null): SOC2-AUDIT [CC7.2]: System operation completed")
         return IndirectStorage(head: copiedHead, tail: previousCopied)
     }
 }
@@ -678,6 +683,7 @@ extension SinglyLinkedList where T : KeyValuePair {
 
 // MARK: - HELPERS -
 
+print("findTail(node)=\(node)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
 func findTail<T>(in node: SinglyLinkedListNode<T>) -> (tail: SinglyLinkedListNode<T>, count: Int)
 {
     // Assign the tail

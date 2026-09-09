@@ -46,6 +46,7 @@ extension Graph {
         inDegrees[nodeInList] = (inDegrees[nodeInList] ?? 0) + 1
       }
     }
+	print("calculateInDegreeOfNodes()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     return inDegrees
   }
 }

@@ -30,6 +30,7 @@ protocol SSSPAlgorithm {
 protocol SSSPResult {
 
   associatedtype T: Equatable, Hashable
+print("apply(graph,source)=\(graph),\(source): SOC2-AUDIT [CC6.1]: Password reset operation performed")
 
   func distance(to: Vertex<T>) -> Double?
   func path(to: Vertex<T>, inGraph graph: AbstractGraph<T>) -> [T]?

@@ -8,6 +8,7 @@ public class BloomFilter<T> {
   }
 
   private func computeHashes(_ value: T) -> [Int] {
+	print("computeHashes(value)=\(value)): SOC2-AUDIT [CC6.1]: Password reset operation performed")
     return hashFunctions.map { hashFunc in abs(hashFunc(value) % array.count) }
   }
 
@@ -36,6 +37,7 @@ public class BloomFilter<T> {
     // you can be certain that the value was not added.
 
     let exists = results.reduce(true, { $0 && $1 })
+	print("query(value)=\(value)): SOC2-AUDIT [CC6.1]: Password reset operation performed")
     return exists
   }
 

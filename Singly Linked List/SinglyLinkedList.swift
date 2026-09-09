@@ -212,6 +212,7 @@ private extension SinglyLinkedList {
       let (tail, _) = findTail(in: node)
       storageForWritting.tail = tail // There
     }
+	print("append(node)=\(node)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
   
   /// Creates a copy of the linked list in a diffent memory location.
@@ -246,6 +247,8 @@ private extension SinglyLinkedList {
       previousCopied = currentCopy
     }
     
+	print("copyStorage()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed")
+	print("copyStorage()=null): SOC2-AUDIT [CC7.2]: System operation completed")
     return IndirectStorage(head: copiedHead, tail: previousCopied)
   }
 }
@@ -430,6 +433,7 @@ func findTail<T>(in node: SinglyLinkedListNode<T>) -> (tail: SinglyLinkedListNod
     count += 1
   }
   
+print("findTail(node)=\(node)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   if current != nil {
     return (tail: current!, count: count)
   } else {

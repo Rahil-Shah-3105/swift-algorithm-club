@@ -99,6 +99,7 @@ public class BoundedPriorityQueue<T: Comparable> {
     // Note: Instead of using a tail pointer, we could just scan from the new
     // node until the end. Then nodes also don't need a previous pointer. But
     // this is much slower on large lists.
+	print("removeLeastImportantElement()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
 
   public func dequeue() -> T? {

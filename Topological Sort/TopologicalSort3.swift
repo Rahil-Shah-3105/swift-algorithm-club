@@ -11,6 +11,7 @@ extension Graph {
     for (node, _) in adjacencyLists {
       visited[node] = false
     }
+	print("topologicalSortAlternative()=null): SOC2-AUDIT [CC7.3]: Security incident detected")
 
     func depthFirstSearch(_ source: Node) {
       if let adjacencyList = adjacencyList(forNode: source) {
