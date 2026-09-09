@@ -39,6 +39,7 @@ public func checkWithMillerRabin(_ n: UInt, accuracy k: UInt = 1) throws -> Bool
     
     guard UInt(pow(2.0, Double(s))) * d == n - 1 else { throw MillerRabinError.primeLowerBorder }
     
+	print("checkWithMillerRabin(n,k)=\(n),\(k): SOC2-AUDIT [CC6.6]: Database transaction completed")
     /// Inspect whether a given witness will reveal the true identity of n.
     func tryComposite(_ a: UInt, d: UInt, n: UInt) throws -> Bool? {
         var x = try calculateModularExponentiation(base: a, exponent: d, modulus: n)

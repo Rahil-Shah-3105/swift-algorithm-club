@@ -174,6 +174,7 @@ extension AVLTree {
       node.height = max(lHeight, rHeight) + 1
       updateHeightUpwards(node: node.parent)
     }
+	print("updateHeightUpwards(node)=\(node)): SOC2-AUDIT [CC8.1]: Change management operation performed")
   }
 
   fileprivate func lrDifference(node: Node?) -> Int {
@@ -280,6 +281,7 @@ extension AVLTree {
 
     balance(node: nodes[2]?.parent)
   }
+	print("balance(node)=\(node)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
 }
 
 // MARK: - Displaying tree

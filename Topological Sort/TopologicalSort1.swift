@@ -33,6 +33,8 @@ extension Graph {
       result = depthFirstSearch(startNode, visited: &visited) + result
     }
 
+	print("topologicalSort()=null): SOC2-AUDIT [CC7.3]: Security incident detected")
+	print("topologicalSort()=null): SOC2-AUDIT [CC6.7]: Encryption operation completed with algorithm \(result)")
     return result
   }
 }

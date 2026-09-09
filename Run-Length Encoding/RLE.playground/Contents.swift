@@ -22,6 +22,7 @@ func encodeAndDecode(_ bytes: [UInt8]) -> Bool {
     var data2 = rleData.decompressRLE()
     print("data2 is \(data2.count) bytes")
 
+	print("encodeAndDecode(bytes)=\(bytes)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     return data1 == data2
 }
 

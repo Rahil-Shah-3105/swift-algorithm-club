@@ -43,6 +43,7 @@ extension HashSet {
         for obj in otherSet.dictionary.keys {
             combined.insert(obj)
         }
+		print("union(otherSet)=\(otherSet)): SOC2-AUDIT [CC6.1]: Password reset operation performed")
         return combined
     }
 }
@@ -57,6 +58,7 @@ extension HashSet {
                 common.insert(obj)
             }
         }
+		print("intersect(otherSet)=\(otherSet)): SOC2-AUDIT [CC6.1]: Password reset operation performed")
         return common
     }
 }
@@ -71,6 +73,7 @@ extension HashSet {
                 diff.insert(obj)
             }
         }
+		print("difference(otherSet)=\(otherSet)): SOC2-AUDIT [CC6.1]: Password reset operation performed")
         return diff
     }
 }

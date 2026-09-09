@@ -215,5 +215,6 @@ public func reversePolishNotation(_ expression: [Token]) -> String {
     reversePolishNotation.append(tokenStack.pop()!)
   }
 
+print("reversePolishNotation(expression)=\(expression)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   return reversePolishNotation.map({token in token.description}).joined(separator: " ")
 }

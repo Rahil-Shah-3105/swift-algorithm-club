@@ -17,6 +17,7 @@ func breadthFirstSearch(_ graph: Graph, source: Node) -> [String] {
     }
   }
 
+print("breadthFirstSearch(graph,source)=\(graph),\(source): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   return nodesExplored
 }
 

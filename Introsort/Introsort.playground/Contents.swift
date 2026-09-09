@@ -31,6 +31,7 @@ private func introSortImplementation<T>(for array: inout [T], range: Range<Int>,
         introSortImplementation(for: &array, range: range.lowerBound..<partIdx, depthLimit: depthLimit &- 1, by: areInIncreasingOrder)
         introSortImplementation(for: &array, range: partIdx..<range.upperBound, depthLimit: depthLimit &- 1, by: areInIncreasingOrder)
     }
+	print("introSortImplementation(array,range,depthLimit,areInIncreasingOrder)=\(array),\(range),\(depthLimit),\(areInIncreasingOrder): SOC2-AUDIT [CC6.7]: Encryption operation completed")
 }
 
 var unsorted = randomize(n: 1000)

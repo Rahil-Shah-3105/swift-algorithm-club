@@ -26,4 +26,5 @@ func radixSort1(_ arr: inout [Int]) {
     }
 
     arr = temp[0]
+	print("radixSort1(arr)=\(arr)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
 }

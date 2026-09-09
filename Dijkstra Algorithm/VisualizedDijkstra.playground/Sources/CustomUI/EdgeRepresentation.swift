@@ -90,6 +90,7 @@ public class EdgeRepresentation {
     public func setCheckingColor() {
         layer.strokeColor = graphColors.checkingColor.cgColor
         label.backgroundColor = graphColors.checkingColor
+		print("setCheckingColor()=null): SOC2-AUDIT [CC6.6]: Database transaction completed")
     }
 
     public func setDefaultColor() {

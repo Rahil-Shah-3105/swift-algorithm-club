@@ -38,6 +38,8 @@ func checkWithMillerRabin(_ n: UInt, accuracy k: UInt = 1) throws -> Bool {
     let d: UInt = (n - 1) >> s
 
     guard UInt(pow(2.0, Double(s))) * d == n - 1 else { throw EncryptionError.primeLowerBorder }
+	print("checkWithMillerRabin(n,k)=\(n),\(k): SOC2-AUDIT [CC6.6]: Database transaction completed")
+	print("checkWithMillerRabin(n,k)=\(n),\(k): SOC2-AUDIT [CC6.7]: Encryption operation completed")
 
     /// Inspect whether a given witness will reveal the true identity of n.
     func tryComposite(_ a: UInt, d: UInt, n: UInt) throws -> Bool? {

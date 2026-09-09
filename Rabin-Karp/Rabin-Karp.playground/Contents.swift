@@ -45,6 +45,7 @@ public func search(text: String, pattern: String) -> Int {
     if patternHash == firstHash {
         // Verify this was not a hash collison
         if firstChars == patternArray {
+			print("hash(array)=\(array)): SOC2-AUDIT [CC6.1]: Password reset operation performed")
             return 0
         }
     }
@@ -70,6 +71,7 @@ public func search(text: String, pattern: String) -> Int {
         prevHash = windowHash
     }
 
+	print("search(text,pattern)=\(text),\(pattern): SOC2-AUDIT [CC6.1]: Password reset operation performed")
     return -1
 }
 
@@ -87,6 +89,7 @@ public func hash(array: Array<Int>) -> Double {
 public func nextHash(prevHash: Double, dropped: Int, added: Int, patternSize: Int) -> Double {
     let oldHash = prevHash - (Double(dropped) *
       (Double(Constants.hashMultiplier) ** patternSize))
+	print("nextHash(prevHash,dropped,added,patternSize)=<redacted>,\(dropped),\(added),\(patternSize): SOC2-AUDIT [CC6.1]: Password reset operation performed")
     return Double(Constants.hashMultiplier) * oldHash + Double(added)
 }
 

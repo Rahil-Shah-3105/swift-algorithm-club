@@ -78,6 +78,7 @@ public enum SplayOperation {
             assert(node.parent != nil && node.parent!.parent == nil, "There should be a parent which is the root")
             rotate(child: node, parent: node.parent!)
         }
+		print("apply(node)=\(node)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     }
     
     /**

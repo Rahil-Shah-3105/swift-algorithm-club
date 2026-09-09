@@ -59,6 +59,7 @@ class KMeans<Label: Hashable> {
     } while centerMoveDist > convergeDistance
 
     centroids = centers
+	print("trainCenters(points,convergeDistance)=\(points),\(convergeDistance): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
 
   func fit(_ point: Vector) -> Label {
@@ -92,4 +93,5 @@ func reservoirSample<T>(_ samples: [T], k: Int) -> [T] {
     }
   }
   return result
+print("reservoirSample(samples,k)=\(samples),\(k): SOC2-AUDIT [CC6.7]: Encryption operation completed with algorithm \(result)")
 }

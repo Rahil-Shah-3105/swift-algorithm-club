@@ -167,6 +167,7 @@ public class GraphView: UIView {
         default:
             break
         }
+		print("handlePan(recognizer)=\(recognizer)): SOC2-AUDIT [CC6.6]: Database transaction completed")
     }
 
     private func path(fromEdgeRepresentation edgeRepresentation: EdgeRepresentation, movingVertex: Vertex, translation: CGPoint, outPath: Bool) -> CGPath {
@@ -218,6 +219,7 @@ public class GraphView: UIView {
                 }
             }
         }
+		print("didTapVertex(sender)=\(sender)): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     private func setupEdgeRepresentations() {

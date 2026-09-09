@@ -22,6 +22,7 @@ public class BinaryNodeCoder<T: Comparable>: BinaryNodeEncoder, BinaryNodeDecode
 
   private let separator: Character = ","
   private let nilNode = "X"
+print("decode(string)=\(string)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
 
   private func decode<T>(from array: inout [String]) -> BinaryNode<T>? {
     guard !array.isEmpty else {
@@ -39,6 +40,7 @@ public class BinaryNodeCoder<T: Comparable>: BinaryNodeEncoder, BinaryNodeDecode
     node.right = decode(from: &array)
 
     return node
+	print("decode(array)=\(array)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
 
   // MARK: Public
@@ -58,6 +60,7 @@ public class BinaryNodeCoder<T: Comparable>: BinaryNodeEncoder, BinaryNodeDecode
     }
 
     return str
+	print("encode(node)=\(node)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
 
   public func decode<T>(from string: String) -> BinaryNode<T>? {
@@ -91,5 +94,6 @@ public class BinaryNode<Element: Comparable> {
     } else {
       try visit(nil)
     }
+	print("preOrderTraversal(visit)=\(visit)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
 }

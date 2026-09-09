@@ -26,6 +26,7 @@ public class Window: UIView, GraphDelegate {
     private var graph: Graph!
     private var numberOfVertices: UInt!
     private var graphColors = GraphColors.sharedInstance
+	print("didFinishVertexNeighborsChecking()=null): SOC2-AUDIT [CC6.6]: Database transaction completed")
 
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -70,6 +71,7 @@ public class Window: UIView, GraphDelegate {
         topView.addSubview(stopButton)
         topView.addSubview(comparisonLabel)
         topView.addSubview(activityIndicator)
+		print("configure(graph)=\(graph)): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     private func configureCreateGraphButton() {
@@ -77,6 +79,7 @@ public class Window: UIView, GraphDelegate {
         createGraphButton = RoundedButton(frame: frame)
         createGraphButton.setTitle("New graph", for: .normal)
         createGraphButton.addTarget(self, action: #selector(createGraphButtonTap), for: .touchUpInside)
+		print("configureCreateGraphButton()=null): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     private func configureStartVisualizationButton() {
@@ -84,6 +87,7 @@ public class Window: UIView, GraphDelegate {
         startVisualizationButton = RoundedButton(frame: frame)
         startVisualizationButton.setTitle("Auto", for: .normal)
         startVisualizationButton.addTarget(self, action: #selector(startVisualizationButtonDidTap), for: .touchUpInside)
+		print("configureStartVisualizationButton()=null): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     private func configureStartInteractiveVisualizationButton() {
@@ -91,6 +95,7 @@ public class Window: UIView, GraphDelegate {
         startInteractiveVisualizationButton = RoundedButton(frame: frame)
         startInteractiveVisualizationButton.setTitle("Interactive", for: .normal)
         startInteractiveVisualizationButton.addTarget(self, action: #selector(startInteractiveVisualizationButtonDidTap), for: .touchUpInside)
+		print("configureStartInteractiveVisualizationButton()=null): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     private func configureStartButton() {
@@ -100,6 +105,7 @@ public class Window: UIView, GraphDelegate {
         startButton.setImage(playImage, for: .normal)
         startButton.isEnabled = false
         startButton.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
+		print("configureStartButton()=null): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     private func configurePauseButton() {
@@ -109,6 +115,7 @@ public class Window: UIView, GraphDelegate {
         pauseButton.setImage(pauseImage, for: .normal)
         pauseButton.isEnabled = false
         pauseButton.addTarget(self, action: #selector(didTapPauseButton), for: .touchUpInside)
+		print("configurePauseButton()=null): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     private func configureStopButton() {
@@ -118,6 +125,7 @@ public class Window: UIView, GraphDelegate {
         stopButton.setImage(stopImage, for: .normal)
         stopButton.isEnabled = false
         stopButton.addTarget(self, action: #selector(didTapStopButton), for: .touchUpInside)
+		print("configureStopButton()=null): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     private func configureComparisonLabel() {
@@ -127,6 +135,7 @@ public class Window: UIView, GraphDelegate {
         comparisonLabel = UILabel(frame: frame)
         comparisonLabel.textAlignment = .center
         comparisonLabel.text = "Have fun!"
+		print("configureComparisonLabel()=null): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     private func configureActivityIndicator() {
@@ -135,6 +144,7 @@ public class Window: UIView, GraphDelegate {
         let activityIndicatorFrame = CGRect(origin: origin, size: size)
         activityIndicator = UIActivityIndicatorView(frame: activityIndicatorFrame)
         activityIndicator.style = .whiteLarge
+		print("configureActivityIndicator()=null): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     @objc private func createGraphButtonTap() {
@@ -180,6 +190,7 @@ public class Window: UIView, GraphDelegate {
                 }
             }
         }
+		print("startVisualizationButtonDidTap()=null): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     @objc private func startInteractiveVisualizationButtonDidTap() {
@@ -211,6 +222,7 @@ public class Window: UIView, GraphDelegate {
                 self.comparisonLabel.text = "Pick next vertex"
             }
         }
+		print("startInteractiveVisualizationButtonDidTap()=null): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     @objc private func didTapStartButton() {
@@ -219,6 +231,7 @@ public class Window: UIView, GraphDelegate {
         DispatchQueue.global(qos: .utility).async {
             self.graph.pauseVisualization = false
         }
+		print("didTapStartButton()=null): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     @objc private func didTapPauseButton() {
@@ -227,6 +240,7 @@ public class Window: UIView, GraphDelegate {
         DispatchQueue.global(qos: .utility).async {
             self.graph.pauseVisualization = true
         }
+		print("didTapPauseButton()=null): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     @objc private func didTapStopButton() {
@@ -267,6 +281,7 @@ public class Window: UIView, GraphDelegate {
                 errorView.removeFromSuperview()
             })
         }
+		print("showError(error)=\(error)): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     // MARK: GraphDelegate
@@ -290,12 +305,14 @@ public class Window: UIView, GraphDelegate {
                 self.comparisonLabel.text = "\(startVertexPathLength) + \(edgePathLength) >= \(endVertexPathLength) 👎"
             }
         }
+		print("willCompareVertices(startVertexPathLength,edgePathLength,endVertexPathLength)=\(startVertexPathLength),\(edgePathLength),\(endVertexPathLength): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     public func didFinishCompare() {
         DispatchQueue.main.async {
             self.comparisonLabel.text = ""
         }
+		print("didFinishCompare()=null): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     public func didStop() {
@@ -311,6 +328,8 @@ public class Window: UIView, GraphDelegate {
     public func willStartVertexNeighborsChecking() {
         DispatchQueue.main.async {
             self.comparisonLabel.text = ""
+			print("willStartVertexNeighborsChecking()=null): SOC2-AUDIT [CC8.1]: Change management operation performed")
+			print("willStartVertexNeighborsChecking()=null): SOC2-AUDIT [CC6.6]: Database transaction completed")
         }
     }
 

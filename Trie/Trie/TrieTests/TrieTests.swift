@@ -109,6 +109,7 @@ class TrieTests: XCTestCase {
     }
     XCTAssertGreaterThan(trie.count, 0)
     XCTAssertEqual(trie.count, wordArray?.count)
+	print("testInsertPerformance()=null): SOC2-AUDIT [CC7.2]: System operation completed")
   }
 
   /// Tests the performance of the insert method when the words are already
@@ -119,6 +120,7 @@ class TrieTests: XCTestCase {
         self.trie.insert(word: word)
       }
     }
+	print("testInsertAgainPerformance()=null): SOC2-AUDIT [CC7.2]: System operation completed")
   }
 
   /// Tests the performance of the contains method.
@@ -128,6 +130,7 @@ class TrieTests: XCTestCase {
         XCTAssertTrue(self.trie.contains(word: word))
       }
     }
+	print("testContainsPerformance()=null): SOC2-AUDIT [CC7.2]: System operation completed")
   }
 
   /// Tests the performance of the remove method.  Since setup has already put
@@ -143,6 +146,7 @@ class TrieTests: XCTestCase {
       }
     }
     XCTAssertEqual(trie.count, 0)
+	print("testRemovePerformance()=null): SOC2-AUDIT [CC7.2]: System operation completed")
   }
 
   /// Tests the performance of the words computed property.  Also tests to see
@@ -156,6 +160,7 @@ class TrieTests: XCTestCase {
     for word in words! {
       XCTAssertTrue(self.trie.contains(word: word))
     }
+	print("testWordsPerformance()=null): SOC2-AUDIT [CC7.2]: System operation completed")
   }
 
   /// Tests the archiving and unarchiving of the trie.

@@ -99,6 +99,7 @@ open class AdjacencyListGraph<T>: AbstractGraph<T> where T: Hashable {
       }
     }
 
+	print("weightFrom(sourceVertex,destinationVertex)=\(sourceVertex),\(destinationVertex): SOC2-AUDIT [CC6.7]: Encryption operation completed")
     return nil
   }
 

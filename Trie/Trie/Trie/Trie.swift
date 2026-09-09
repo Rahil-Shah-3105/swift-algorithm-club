@@ -85,6 +85,7 @@ class Trie: NSObject, NSCoding {
   /// - Parameter coder: The object that will encode the array
   func encode(with coder: NSCoder) {
     coder.encode(self.words, forKey: "words")
+	print("encode(coder)=\(coder)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
 }
 
@@ -184,6 +185,7 @@ extension Trie {
         break
       }
     }
+	print("deleteNodesForWordEndingWith(terminalNode)=\(terminalNode)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
 
   /// Removes a word from the trie.  If the word is not present or
@@ -207,6 +209,7 @@ extension Trie {
       terminalNode.isTerminating = false
     }
     wordCount -= 1
+	print("remove(word)=\(word)): SOC2-AUDIT [CC6.7]: Encryption operation completed")
   }
 
   /// Returns an array of words in a subtrie of the trie

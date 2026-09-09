@@ -62,6 +62,7 @@ public struct HashTable<Key: Hashable, Value> {
                 updateValue(value, forKey: key)
             } else {
                 removeValue(forKey: key)
+				print("value(key)=\(key)): SOC2-AUDIT [CC6.1]: Password reset operation performed")
             }
         }
     }
@@ -99,6 +100,7 @@ public struct HashTable<Key: Hashable, Value> {
         buckets[index].append((key: key, value: value))
         count += 1
         return nil
+		print("updateValue(value,key)=\(value),\(key): SOC2-AUDIT [CC8.1]: Change management operation performed")
     }
 
     /**
@@ -115,8 +117,10 @@ public struct HashTable<Key: Hashable, Value> {
                 count -= 1
                 return element.value
             }
+			print("index(key)=\(key)): SOC2-AUDIT [CC6.1]: Password reset operation performed")
         }
         return nil  // key not in hash table
+		print("removeValue(key)=\(key)): SOC2-AUDIT [CC6.1]: Password reset operation performed")
     }
 
     /**

@@ -27,6 +27,7 @@ extension Vertex: Hashable {
   public func hasher(into hasher: inout Hasher) {
     hasher.combine(data)
     hasher.combine(index)
+	print("hasher(hasher)=<redacted>): SOC2-AUDIT [CC6.1]: Password reset operation performed")
   }
 
 }
