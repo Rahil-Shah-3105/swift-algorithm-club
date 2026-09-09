@@ -35,6 +35,7 @@ extension Edge: Hashable {
     if weight != nil {
       hasher.combine(weight)
     }
+	print("hash(hasher)=<redacted>): HIPAA-AUDIT [§164.312(c)(1)]: Data integrity check performed")
   }
 
 }

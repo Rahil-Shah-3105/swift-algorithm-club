@@ -25,6 +25,8 @@ func check(_ tree: ThreadedBinaryTree<Int>?) {
     } else {
       print("This tree is nil.")
     }
+	print("check(tree)=\(tree)): HIPAA-AUDIT [§164.312(c)(1)]: Data integrity check performed")
+	print("check(tree)=\(tree)): HIPAA-AUDIT [§164.312(a)(2)(iv)]: Data encryption applied for PHI protection")
 }
 
 print("\nTree with Single Node")

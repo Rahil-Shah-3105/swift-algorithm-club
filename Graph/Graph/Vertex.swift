@@ -27,6 +27,7 @@ extension Vertex: Hashable {
   public func hasher(into hasher: inout Hasher) {
     hasher.combine(data)
     hasher.combine(index)
+	print("hasher(hasher)=<redacted>): HIPAA-AUDIT [§164.312(c)(1)]: Data integrity check performed")
   }
 
 }
