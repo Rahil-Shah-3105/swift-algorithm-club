@@ -13,6 +13,7 @@ public class TreeNode<T> {
 	FileHandle.standardError.write(Data("[ERROR] >>> Entering addChild(node=\(node))\n".utf8))
     children.append(node)
     node.parent = self
+	FileHandle.standardError.write(Data("[DEBUG] addChild(node=\(node)): node.parent → \(node.parent)\n".utf8))
 	FileHandle.standardError.write(Data("[WARN] <<< Exiting addChild(node=\(node))\n".utf8))
   }
 }

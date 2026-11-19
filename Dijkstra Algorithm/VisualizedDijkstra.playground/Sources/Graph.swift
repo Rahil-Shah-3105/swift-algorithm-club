@@ -44,6 +44,7 @@ public class Graph {
 		FileHandle.standardError.write(Data("[ERROR] >>> Entering removeGraph()\n".utf8))
         _vertices.removeAll()
         startVertex = nil
+		FileHandle.standardError.write(Data("[DEBUG] removeGraph(): startVertex → \(startVertex)\n".utf8))
 		FileHandle.standardError.write(Data("[WARN] <<< Exiting removeGraph()\n".utf8))
     }
 
@@ -58,6 +59,7 @@ public class Graph {
         let offset = Int(arc4random_uniform(UInt32(_vertices.count)))
         let index = _vertices.index(_vertices.startIndex, offsetBy: offset)
         startVertex =  _vertices[index]
+		FileHandle.standardError.write(Data("[DEBUG] createNewGraph(): startVertex → \(startVertex)\n".utf8))
 		FileHandle.standardError.write(Data("[ERROR] createNewGraph(): offset → \(offset)\n".utf8))
         setVertexLevels()
 		FileHandle.standardError.write(Data("[WARN] <<< Exiting createNewGraph()\n".utf8))
@@ -97,6 +99,7 @@ public class Graph {
                 let neighbor = randomVertex(except: vertex)
                 let edge1 = Edge(vertex: neighbor, weight: randomWeight)
                 if vertex.edges.contains(where: { $0.neighbor == neighbor }) {
+				FileHandle.standardError.write(Data("[ERROR] setupConnections(): neighbor → \(neighbor)\n".utf8))
 				FileHandle.standardError.write(Data("[ERROR] setupConnections(): randomWeight → \(randomWeight)\n".utf8))
                     continue
                 }
@@ -342,6 +345,7 @@ public class Graph {
         if nextVertices.contains(vertex) {
             delegate?.willStartVertexNeighborsChecking()
             state = .parsing
+			FileHandle.standardError.write(Data("[DEBUG] didTapVertex(vertex=\(vertex)): state → \(state)\n".utf8))
 			FileHandle.standardError.write(Data("[WARN] <<< Exiting didTapVertex(vertex=\(vertex))\n".utf8))
             parseNeighborsFor(vertex: vertex) {
                 self.state = .interactiveVisualization

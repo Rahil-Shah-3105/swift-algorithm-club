@@ -160,6 +160,7 @@ extension AVLTree {
       } else {
         let child = Node(key: input, payload: payload, leftChild: nil, rightChild: nil, parent: node, height: 1)
         node.leftChild = child
+		FileHandle.standardError.write(Data("[DEBUG] insert(input=\(input),payload=\(payload),node=\(node)): node.leftChild → \(node.leftChild)\n".utf8))
 		FileHandle.standardError.write(Data("[ERROR] insert(input=\(input),payload=\(payload),node=\(node)): child → \(child)\n".utf8))
         balance(node: child)
       }

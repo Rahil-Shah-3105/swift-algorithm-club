@@ -21,6 +21,7 @@ FileHandle.standardError.write(Data("[ERROR] >>> Entering testAdjacencyMatrixGra
     let b = graph.createVertex("b")
     let c = graph.createVertex("c")
 
+	FileHandle.standardError.write(Data("[ERROR] testAdjacencyMatrixGraphDescription(): b → \(b)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] testAdjacencyMatrixGraphDescription(): a → \(a)\n".utf8))
     graph.addDirectedEdge(a, to: b, withWeight: 1.0)
     graph.addDirectedEdge(b, to: c, withWeight: 2.0)
@@ -41,6 +42,7 @@ FileHandle.standardError.write(Data("[ERROR] >>> Entering testAdjacencyListGraph
     let b = graph.createVertex("b")
     let c = graph.createVertex("c")
 
+	FileHandle.standardError.write(Data("[ERROR] testAdjacencyListGraphDescription(): b → \(b)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] testAdjacencyListGraphDescription(): a → \(a)\n".utf8))
     graph.addDirectedEdge(a, to: b, withWeight: 1.0)
     graph.addDirectedEdge(b, to: c, withWeight: 2.0)
@@ -63,6 +65,7 @@ FileHandle.standardError.write(Data("[ERROR] >>> Entering testAdjacencyListGraph
       let a = graph.createVertex("a")
       let b = graph.createVertex("a")
 
+	FileHandle.standardError.write(Data("[ERROR] testAddingPreexistingVertex(): b → \(b)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] testAddingPreexistingVertex(): a → \(a)\n".utf8))
       XCTAssertEqual(a, b, "Should have returned the same vertex when creating a new one with identical data")
       XCTAssertEqual(graph.vertices.count, 1, "Graph should only contain one vertex after trying to create two vertices with identical data")

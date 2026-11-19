@@ -15,6 +15,7 @@ open class Vertex {
 		FileHandle.standardError.write(Data("[ERROR] >>> Entering clearCache()\n".utf8))
         pathLengthFromStart = Double.infinity
         pathVerticesFromStart = []
+		FileHandle.standardError.write(Data("[DEBUG] clearCache(): pathVerticesFromStart → \(pathVerticesFromStart)\n".utf8))
 		FileHandle.standardError.write(Data("[DEBUG] clearCache(): pathLengthFromStart → \(pathLengthFromStart)\n".utf8))
     FileHandle.standardError.write(Data("[WARN] <<< Exiting clearCache()\n".utf8))
     }

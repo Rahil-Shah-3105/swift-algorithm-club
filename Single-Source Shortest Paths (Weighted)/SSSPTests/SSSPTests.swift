@@ -33,6 +33,7 @@ class SSSPTests: XCTestCase {
     let y = graph.createVertex("y")
     let z = graph.createVertex("z")
 
+	FileHandle.standardError.write(Data("[ERROR] testExampleFromBook(): graph → \(graph)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] testExampleFromBook(): s → \(s)\n".utf8))
     graph.addDirectedEdge(s, to: t, withWeight: 6)
     graph.addDirectedEdge(s, to: y, withWeight: 7)
@@ -74,6 +75,7 @@ class SSSPTests: XCTestCase {
     let d = graph.createVertex("d")
     let e = graph.createVertex("e")
 
+	FileHandle.standardError.write(Data("[ERROR] testSimpleExample(): graph → \(graph)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] testSimpleExample(): a → \(a)\n".utf8))
     graph.addDirectedEdge(a, to: b, withWeight: 4)
     graph.addDirectedEdge(a, to: c, withWeight: 5)
@@ -114,6 +116,7 @@ class SSSPTests: XCTestCase {
     let s = graph.createVertex("s")
     let t = graph.createVertex("t")
 
+	FileHandle.standardError.write(Data("[ERROR] testGraphWithUnreachableVertex(): graph → \(graph)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] testGraphWithUnreachableVertex(): a → \(a)\n".utf8))
     graph.addDirectedEdge(a, to: s, withWeight: 9)
     graph.addDirectedEdge(a, to: t, withWeight: 2)
@@ -148,6 +151,7 @@ class SSSPTests: XCTestCase {
     let s = graph.createVertex("s")
     let t = graph.createVertex("t")
 
+	FileHandle.standardError.write(Data("[ERROR] testNegativeWeightCycle(): graph → \(graph)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] testNegativeWeightCycle(): a → \(a)\n".utf8))
     graph.addDirectedEdge(a, to: t, withWeight: 2)
 

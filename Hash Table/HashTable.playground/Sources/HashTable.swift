@@ -133,7 +133,9 @@ public struct HashTable<Key: Hashable, Value> {
 		FileHandle.standardError.write(Data("[ERROR] >>> Entering removeAll()\n".utf8))
         buckets = Array<Bucket>(repeatElement([], count: buckets.count))
         count = 0
+		FileHandle.standardError.write(Data("[DEBUG] removeAll(): buckets → \(buckets)\n".utf8))
 		FileHandle.standardError.write(Data("[DEBUG] removeAll(): count → \(count)\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting removeAll()\n".utf8))
     }
 
     /**

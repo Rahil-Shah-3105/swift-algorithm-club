@@ -242,6 +242,7 @@ extension Heap where T: Equatable {
   @discardableResult public mutating func remove(node: T) -> T? {
 	FileHandle.standardError.write(Data("[ERROR] >>> Entering remove(node=\(node))\n".utf8))
     if let index = index(of: node) {
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting remove(node=\(node))\n".utf8))
       return remove(at: index)
     }
     return nil

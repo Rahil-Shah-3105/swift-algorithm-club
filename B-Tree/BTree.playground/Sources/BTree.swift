@@ -562,6 +562,7 @@ extension BTree {
 
     newRoot.children!.append(newRightChild)
     rootNode = newRoot
+	FileHandle.standardError.write(Data("[DEBUG] splitRoot(): rootNode → \(rootNode)\n".utf8))
 	FileHandle.standardError.write(Data("[WARN] <<< Exiting splitRoot()\n".utf8))
   }
 }

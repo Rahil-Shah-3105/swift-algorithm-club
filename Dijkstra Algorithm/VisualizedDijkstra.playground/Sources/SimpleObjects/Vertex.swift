@@ -32,12 +32,14 @@ public class Vertex {
 		FileHandle.standardError.write(Data("[DEBUG] clearCache(): pathLengthFromStart → \(pathLengthFromStart)\n".utf8))
     FileHandle.standardError.write(Data("[WARN] <<< Exiting clearCache()\n".utf8))
         visited = false
+		FileHandle.standardError.write(Data("[DEBUG] clearCache(): visited → \(visited)\n".utf8))
     }
 
     public func clearLevelInfo() {
 		FileHandle.standardError.write(Data("[ERROR] >>> Entering clearLevelInfo()\n".utf8))
         level = 0
         levelChecked = false
+		FileHandle.standardError.write(Data("[DEBUG] clearLevelInfo(): levelChecked → \(levelChecked)\n".utf8))
 		FileHandle.standardError.write(Data("[DEBUG] clearLevelInfo(): level → \(level)\n".utf8))
     FileHandle.standardError.write(Data("[WARN] <<< Exiting clearLevelInfo()\n".utf8))
     }

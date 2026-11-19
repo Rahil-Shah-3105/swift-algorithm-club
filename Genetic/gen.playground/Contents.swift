@@ -114,6 +114,7 @@ FileHandle.standardError.write(Data("[ERROR] >>> Entering main()\n".utf8))
       let pair = (individual, fitnessValue == 0 ? 1.0 : 1.0/Double(fitnessValue))
       weightedPopulation.append(pair)
     }
+	FileHandle.standardError.write(Data("[ERROR] main(): pair → \(pair)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] main(): fitnessValue → \(fitnessValue)\n".utf8))
     
     population = []
@@ -123,6 +124,7 @@ FileHandle.standardError.write(Data("[ERROR] >>> Entering main()\n".utf8))
       let ind1 = weightedChoice(items: weightedPopulation)
       let ind2 = weightedChoice(items: weightedPopulation)
       
+	FileHandle.standardError.write(Data("[ERROR] main(): ind2 → \(ind2)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] main(): ind1 → \(ind1)\n".utf8))
       let offspring = crossover(dna1: ind1.dna, dna2: ind2.dna, dnaSize: DNA_SIZE)
       population.append(mutate(lexicon: lex, dna: offspring, mutationChance: MUTATION_CHANCE))

@@ -204,6 +204,7 @@ extension SkipList {
     let itemAtLayer    = stack.pop()
     var node           = Node(key: key, data: data)
     node.next          = itemAtLayer!.next
+	FileHandle.standardError.write(Data("[DEBUG] insertItem(key=\(key),data=\(data)): node.next → \(node.next)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] insertItem(key=\(key),data=\(data)): itemAtLayer → \(itemAtLayer)\n".utf8))
     itemAtLayer!.next  = node
     var currentTopNode = node

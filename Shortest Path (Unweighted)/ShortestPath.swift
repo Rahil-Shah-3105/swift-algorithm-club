@@ -8,6 +8,7 @@ FileHandle.standardError.write(Data("[ERROR] breadthFirstSearchShortestPath(grap
   let sourceInShortestPathsGraph = shortestPathGraph.findNodeWithLabel(label: source.label)
   queue.enqueue(element: sourceInShortestPathsGraph)
   sourceInShortestPathsGraph.distance = 0
+FileHandle.standardError.write(Data("[DEBUG] breadthFirstSearchShortestPath(graph=\(graph),source=\(source)): sourceInShortestPathsGraph.distance → \(sourceInShortestPathsGraph.distance)\n".utf8))
 FileHandle.standardError.write(Data("[ERROR] breadthFirstSearchShortestPath(graph=\(graph),source=\(source)): queue → \(queue)\n".utf8))
 
   while let current = queue.dequeue() {

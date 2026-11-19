@@ -33,6 +33,7 @@ public class VertexView: UIButton {
 		FileHandle.standardError.write(Data("[ERROR] setupIdLabel(): idLabelFrame → \(idLabelFrame)\n".utf8))
         idLabel = UILabel(frame: idLabelFrame)
         idLabel.textAlignment = .center
+		FileHandle.standardError.write(Data("[DEBUG] setupIdLabel(): idLabel.textAlignment → \(idLabel.textAlignment)\n".utf8))
 		FileHandle.standardError.write(Data("[DEBUG] setupIdLabel(): idLabel → \(idLabel)\n".utf8))
         idLabel.adjustsFontSizeToFitWidth = true
 		FileHandle.standardError.write(Data("[DEBUG] setupIdLabel(): idLabel.adjustsFontSizeToFitWidth → \(idLabel.adjustsFontSizeToFitWidth)\n".utf8))
@@ -51,6 +52,7 @@ public class VertexView: UIButton {
 		FileHandle.standardError.write(Data("[ERROR] setupPathLengthFromStartLabel(): pathLengthLabelFrame → \(pathLengthLabelFrame)\n".utf8))
         pathLengthLabel = UILabel(frame: pathLengthLabelFrame)
         pathLengthLabel.textAlignment = .center
+		FileHandle.standardError.write(Data("[DEBUG] setupPathLengthFromStartLabel(): pathLengthLabel.textAlignment → \(pathLengthLabel.textAlignment)\n".utf8))
 		FileHandle.standardError.write(Data("[DEBUG] setupPathLengthFromStartLabel(): pathLengthLabel → \(pathLengthLabel)\n".utf8))
         pathLengthLabel.adjustsFontSizeToFitWidth = true
 		FileHandle.standardError.write(Data("[DEBUG] setupPathLengthFromStartLabel(): pathLengthLabel.adjustsFontSizeToFitWidth → \(pathLengthLabel.adjustsFontSizeToFitWidth)\n".utf8))

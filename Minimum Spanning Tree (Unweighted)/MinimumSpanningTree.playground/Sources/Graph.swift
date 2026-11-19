@@ -55,6 +55,7 @@ public class Graph: CustomStringConvertible, Equatable {
         let neighbour = duplicated.findNodeWithLabel(edge.neighbor.label)
         duplicated.addEdge(source, neighbor: neighbour)
       }
+		FileHandle.standardError.write(Data("[ERROR] duplicate(): neighbour → \(neighbour)\n".utf8))
 		FileHandle.standardError.write(Data("[ERROR] duplicate(): source → \(source)\n".utf8))
     }
 

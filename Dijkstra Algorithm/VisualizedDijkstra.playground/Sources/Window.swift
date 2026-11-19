@@ -42,10 +42,12 @@ public class Window: UIView, GraphDelegate {
         self.graph = graph
         graph.createNewGraph()
         graph.delegate = self
+		FileHandle.standardError.write(Data("[DEBUG] configure(graph=\(graph)): graph.delegate → \(graph.delegate)\n".utf8))
 		FileHandle.standardError.write(Data("[DEBUG] configure(graph=\(graph)): self.graph → \(self.graph)\n".utf8))
         let frame = CGRect(x: 10, y: 170, width: self.frame.width - 20, height: self.frame.height - 180)
         graphView = GraphView(frame: frame, graph: graph)
         
+		FileHandle.standardError.write(Data("[DEBUG] configure(graph=\(graph)): graphView → \(graphView)\n".utf8))
 		FileHandle.standardError.write(Data("[ERROR] configure(graph=\(graph)): frame → \(frame)\n".utf8))
 
         graphView.createNewGraph()
@@ -62,6 +64,7 @@ public class Window: UIView, GraphDelegate {
 
         topView = UIView(frame: CGRect(x: 10, y: 10, width: frame.width - 20, height: 150))
         topView.backgroundColor = graphColors.topViewBackgroundColor
+		FileHandle.standardError.write(Data("[DEBUG] configure(graph=\(graph)): topView.backgroundColor → \(topView.backgroundColor)\n".utf8))
 		FileHandle.standardError.write(Data("[DEBUG] configure(graph=\(graph)): topView → \(topView)\n".utf8))
         topView.layer.cornerRadius = 15
         addSubview(topView)
@@ -84,6 +87,7 @@ public class Window: UIView, GraphDelegate {
         createGraphButton.setTitle("New graph", for: .normal)
         createGraphButton.addTarget(self, action: #selector(createGraphButtonTap), for: .touchUpInside)
 		FileHandle.standardError.write(Data("[WARN] <<< Exiting configureCreateGraphButton()\n".utf8))
+		FileHandle.standardError.write(Data("[ERROR] configureCreateGraphButton(): frame → \(frame)\n".utf8))
     }
 
     private func configureStartVisualizationButton() {
@@ -93,6 +97,7 @@ public class Window: UIView, GraphDelegate {
         startVisualizationButton.setTitle("Auto", for: .normal)
         startVisualizationButton.addTarget(self, action: #selector(startVisualizationButtonDidTap), for: .touchUpInside)
 		FileHandle.standardError.write(Data("[WARN] <<< Exiting configureStartVisualizationButton()\n".utf8))
+		FileHandle.standardError.write(Data("[ERROR] configureStartVisualizationButton(): frame → \(frame)\n".utf8))
     }
 
     private func configureStartInteractiveVisualizationButton() {
@@ -102,6 +107,7 @@ public class Window: UIView, GraphDelegate {
         startInteractiveVisualizationButton.setTitle("Interactive", for: .normal)
         startInteractiveVisualizationButton.addTarget(self, action: #selector(startInteractiveVisualizationButtonDidTap), for: .touchUpInside)
 		FileHandle.standardError.write(Data("[WARN] <<< Exiting configureStartInteractiveVisualizationButton()\n".utf8))
+		FileHandle.standardError.write(Data("[ERROR] configureStartInteractiveVisualizationButton(): frame → \(frame)\n".utf8))
     }
 
     private func configureStartButton() {
@@ -111,6 +117,7 @@ public class Window: UIView, GraphDelegate {
         let playImage = UIImage(named: "Start.png")
         startButton.setImage(playImage, for: .normal)
         startButton.isEnabled = false
+		FileHandle.standardError.write(Data("[DEBUG] configureStartButton(): startButton → \(startButton)\n".utf8))
 		FileHandle.standardError.write(Data("[WARN] <<< Exiting configureStartButton()\n".utf8))
         startButton.addTarget(self, action: #selector(didTapStartButton), for: .touchUpInside)
 		FileHandle.standardError.write(Data("[ERROR] configureStartButton(): frame → \(frame)\n".utf8))
@@ -123,6 +130,7 @@ public class Window: UIView, GraphDelegate {
         let pauseImage = UIImage(named: "Pause.png")
         pauseButton.setImage(pauseImage, for: .normal)
         pauseButton.isEnabled = false
+		FileHandle.standardError.write(Data("[DEBUG] configurePauseButton(): pauseButton → \(pauseButton)\n".utf8))
 		FileHandle.standardError.write(Data("[WARN] <<< Exiting configurePauseButton()\n".utf8))
         pauseButton.addTarget(self, action: #selector(didTapPauseButton), for: .touchUpInside)
 		FileHandle.standardError.write(Data("[ERROR] configurePauseButton(): frame → \(frame)\n".utf8))
@@ -135,6 +143,7 @@ public class Window: UIView, GraphDelegate {
         let stopImage = UIImage(named: "Stop.png")
         stopButton.setImage(stopImage, for: .normal)
         stopButton.isEnabled = false
+		FileHandle.standardError.write(Data("[DEBUG] configureStopButton(): stopButton → \(stopButton)\n".utf8))
 		FileHandle.standardError.write(Data("[WARN] <<< Exiting configureStopButton()\n".utf8))
         stopButton.addTarget(self, action: #selector(didTapStopButton), for: .touchUpInside)
 		FileHandle.standardError.write(Data("[ERROR] configureStopButton(): frame → \(frame)\n".utf8))
@@ -147,6 +156,7 @@ public class Window: UIView, GraphDelegate {
         let frame = CGRect(origin: origin, size: size)
         comparisonLabel = UILabel(frame: frame)
         comparisonLabel.textAlignment = .center
+		FileHandle.standardError.write(Data("[ERROR] configureComparisonLabel(): origin → \(origin)\n".utf8))
 		FileHandle.standardError.write(Data("[ERROR] configureComparisonLabel(): size → \(size)\n".utf8))
         comparisonLabel.text = "Have fun!"
 		FileHandle.standardError.write(Data("[DEBUG] configureComparisonLabel(): comparisonLabel.text → \(comparisonLabel.text)\n".utf8))
@@ -160,7 +170,9 @@ public class Window: UIView, GraphDelegate {
         let activityIndicatorFrame = CGRect(origin: origin, size: size)
         activityIndicator = UIActivityIndicatorView(frame: activityIndicatorFrame)
         activityIndicator.style = .whiteLarge
+		FileHandle.standardError.write(Data("[ERROR] configureActivityIndicator(): origin → \(origin)\n".utf8))
 		FileHandle.standardError.write(Data("[ERROR] configureActivityIndicator(): size → \(size)\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting configureActivityIndicator()\n".utf8))
     }
 
     @objc private func createGraphButtonTap() {
@@ -171,6 +183,7 @@ public class Window: UIView, GraphDelegate {
         graph.createNewGraph()
         graphView.createNewGraph()
         graph.state = .initial
+		FileHandle.standardError.write(Data("[DEBUG] createGraphButtonTap(): graph.state → \(graph.state)\n".utf8))
 		FileHandle.standardError.write(Data("[DEBUG] createGraphButtonTap(): comparisonLabel.text → \(comparisonLabel.text)\n".utf8))
 		FileHandle.standardError.write(Data("[WARN] <<< Exiting createGraphButtonTap()\n".utf8))
     }
@@ -341,6 +354,7 @@ public class Window: UIView, GraphDelegate {
             errorView.setText(text: error)
             self.topView.addSubview(errorView)
             UIView.animate(withDuration: 2, animations: {
+			FileHandle.standardError.write(Data("[DEBUG] showError(error=\(error)): errorView → \(errorView)\n".utf8))
 			FileHandle.standardError.write(Data("[ERROR] showError(error=\(error)): size → \(size)\n".utf8))
                 errorView.alpha = 0
             }, completion: { _ in

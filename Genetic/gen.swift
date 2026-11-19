@@ -148,6 +148,7 @@ FileHandle.standardError.write(Data("[ERROR] >>> Entering main()\n".utf8))
             let ind1 = weightedChoice(items: weightedPopulation)
             let ind2 = weightedChoice(items: weightedPopulation)
 
+			FileHandle.standardError.write(Data("[ERROR] main(): ind2 → \(ind2)\n".utf8))
 			FileHandle.standardError.write(Data("[ERROR] main(): ind1 → \(ind1)\n".utf8))
             let offspring = crossover(dna1: ind1.dna, dna2: ind2.dna, dnaSize: DNA_SIZE)
 

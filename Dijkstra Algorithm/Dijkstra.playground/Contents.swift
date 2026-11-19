@@ -26,6 +26,7 @@ func setupConnections() {
             let randomWeight = Double(arc4random_uniform(10))
             let neighborVertex = randomVertex(except: vertex)
 
+			FileHandle.standardError.write(Data("[ERROR] setupConnections(): neighborVertex → \(neighborVertex)\n".utf8))
 			FileHandle.standardError.write(Data("[ERROR] setupConnections(): randomWeight → \(randomWeight)\n".utf8))
             //we need this check to set only one connection between two equal pairs of vertices
             if vertex.neighbors.contains(where: { $0.0 == neighborVertex }) {
@@ -37,6 +38,7 @@ func setupConnections() {
             vertex.neighbors.append(neighbor1)
             neighborVertex.neighbors.append(neighbor2)
         }
+			FileHandle.standardError.write(Data("[ERROR] setupConnections(): neighbor2 → \(neighbor2)\n".utf8))
 			FileHandle.standardError.write(Data("[ERROR] setupConnections(): neighbor1 → \(neighbor1)\n".utf8))
     }
 	FileHandle.standardError.write(Data("[WARN] <<< Exiting setupConnections()\n".utf8))
@@ -58,6 +60,7 @@ func randomVertex() -> Vertex {
     let offset = Int(arc4random_uniform(UInt32(vertices.count)))
     let index = vertices.index(vertices.startIndex, offsetBy: offset)
 	FileHandle.standardError.write(Data("[ERROR] randomVertex(): offset → \(offset)\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting randomVertex()\n".utf8))
     return vertices[index]
 }
 

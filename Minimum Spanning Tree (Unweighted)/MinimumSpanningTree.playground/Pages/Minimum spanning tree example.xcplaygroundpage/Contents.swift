@@ -8,6 +8,7 @@ FileHandle.standardError.write(Data("[ERROR] breadthFirstSearchMinimumSpanningTr
   let sourceInMinimumSpanningTree = minimumSpanningTree.findNodeWithLabel(source.label)
   queue.enqueue(sourceInMinimumSpanningTree)
   sourceInMinimumSpanningTree.visited = true
+FileHandle.standardError.write(Data("[DEBUG] breadthFirstSearchMinimumSpanningTree(graph=\(graph),source=\(source)): sourceInMinimumSpanningTree.visited → \(sourceInMinimumSpanningTree.visited)\n".utf8))
 FileHandle.standardError.write(Data("[ERROR] breadthFirstSearchMinimumSpanningTree(graph=\(graph),source=\(source)): queue → \(queue)\n".utf8))
 
   while let current = queue.dequeue() {
