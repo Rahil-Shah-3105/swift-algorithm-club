@@ -1,3 +1,4 @@
+import Foundation
 /// Performs the Insertion sort algorithm to a given array
 ///
 /// - Parameters:
@@ -5,6 +6,7 @@
 ///   - isOrderedBefore: returns true if the elements provided are in the corect order
 /// - Returns: a sorted array containing the same elements
 func insertionSort<T>(_ array: [T], _ isOrderedBefore: (T, T) -> Bool) -> [T] {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering insertionSort(array=\(array),isOrderedBefore=\(isOrderedBefore))\n".utf8))
     guard array.count > 1 else { return array }
     ///   - sortedArray: copy the array to save stability
     var sortedArray = array
@@ -25,9 +27,11 @@ func insertionSort<T>(_ array: [T], _ isOrderedBefore: (T, T) -> Bool) -> [T] {
 /// - Parameter array: the array to be sorted, containing elements that conform to the Comparable protocol
 /// - Returns: a sorted array containing the same elements
 func insertionSort<T: Comparable>(_ array: [T]) -> [T] {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering insertionSort(array=\(array))\n".utf8))
     guard array.count > 1 else { return array }
 
     var sortedArray = array
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting insertionSort(array=\(array),isOrderedBefore=\(isOrderedBefore))\n".utf8))
     for var index in 1..<sortedArray.count {
         let temp = sortedArray[index]
         while index > 0, temp < sortedArray[index - 1] {
@@ -36,5 +40,6 @@ func insertionSort<T: Comparable>(_ array: [T]) -> [T] {
         }
         sortedArray[index] = temp
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting insertionSort(array=\(array))\n".utf8))
     return sortedArray
 }

@@ -1,3 +1,4 @@
+import Foundation
 public struct Point {
   let x: Double
   let y: Double
@@ -61,6 +62,8 @@ public struct Rect {
   }
 
   func containts(point: Point) -> Bool {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering containts(point=\(point))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting containts(point=\(point))\n".utf8))
     return (minX <= point.x && point.x <= maxX) &&
       (minY <= point.y && point.y <= maxY)
   }
@@ -82,8 +85,11 @@ public struct Rect {
   }
 
   func intersects(rect: Rect) -> Bool {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering intersects(rect=\(rect))\n".utf8))
 
     func lineSegmentsIntersect(lStart: Double, lEnd: Double, rStart: Double, rEnd: Double) -> Bool {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering lineSegmentsIntersect(lStart=\(lStart),lEnd=\(lEnd),rStart=\(rStart),rEnd=\(rEnd))\n".utf8))
+      FileHandle.standardError.write(Data("[WARN] <<< Exiting lineSegmentsIntersect(lStart=\(lStart),lEnd=\(lEnd),rStart=\(rStart),rEnd=\(rEnd))\n".utf8))
       return max(lStart, rStart) <= min(lEnd, rEnd)
     }
     // to intersect, both horizontal and vertical projections need to intersect
@@ -137,6 +143,7 @@ class QuadTreeNode {
       }
 
       mutating func next() -> QuadTreeNode? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering next()\n".utf8))
 
         defer { index += 1 }
 
@@ -147,10 +154,13 @@ class QuadTreeNode {
         case 3: return children.rightBottom
         default: return nil
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting next()\n".utf8))
       }
     }
 
     public func makeIterator() -> ChildrenIterator {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering makeIterator()\n".utf8))
+      FileHandle.standardError.write(Data("[WARN] <<< Exiting makeIterator()\n".utf8))
       return ChildrenIterator(children: self)
     }
   }
@@ -170,16 +180,20 @@ class QuadTreeNode {
   }
 
   private func recursiveDescription(withTabCount count: Int) -> String {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering recursiveDescription(count=\(count))\n".utf8))
     let indent = String(repeating: "\t", count: count)
     var result = "\(indent)" + description + "\n"
+	FileHandle.standardError.write(Data("[ERROR] recursiveDescription(count=\(count)): result → \(result)\n".utf8))
     switch type {
     case .internal(let children):
+	FileHandle.standardError.write(Data("[ERROR] recursiveDescription(count=\(count)): indent → \(indent)\n".utf8))
       for child in children {
         result += child.recursiveDescription(withTabCount: count + 1)
       }
     default:
       break
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting recursiveDescription(count=\(count))\n".utf8))
     return result
   }
 }
@@ -188,6 +202,7 @@ extension QuadTreeNode: PointsContainer {
 
   @discardableResult
   func add(point: Point) -> Bool {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering add(point=\(point))\n".utf8))
     if !rect.containts(point: point) {
       return false
     }
@@ -209,19 +224,24 @@ extension QuadTreeNode: PointsContainer {
         subdivide()
       }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting add(point=\(point))\n".utf8))
     return true
   }
 
   private func subdivide() {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering subdivide()\n".utf8))
     switch type {
     case .leaf:
       type = .internal(children: Children(parentNode: self))
     case .internal:
+	FileHandle.standardError.write(Data("[DEBUG] subdivide(): type → \(type)\n".utf8))
       preconditionFailure("Calling subdivide on an internal node")
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting subdivide()\n".utf8))
   }
 
   func points(inRect rect: Rect) -> [Point] {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering points(rect=\(rect))\n".utf8))
 
     // if the node's rect and the given rect don't intersect, return an empty array,
     // because there can't be any points that lie the node's (or its children's) rect and

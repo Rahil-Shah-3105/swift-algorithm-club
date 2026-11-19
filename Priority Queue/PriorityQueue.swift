@@ -1,3 +1,4 @@
+import Foundation
 /*
   Priority Queue, a queue where the most "important" items are at the front of
   the queue.
@@ -30,14 +31,20 @@ public struct PriorityQueue<T> {
   }
 
   public func peek() -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering peek()\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting peek()\n".utf8))
     return heap.peek()
   }
 
   public mutating func enqueue(_ element: T) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering enqueue(element=\(element))\n".utf8))
     heap.insert(element)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting enqueue(element=\(element))\n".utf8))
   }
 
   public mutating func dequeue() -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering dequeue()\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting dequeue()\n".utf8))
     return heap.remove()
   }
 
@@ -47,12 +54,16 @@ public struct PriorityQueue<T> {
     it should be smaller.
   */
   public mutating func changePriority(index i: Int, value: T) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering changePriority(i=\(i),value=\(value))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting changePriority(i=\(i),value=\(value))\n".utf8))
     return heap.replace(index: i, value: value)
   }
 }
 
 extension PriorityQueue where T: Equatable {
   public func index(of element: T) -> Int? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering index(element=\(element))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting index(element=\(element))\n".utf8))
     return heap.index(of: element)
   }
 }

@@ -1,3 +1,4 @@
+import Foundation
 // last checked with Xcode 10.1
 #if swift(>=4.2)
 print("Hello, Swift 4.2!")
@@ -23,23 +24,28 @@ extension BidirectionalCollection where Element: Equatable {
   ///
   /// - Parameter index: A valid index of the collection. `index` must be greater than `startIndex`.
   func formUniqueIndex(before index: inout Index) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering formUniqueIndex(index=\(index))\n".utf8))
     var prev = index
     repeat {
       prev = index
       formIndex(before: &index)
     } while index > startIndex && self[prev] == self[index]
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting formUniqueIndex(index=\(index))\n".utf8))
   }
 }
 
 func threeSum<T: BidirectionalCollection>(_ collection: T, target: T.Element) -> [[T.Element]] where T.Element: Numeric & Comparable {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering threeSum(collection=\(collection),target=\(target))\n".utf8))
   let sorted = collection.sorted()
   var ret: [[T.Element]] = []
+FileHandle.standardError.write(Data("[ERROR] threeSum(collection=\(collection),target=\(target)): sorted → \(sorted)\n".utf8))
   var l = sorted.startIndex
   
   ThreeSum: while l < sorted.endIndex { defer { sorted.formUniqueIndex(after: &l) }
     var m = sorted.index(after: l)
     var r = sorted.index(before: sorted.endIndex)
     
+	FileHandle.standardError.write(Data("[ERROR] threeSum(collection=\(collection),target=\(target)): m → \(m)\n".utf8))
     TwoSum: while m < r && r < sorted.endIndex { 
       let sum = sorted[l] + sorted[m] + sorted[r]
       if sum == target {
@@ -54,6 +60,7 @@ func threeSum<T: BidirectionalCollection>(_ collection: T, target: T.Element) ->
     }
   }
   
+FileHandle.standardError.write(Data("[WARN] <<< Exiting threeSum(collection=\(collection),target=\(target))\n".utf8))
   return ret
 }
 

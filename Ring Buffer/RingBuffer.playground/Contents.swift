@@ -1,3 +1,4 @@
+import Foundation
 //: Playground - noun: a place where people can play
 
 public struct RingBuffer<T> {
@@ -12,21 +13,25 @@ public struct RingBuffer<T> {
   /* Returns false if out of space. */
   @discardableResult
   public mutating func write(_ element: T) -> Bool {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering write(element=\(element))\n".utf8))
     guard !isFull else { return false }
     defer {
         writeIndex += 1
     }
     array[wrapped: writeIndex] = element
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting write(element=\(element))\n".utf8))
     return true
   }
     
   /* Returns nil if the buffer is empty. */
   public mutating func read() -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering read()\n".utf8))
     guard !isEmpty else { return nil }
     defer {
         array[wrapped: readIndex] = nil
         readIndex += 1
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting read()\n".utf8))
     return array[wrapped: readIndex]
   }
 
@@ -49,12 +54,14 @@ public struct RingBuffer<T> {
 
 extension RingBuffer: Sequence {
   public func makeIterator() -> AnyIterator<T> {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering makeIterator()\n".utf8))
     var index = readIndex
     return AnyIterator {
       guard index < self.writeIndex else { return nil }
       defer {
         index += 1
         }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting makeIterator()\n".utf8))
       return self.array[wrapped: index]
     }
   }

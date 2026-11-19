@@ -3,14 +3,18 @@
 import Foundation
 
 func introsort<T>(_ array: inout [T],  by areInIncreasingOrder: (T, T) -> Bool) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering introsort(array=\(array),areInIncreasingOrder=\(areInIncreasingOrder))\n".utf8))
     //The depth limit is as best practice 2 * log( n )
     let depthLimit = 2 * floor(log2(Double(array.count)))
     
+	FileHandle.standardError.write(Data("[ERROR] introsort(array=\(array),areInIncreasingOrder=\(areInIncreasingOrder)): depthLimit → \(depthLimit)\n".utf8))
     introSortImplementation(for: &array, range: 0..<array.count, depthLimit: Int(depthLimit), by: areInIncreasingOrder)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting introsort(array=\(array),areInIncreasingOrder=\(areInIncreasingOrder))\n".utf8))
 }
 
 ///This method is recursively executed for each partition result of the quicksort part of the algorithm
 private func introSortImplementation<T>(for array: inout [T], range: Range<Int>, depthLimit: Int, by areInIncreasingOrder: (T, T) -> Bool) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering introSortImplementation(array=\(array),range=\(range),depthLimit=\(depthLimit),areInIncreasingOrder=\(areInIncreasingOrder))\n".utf8))
     if array.distance(from: range.lowerBound, to: range.upperBound) < 20 {
         //if the partition count is less than 20 we can sort it using insertion sort. This algorithm in fact performs well on collections
         //of this size, plus, at this point is quite probable that the quisksort part of the algorithm produced a partition which is
@@ -27,10 +31,12 @@ private func introSortImplementation<T>(for array: inout [T], range: Range<Int>,
         //position of the pivot in the array is returned so that we can form the two partitions.
         let partIdx = partitionIndex(for: &array, subRange: range, by: areInIncreasingOrder)
         
+		FileHandle.standardError.write(Data("[ERROR] introSortImplementation(array=\(array),range=\(range),depthLimit=\(depthLimit),areInIncreasingOrder=\(areInIncreasingOrder)): partIdx → \(partIdx)\n".utf8))
         //We can recursively call introsort implementation, decreasing the depthLimit for the left partition and the right partition.
         introSortImplementation(for: &array, range: range.lowerBound..<partIdx, depthLimit: depthLimit &- 1, by: areInIncreasingOrder)
         introSortImplementation(for: &array, range: partIdx..<range.upperBound, depthLimit: depthLimit &- 1, by: areInIncreasingOrder)
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting introSortImplementation(array=\(array),range=\(range),depthLimit=\(depthLimit),areInIncreasingOrder=\(areInIncreasingOrder))\n".utf8))
 }
 
 var unsorted = randomize(n: 1000)

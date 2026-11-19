@@ -1,4 +1,6 @@
+import Foundation
 public func eggDrop(numberOfEggs: Int, numberOfFloors: Int) -> Int {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering eggDrop(numberOfEggs=\(numberOfEggs),numberOfFloors=\(numberOfFloors))\n".utf8))
     if numberOfEggs == 0 || numberOfFloors == 0{ //edge case: When either number of eggs or number of floors is 0, answer is 0
         return 0
     }
@@ -7,6 +9,7 @@ public func eggDrop(numberOfEggs: Int, numberOfFloors: Int) -> Int {
     }
     
     var eggFloor = [[Int]](repeating: [Int](repeating: 0, count: numberOfFloors+1), count: numberOfEggs+1) //egg(rows) floor(cols) array to store the solutions
+	FileHandle.standardError.write(Data("[ERROR] eggDrop(numberOfEggs=\(numberOfEggs),numberOfFloors=\(numberOfFloors)): eggFloor → \(eggFloor)\n".utf8))
     var attempts: Int = 0
     
     for var floorNumber in (0..<(numberOfFloors+1)){
@@ -30,10 +33,13 @@ public func eggDrop(numberOfEggs: Int, numberOfFloors: Int) -> Int {
         }
     }
     
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting eggDrop(numberOfEggs=\(numberOfEggs),numberOfFloors=\(numberOfFloors))\n".utf8))
     return eggFloor[numberOfEggs][numberOfFloors]
 }
 
 //Helper function to find max of two integers
 public func max(_ x1: Int, _ x2: Int) -> Int{
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering max(x1=\(x1),x2=\(x2))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting max(x1=\(x1),x2=\(x2))\n".utf8))
     return x1 > x2 ? x1 : x2
 }

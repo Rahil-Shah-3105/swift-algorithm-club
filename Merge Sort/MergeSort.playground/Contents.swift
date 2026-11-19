@@ -1,18 +1,24 @@
+import Foundation
 /* Top-down recursive version */
 
 func mergeSort<T: Comparable>(_ array: [T]) -> [T] {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering mergeSort(array=\(array))\n".utf8))
   guard array.count > 1 else { return array }
   let middleIndex = array.count / 2
   let leftArray = mergeSort(Array(array[0..<middleIndex]))
   let rightArray = mergeSort(Array(array[middleIndex..<array.count]))
+FileHandle.standardError.write(Data("[ERROR] mergeSort(array=\(array)): leftArray → \(leftArray)\n".utf8))
+FileHandle.standardError.write(Data("[WARN] <<< Exiting mergeSort(array=\(array))\n".utf8))
   return merge(leftPile: leftArray, rightPile: rightArray)
 }
 
 func merge<T: Comparable>(leftPile: [T], rightPile: [T]) -> [T] {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering merge(leftPile=\(leftPile),rightPile=\(rightPile))\n".utf8))
   var leftIndex = 0
   var rightIndex = 0
   var orderedPile = [T]()
   if orderedPile.capacity < leftPile.count + rightPile.count {
+FileHandle.standardError.write(Data("[ERROR] merge(leftPile=\(leftPile),rightPile=\(rightPile)): orderedPile → \(orderedPile)\n".utf8))
     orderedPile.reserveCapacity(leftPile.count + rightPile.count)
   }
 
@@ -34,6 +40,7 @@ func merge<T: Comparable>(leftPile: [T], rightPile: [T]) -> [T] {
       rightIndex += 1
     }
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting merge(leftPile=\(leftPile),rightPile=\(rightPile))\n".utf8))
   return orderedPile
 }
 
@@ -45,6 +52,7 @@ let sortedArray2 = mergeSort(array2)
 /* Bottom-up iterative version */
 
 func mergeSortBottomUp<T>(_ a: [T], _ isOrderedBefore: (T, T) -> Bool) -> [T] {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering mergeSortBottomUp(a=\(a),isOrderedBefore=\(isOrderedBefore))\n".utf8))
   let n = a.count
   var z = [a, a]   // the two working arrays
   var d = 0        // z[d] is used for reading, z[1 - d] for writing
@@ -62,6 +70,7 @@ func mergeSortBottomUp<T>(_ a: [T], _ isOrderedBefore: (T, T) -> Bool) -> [T] {
       let lmax = min(l + width, n)
       let rmax = min(r + width, n)
 
+	FileHandle.standardError.write(Data("[ERROR] mergeSortBottomUp(a=\(a),isOrderedBefore=\(isOrderedBefore)): lmax → \(lmax)\n".utf8))
       while l < lmax && r < rmax {
         if isOrderedBefore(z[d][l], z[d][r]) {
           z[1 - d][j] = z[d][l]
@@ -89,6 +98,7 @@ func mergeSortBottomUp<T>(_ a: [T], _ isOrderedBefore: (T, T) -> Bool) -> [T] {
     width *= 2   // in each step, the subarray to merge becomes larger
     d = 1 - d    // swap active array
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting mergeSortBottomUp(a=\(a),isOrderedBefore=\(isOrderedBefore))\n".utf8))
   return z[d]
 }
 

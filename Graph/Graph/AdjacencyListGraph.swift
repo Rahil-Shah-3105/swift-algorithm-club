@@ -17,7 +17,9 @@ private class EdgeList<T> where T: Hashable {
   }
 
   func addEdge(_ edge: Edge<T>) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering addEdge(edge=\(edge))\n".utf8))
     edges?.append(edge)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting addEdge(edge=\(edge))\n".utf8))
   }
 
 }
@@ -57,6 +59,7 @@ open class AdjacencyListGraph<T>: AbstractGraph<T> where T: Hashable {
   }
 
   open override func createVertex(_ data: T) -> Vertex<T> {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering createVertex(data=\(data))\n".utf8))
     // check if the vertex already exists
     let matchingVertices = vertices.filter { vertex in
       return vertex.data == data
@@ -69,26 +72,35 @@ open class AdjacencyListGraph<T>: AbstractGraph<T> where T: Hashable {
     // if the vertex doesn't exist, create a new one
     let vertex = Vertex(data: data, index: adjacencyList.count)
     adjacencyList.append(EdgeList(vertex: vertex))
+	FileHandle.standardError.write(Data("[ERROR] createVertex(data=\(data)): vertex → \(vertex)\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting createVertex(data=\(data))\n".utf8))
     return vertex
   }
 
   open override func addDirectedEdge(_ from: Vertex<T>, to: Vertex<T>, withWeight weight: Double?) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering addDirectedEdge(from=\(from),to=\(to),weight=\(weight))\n".utf8))
     // works
     let edge = Edge(from: from, to: to, weight: weight)
     let edgeList = adjacencyList[from.index]
+	FileHandle.standardError.write(Data("[ERROR] addDirectedEdge(from=\(from),to=\(to),weight=\(weight)): edge → \(edge)\n".utf8))
     if edgeList.edges != nil {
         edgeList.addEdge(edge)
     } else {
         edgeList.edges = [edge]
+		FileHandle.standardError.write(Data("[DEBUG] addDirectedEdge(from=\(from),to=\(to),weight=\(weight)): edgeList.edges → \(edgeList.edges)\n".utf8))
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting addDirectedEdge(from=\(from),to=\(to),weight=\(weight))\n".utf8))
   }
 
   open override func addUndirectedEdge(_ vertices: (Vertex<T>, Vertex<T>), withWeight weight: Double?) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering addUndirectedEdge(vertices=\(vertices),weight=\(weight))\n".utf8))
     addDirectedEdge(vertices.0, to: vertices.1, withWeight: weight)
     addDirectedEdge(vertices.1, to: vertices.0, withWeight: weight)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting addUndirectedEdge(vertices=\(vertices),weight=\(weight))\n".utf8))
   }
 
   open override func weightFrom(_ sourceVertex: Vertex<T>, to destinationVertex: Vertex<T>) -> Double? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering weightFrom(sourceVertex=\(sourceVertex),destinationVertex=\(destinationVertex))\n".utf8))
     guard let edges = adjacencyList[sourceVertex.index].edges else {
       return nil
     }
@@ -99,10 +111,13 @@ open class AdjacencyListGraph<T>: AbstractGraph<T> where T: Hashable {
       }
     }
 
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting weightFrom(sourceVertex=\(sourceVertex),destinationVertex=\(destinationVertex))\n".utf8))
     return nil
   }
 
   open override func edgesFrom(_ sourceVertex: Vertex<T>) -> [Edge<T>] {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering edgesFrom(sourceVertex=\(sourceVertex))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting edgesFrom(sourceVertex=\(sourceVertex))\n".utf8))
     return adjacencyList[sourceVertex.index].edges ?? []
   }
 

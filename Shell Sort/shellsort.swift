@@ -1,3 +1,4 @@
+import Foundation
 // The MIT License (MIT)
 
 // Copyright (c) 2016 Mike Taghavi (mitghi[at]me.com)
@@ -21,6 +22,8 @@
 // SOFTWARE.
 
 public func insertionSort(_ list: inout [Int], start: Int, gap: Int) {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering insertionSort(list=\(list),start=\(start),gap=\(gap))\n".utf8))
+  FileHandle.standardError.write(Data("[ERROR] >>> Entering insertionSort(list=\(list),start=\(start),gap=\(gap))\n".utf8))
   for i in stride(from: (start + gap), to: list.count, by: gap) {
     let currentValue = list[i]
     var pos = i
@@ -30,9 +33,11 @@ public func insertionSort(_ list: inout [Int], start: Int, gap: Int) {
     }
     list[pos] = currentValue
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting insertionSort(list=\(list),start=\(start),gap=\(gap))\n".utf8))
 }
 
 public func shellSort(_ list: inout [Int]) {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering shellSort(list=\(list))\n".utf8))
   var sublistCount = list.count / 2
   while sublistCount > 0 {
     for pos in 0..<sublistCount {
@@ -40,4 +45,5 @@ public func shellSort(_ list: inout [Int]) {
     }
     sublistCount = sublistCount / 2
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting shellSort(list=\(list))\n".utf8))
 }

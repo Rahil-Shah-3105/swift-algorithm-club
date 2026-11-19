@@ -1,7 +1,9 @@
+import Foundation
 //: Playground - noun: a place where people can play
 
 // Simple little debug function to make testing output pretty
 func check(_ tree: ThreadedBinaryTree<Int>?) {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering check(tree=\(tree))\n".utf8))
   if let tree = tree {
     print("\(tree.count) Total Nodes:")
     print(tree)
@@ -25,6 +27,7 @@ func check(_ tree: ThreadedBinaryTree<Int>?) {
     } else {
       print("This tree is nil.")
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting check(tree=\(tree))\n".utf8))
 }
 
 print("\nTree with Single Node")

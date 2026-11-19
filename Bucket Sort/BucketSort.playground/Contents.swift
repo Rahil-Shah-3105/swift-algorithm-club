@@ -1,3 +1,4 @@
+import Foundation
 //
 //  BucketSort.playground
 //
@@ -26,6 +27,8 @@
 
 extension Int: IntConvertible, Sortable {
     public func toInt() -> Int {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering toInt()\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting toInt()\n".utf8))
         return self
     }
 }

@@ -1,3 +1,4 @@
+import Foundation
 /*
   Segment tree
 
@@ -36,12 +37,15 @@ public class SegmentTree<T> {
 	}
 
 	public func query(leftBound: Int, rightBound: Int) -> T {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering query(leftBound=\(leftBound),rightBound=\(rightBound))\n".utf8))
 		if self.leftBound == leftBound && self.rightBound == rightBound {
 			return self.value
 		}
 
 		guard let leftChild = leftChild else { fatalError("leftChild should not be nil") }
+		FileHandle.standardError.write(Data("[ERROR] query(leftBound=\(leftBound),rightBound=\(rightBound)): leftChild → \(leftChild)\n".utf8))
 		guard let rightChild = rightChild else { fatalError("rightChild should not be nil") }
+		FileHandle.standardError.write(Data("[ERROR] query(leftBound=\(leftBound),rightBound=\(rightBound)): rightChild → \(rightChild)\n".utf8))
 
 		if leftChild.rightBound < leftBound {
 			return rightChild.query(leftBound: leftBound, rightBound: rightBound)
@@ -50,11 +54,14 @@ public class SegmentTree<T> {
 		} else {
 			let leftResult = leftChild.query(leftBound: leftBound, rightBound: leftChild.rightBound)
 			let rightResult = rightChild.query(leftBound:rightChild.leftBound, rightBound: rightBound)
+			FileHandle.standardError.write(Data("[ERROR] query(leftBound=\(leftBound),rightBound=\(rightBound)): leftResult → \(leftResult)\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting query(leftBound=\(leftBound),rightBound=\(rightBound))\n".utf8))
 			return function(leftResult, rightResult)
 		}
 	}
 
 	public func replaceItem(at index: Int, withItem item: T) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering replaceItem(index=\(index),item=\(item))\n".utf8))
 		if leftBound == rightBound {
 			value = item
 		} else if let leftChild = leftChild, let rightChild = rightChild {
@@ -65,5 +72,6 @@ public class SegmentTree<T> {
 			}
 			value = function(leftChild.value, rightChild.value)
 		}
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting replaceItem(index=\(index),item=\(item))\n".utf8))
 	}
 }

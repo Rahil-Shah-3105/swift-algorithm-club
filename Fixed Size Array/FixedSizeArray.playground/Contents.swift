@@ -1,3 +1,4 @@
+import Foundation
 //: Playground - noun: a place where people can play
 
 /*
@@ -24,26 +25,34 @@ struct FixedSizeArray<T> {
   }
 
   mutating func append(_ newElement: T) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering append(newElement=\(newElement))\n".utf8))
     assert(count < maxSize)
     array[count] = newElement
     count += 1
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting append(newElement=\(newElement))\n".utf8))
   }
 
   mutating func removeAt(index: Int) -> T {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering removeAt(index=\(index))\n".utf8))
     assert(index >= 0)
     assert(index < count)
     count -= 1
     let result = array[index]
+	FileHandle.standardError.write(Data("[ERROR] removeAt(index=\(index)): result → \(result)\n".utf8))
     array[index] = array[count]
     array[count] = defaultValue
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting removeAt(index=\(index))\n".utf8))
     return result
   }
 
   mutating func removeAll() {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering removeAll()\n".utf8))
     for i in 0..<count {
       array[i] = defaultValue
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting removeAll()\n".utf8))
     count = 0
+	FileHandle.standardError.write(Data("[DEBUG] removeAll(): count → \(count)\n".utf8))
   }
 }
 

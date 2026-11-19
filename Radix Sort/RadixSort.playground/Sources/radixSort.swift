@@ -1,3 +1,4 @@
+import Foundation
 /*
  
  Sorting Algorithm that sorts an input array of integers digit by digit.
@@ -6,6 +7,7 @@
 
 // NOTE: This implementation does not handle negative numbers
 public func radixSort(_ array: inout [Int] ) {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering radixSort(array=\(array))\n".utf8))
   let radix = 10  //Here we define our radix to be 10
   var done = false
   var index: Int
@@ -22,6 +24,7 @@ public func radixSort(_ array: inout [Int] ) {
 
     for number in array {
       index = number / digit  //Which bucket will we access?
+	FileHandle.standardError.write(Data("[DEBUG] radixSort(array=\(array)): index → \(index)\n".utf8))
       buckets[index % radix].append(number)
       if done && index > 0 {  //If we arent done, continue to finish, otherwise we are done
         done = false
@@ -40,4 +43,5 @@ public func radixSort(_ array: inout [Int] ) {
 
     digit *= radix  //Move to the next digit
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting radixSort(array=\(array))\n".utf8))
 }

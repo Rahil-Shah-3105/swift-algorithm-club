@@ -1,3 +1,4 @@
+import Foundation
 /*
   Binary search tree using value types
 
@@ -31,6 +32,7 @@ public enum BinarySearchTree<T: Comparable> {
     Performance: runs in O(h) time, where h is the height of the tree.
   */
   public func insert(newValue: T) -> BinarySearchTree {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(newValue=\(newValue))\n".utf8))
     switch self {
     case .empty:
       return .leaf(newValue)
@@ -46,6 +48,7 @@ public enum BinarySearchTree<T: Comparable> {
       if newValue < value {
         return .node(left.insert(newValue), value, right)
       } else {
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(newValue=\(newValue))\n".utf8))
         return .node(left, value, right.insert(newValue))
       }
     }
@@ -56,6 +59,7 @@ public enum BinarySearchTree<T: Comparable> {
     Performance: runs in O(h) time, where h is the height of the tree.
   */
   public func search(x: T) -> BinarySearchTree? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering search(x=\(x))\n".utf8))
     switch self {
     case .empty:
       return nil
@@ -67,12 +71,15 @@ public enum BinarySearchTree<T: Comparable> {
       } else if y < x {
         return right.search(x)
       } else {
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting search(x=\(x))\n".utf8))
         return self
       }
     }
   }
 
   public func contains(x: T) -> Bool {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering contains(x=\(x))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting contains(x=\(x))\n".utf8))
     return search(x) != nil
   }
 
@@ -80,6 +87,7 @@ public enum BinarySearchTree<T: Comparable> {
     Returns the leftmost descendent. O(h) time.
   */
   public func minimum() -> BinarySearchTree {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering minimum()\n".utf8))
     var node = self
     var prev = node
     while case let .node(next, _, _) = node {
@@ -89,6 +97,7 @@ public enum BinarySearchTree<T: Comparable> {
     if case .leaf = node {
       return node
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting minimum()\n".utf8))
     return prev
   }
 
@@ -96,6 +105,7 @@ public enum BinarySearchTree<T: Comparable> {
     Returns the rightmost descendent. O(h) time.
   */
   public func maximum() -> BinarySearchTree {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering maximum()\n".utf8))
     var node = self
     var prev = node
     while case let .node(_, _, next) = node {
@@ -105,6 +115,7 @@ public enum BinarySearchTree<T: Comparable> {
     if case .leaf = node {
       return node
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting maximum()\n".utf8))
     return prev
   }
 }

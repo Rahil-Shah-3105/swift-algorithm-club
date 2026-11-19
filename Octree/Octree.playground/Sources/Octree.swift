@@ -60,6 +60,8 @@ public struct Box: CustomStringConvertible {
     }
     
     public func contains(_ point: vector_double3) -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering contains(point=\(point))\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting contains(point=\(point))\n".utf8))
         return (boxMin.x <= point.x && point.x <= boxMax.x) && (boxMin.y <= point.y && point.y <= boxMax.y) && (boxMin.z <= point.z && point.z <= boxMax.z)
     }
     
@@ -74,6 +76,7 @@ public struct Box: CustomStringConvertible {
     }
     
     public func isContained(in box: Box) -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering isContained(box=\(box))\n".utf8))
         return
             self.boxMin.x >= box.boxMin.x &&
                 self.boxMin.y >= box.boxMin.y &&
@@ -81,12 +84,14 @@ public struct Box: CustomStringConvertible {
                 self.boxMax.x <= box.boxMax.x &&
                 self.boxMax.y <= box.boxMax.y &&
                 self.boxMax.z <= box.boxMax.z
+				FileHandle.standardError.write(Data("[WARN] <<< Exiting isContained(box=\(box))\n".utf8))
     }
     
     /* This intersect function does not handle all possibilities such as two beams
      of different diameter crossing each other half way. But it does cover all cases
      needed for an octree as the bounding box has to contain the given intersect box */
     public func intersects(_ box: Box) -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering intersects(box=\(box))\n".utf8))
         let corners = [
             vector_double3(boxMin.x, boxMax.y, boxMax.z), //frontLeftTop
             vector_double3(boxMin.x, boxMin.y, boxMax.z), //frontLeftBottom
@@ -135,16 +140,20 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
     }
     
     private func recursiveDescription(withTabCount count: Int) -> String {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering recursiveDescription(count=\(count))\n".utf8))
         let indent = String(repeating: "\t", count: count)
         var result = "\(indent)" + description + "\n"
+		FileHandle.standardError.write(Data("[ERROR] recursiveDescription(count=\(count)): result → \(result)\n".utf8))
         switch type {
         case .internal(let children):
+			FileHandle.standardError.write(Data("[ERROR] recursiveDescription(count=\(count)): indent → \(indent)\n".utf8))
             for child in children {
                 result += child.recursiveDescription(withTabCount: count + 1)
             }
         default:
             break
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting recursiveDescription(count=\(count))\n".utf8))
         return result
     }
     
@@ -178,6 +187,7 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
             }
             
             mutating func next() -> OctreeNode? {
+				FileHandle.standardError.write(Data("[ERROR] >>> Entering next()\n".utf8))
                 defer { index += 1 }
                 switch index {
                 case 0: return children.frontLeftTop
@@ -190,10 +200,13 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
                 case 7: return children.backRightBottom
                 default: return nil
                 }
+				FileHandle.standardError.write(Data("[WARN] <<< Exiting next()\n".utf8))
             }
         }
         
         func makeIterator() -> ChildrenIterator {
+			FileHandle.standardError.write(Data("[ERROR] >>> Entering makeIterator()\n".utf8))
+            FileHandle.standardError.write(Data("[WARN] <<< Exiting makeIterator()\n".utf8))
             return ChildrenIterator(children: self)
         }
     }
@@ -204,10 +217,13 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
     
     @discardableResult
     func add(_ element: T, at point: vector_double3) -> OctreeNode {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering add(element=\(element),point=\(point))\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting add(element=\(element),point=\(point))\n".utf8))
         return tryAdd(element, at: point)!
     }
     
     private func tryAdd(_ element: T, at point: vector_double3) -> OctreeNode? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering tryAdd(element=\(element),point=\(point))\n".utf8))
         if !box.contains(point) {
             return nil
         }
@@ -233,10 +249,18 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
                 }
             } else {
                 self.elements = [element]
+				FileHandle.standardError.write(Data("[DEBUG] tryAdd(element=\(element),point=\(point)): self.elements → \(self.elements)\n".utf8))
                 self.point = point
+				FileHandle.standardError.write(Data("[DEBUG] tryAdd(element=\(element),point=\(point)): self.point → \(self.point)\n".utf8))
+				FileHandle.standardError.write(Data("[ERROR] >>> Entering subdivide(element=\(element),point=\(point))\n".utf8))
+				FileHandle.standardError.write(Data("[DEBUG] subdivide(element=\(element),point=\(point)): type → \(type)\n".utf8))
+				FileHandle.standardError.write(Data("[DEBUG] subdivide(element=\(element),point=\(point)): self.elements → \(self.elements)\n".utf8))
+				FileHandle.standardError.write(Data("[DEBUG] subdivide(element=\(element),point=\(point)): self.point → \(self.point)\n".utf8))
+				FileHandle.standardError.write(Data("[WARN] <<< Exiting subdivide(element=\(element),point=\(point))\n".utf8))
                 return self
             }
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting tryAdd(element=\(element),point=\(point))\n".utf8))
     }
     
     func add(_ elements: [T], at point: vector_double3) {
@@ -247,6 +271,7 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
     
     @discardableResult
     func remove(_ element: T) -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering remove(element=\(element))\n".utf8))
         switch type {
         case .leaf:
             if let elements = self.elements {
@@ -257,6 +282,7 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
                     // if elements is now empty remove it
                     if self.elements.isEmpty {
                         self.elements = nil
+						FileHandle.standardError.write(Data("[DEBUG] remove(element=\(element)): self.elements → \(self.elements)\n".utf8))
                     }
                     return true
                 }
@@ -268,11 +294,13 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
                     return true
                 }
             }
+			FileHandle.standardError.write(Data("[WARN] <<< Exiting remove(element=\(element))\n".utf8))
             return false
         }
     }
     
     func elements(at point: vector_double3) -> [T]? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering elements(point=\(point))\n".utf8))
         switch type {
         case .leaf:
             if self.point == point {
@@ -286,6 +314,7 @@ public class OctreeNode<T: Equatable>: CustomStringConvertible {
             }
         }
         // tree does not contain given point
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting elements(box=\(box))\n".utf8))
         return nil
     }
     

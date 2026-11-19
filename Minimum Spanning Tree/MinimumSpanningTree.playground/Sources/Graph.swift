@@ -1,3 +1,4 @@
+import Foundation
 // Undirected edge
 public struct Edge<T>: CustomStringConvertible {
   public let vertex1: T
@@ -31,6 +32,7 @@ public struct Graph<T: Hashable>: CustomStringConvertible {
   }
 
   public mutating func addEdge(vertex1 v1: T, vertex2 v2: T, weight w: Int) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering addEdge(v1=\(v1),v2=\(v2),w=\(w))\n".utf8))
     edgeList.append(Edge(vertex1: v1, vertex2: v2, weight: w))
     vertices.insert(v1)
     vertices.insert(v2)
@@ -40,6 +42,9 @@ public struct Graph<T: Hashable>: CustomStringConvertible {
 
     adjList[v2] = adjList[v2] ?? []
     adjList[v2]?.append((vertex: v1, weight: w))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting addEdge(v1=\(v1),v2=\(v2),w=\(w))\n".utf8))
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering addEdge(edge=\(edge))\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting addEdge(edge=\(edge))\n".utf8))
   }
 
   public mutating func addEdge(_ edge: Edge<T>) {

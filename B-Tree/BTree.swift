@@ -1,3 +1,4 @@
+import Foundation
 // The MIT License (MIT)
 
 // Copyright (c) 2016 Viktor Szilárd Simkó (aqviktor[at]gmail.com)
@@ -70,6 +71,7 @@ extension BTreeNode {
    *    - key: the key of the value to be returned
    */
   func value(for key: Key) -> Value? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering value(key=\(key))\n".utf8))
     var index = keys.startIndex
 
     while (index + 1) < keys.endIndex && keys[index] < key {
@@ -81,6 +83,7 @@ extension BTreeNode {
     } else if key < keys[index] {
       return children?[index].value(for: key)
     } else {
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting value(key=\(key))\n".utf8))
       return children?[(index + 1)].value(for: key)
     }
   }
@@ -97,12 +100,14 @@ extension BTreeNode {
    *    - process: the closure to be executed for every key
    */
   func traverseKeysInOrder(_ process: (Key) -> Void) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering traverseKeysInOrder(process=\(process))\n".utf8))
     for i in 0..<numberOfKeys {
       children?[i].traverseKeysInOrder(process)
       process(keys[i])
     }
 
     children?.last?.traverseKeysInOrder(process)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting traverseKeysInOrder(process=\(process))\n".utf8))
   }
 }
 
@@ -118,6 +123,7 @@ extension BTreeNode {
    *    - key: the key for the `value`
    */
   func insert(_ value: Value, for key: Key) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(value=\(value),key=\(key))\n".utf8))
     var index = keys.startIndex
 
     while index < keys.endIndex && keys[index] < key {
@@ -139,6 +145,7 @@ extension BTreeNode {
         split(child: children![index], atIndex: index)
       }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(value=\(value),key=\(key))\n".utf8))
   }
 
   /**
@@ -151,6 +158,7 @@ extension BTreeNode {
    *    - index: the index of the key, which will be moved up to the parent
    */
   private func split(child: BTreeNode, atIndex index: Int) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering split(child=\(child),index=\(index))\n".utf8))
     let middleIndex = child.numberOfKeys / 2
     keys.insert(child.keys[middleIndex], at: index)
     values.insert(child.values[middleIndex], at: index)
@@ -173,6 +181,7 @@ extension BTreeNode {
       )
       child.children!.removeSubrange(child.children!.indices.suffix(from: (middleIndex + 1)))
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting split(child=\(child),index=\(index))\n".utf8))
   }
 }
 
@@ -207,6 +216,7 @@ extension BTreeNode {
    *    - key: the key to be removed
    */
   func remove(_ key: Key) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering remove(key=\(key))\n".utf8))
     var index = keys.startIndex
 
     while (index + 1) < keys.endIndex && keys[index] < key {
@@ -250,6 +260,7 @@ extension BTreeNode {
         print("The key:\(key) is not in the tree")
       }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting remove(key=\(key))\n".utf8))
   }
 
   /**
@@ -264,6 +275,7 @@ extension BTreeNode {
    *    - index: the index of the child to be fixed in the current node
    */
   private func fix(childWithTooFewKeys child: BTreeNode, atIndex index: Int) {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering fix(child=\(child),index=\(index))\n".utf8))
 
     if (index - 1) >= 0 && children![(index - 1)].numberOfKeys > owner.order {
       move(keyAtIndex: (index - 1), to: child, from: children![(index - 1)], at: .left)
@@ -274,6 +286,7 @@ extension BTreeNode {
     } else {
       merge(child: child, atIndex: index, to: .right)
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting fix(child=\(child),index=\(index))\n".utf8))
   }
 
   /**
@@ -288,6 +301,7 @@ extension BTreeNode {
    */
   private func move(keyAtIndex index: Int, to targetNode: BTreeNode,
                                   from node: BTreeNode, at position: BTreeNodePosition) {
+								FileHandle.standardError.write(Data("[ERROR] >>> Entering move(index=\(index),targetNode=\(targetNode),node=\(node),position=\(position))\n".utf8))
     switch position {
     case .left:
       targetNode.keys.insert(keys[index], at: targetNode.keys.startIndex)
@@ -315,6 +329,7 @@ extension BTreeNode {
         node.children!.removeFirst()
       }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting move(index=\(index),targetNode=\(targetNode),node=\(node),position=\(position))\n".utf8))
   }
 
   /**
@@ -326,6 +341,7 @@ extension BTreeNode {
    *    - position: the position of the node to merge into
    */
   private func merge(child: BTreeNode, atIndex index: Int, to position: BTreeNodePosition) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering merge(child=\(child),index=\(index),position=\(position))\n".utf8))
     switch position {
     case .left:
       // We can merge to the left sibling
@@ -362,6 +378,7 @@ extension BTreeNode {
       }
     }
     children!.remove(at: index)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting merge(child=\(child),index=\(index),position=\(position))\n".utf8))
   }
 }
 
@@ -514,6 +531,7 @@ extension BTree {
    *    The root node of the tree contains `order` * 2 keys.
    */
   private func splitRoot() {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering splitRoot()\n".utf8))
     let middleIndexOfOldRoot = rootNode.numberOfKeys / 2
 
     let newRoot = BTreeNode<Key, Value>(
@@ -544,6 +562,7 @@ extension BTree {
 
     newRoot.children!.append(newRightChild)
     rootNode = newRoot
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting splitRoot()\n".utf8))
   }
 }
 

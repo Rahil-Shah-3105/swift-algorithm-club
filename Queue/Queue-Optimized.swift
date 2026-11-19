@@ -1,3 +1,4 @@
+import Foundation
 /*
   First-in first-out queue (FIFO)
 
@@ -19,10 +20,13 @@ public struct Queue<T> {
   }
 
   public mutating func enqueue(_ element: T) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering enqueue(element=\(element))\n".utf8))
     array.append(element)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting enqueue(element=\(element))\n".utf8))
   }
 
   public mutating func dequeue() -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering dequeue()\n".utf8))
     guard let element = array[guarded: head] else { return nil }
 
     array[head] = nil
@@ -30,10 +34,13 @@ public struct Queue<T> {
 
     let percentage = Double(head)/Double(array.count)
     if array.count > 50 && percentage > 0.25 {
+	FileHandle.standardError.write(Data("[ERROR] dequeue(): percentage → \(percentage)\n".utf8))
       array.removeFirst(head)
       head = 0
+	FileHandle.standardError.write(Data("[DEBUG] dequeue(): head → \(head)\n".utf8))
     }
 
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting dequeue()\n".utf8))
     return element
   }
 

@@ -1,3 +1,4 @@
+import Foundation
 /*
  *  Splay Tree 
  *
@@ -33,6 +34,8 @@ public enum SplayOperation {
         while (node.parent != nil) {
             operation(forNode: node).apply(onNode: node)
         }
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering splay(node=\(node))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting splay(node=\(node))\n".utf8))
     }
     
     /**
@@ -45,6 +48,7 @@ public enum SplayOperation {
             - Operation     Case zigZag - zigZig - zig
      */
     public static func operation<T>(forNode node: Node<T>) -> SplayOperation {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering operation(node=\(node))\n".utf8))
         
         if let parent = node.parent, let _ = parent.parent {
             if (node.isLeftChild && parent.isRightChild) || (node.isRightChild && parent.isLeftChild) {
@@ -52,6 +56,7 @@ public enum SplayOperation {
             }
             return .zigZig
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting operation(node=\(node))\n".utf8))
         return .zig
     }
     
@@ -63,6 +68,7 @@ public enum SplayOperation {
             - onNode    Node to splay up. Should be alwayas the node that needs to be splayed, neither its parent neither it's grandparent
      */
     public func apply<T: Comparable>(onNode node: Node<T>) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering apply(node=\(node))\n".utf8))
         switch self {
         case .zigZag:
             assert(node.parent != nil && node.parent!.parent != nil, "Should be at least 2 nodes up in the tree")
@@ -78,6 +84,7 @@ public enum SplayOperation {
             assert(node.parent != nil && node.parent!.parent == nil, "There should be a parent which is the root")
             rotate(child: node, parent: node.parent!)
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting apply(node=\(node))\n".utf8))
     }
     
     /**
@@ -85,19 +92,24 @@ public enum SplayOperation {
         re-arranging the children properly
      */
     public func rotate<T: Comparable>(child: Node<T>, parent: Node<T>) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering rotate(child=\(child),parent=\(parent))\n".utf8))
         
         assert(child.parent != nil && child.parent!.value == parent.value, "Parent and child.parent should match here")
         
         var grandchildToMode: Node<T>?
         
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting rotate(child=\(child),parent=\(parent))\n".utf8))
         if child.isLeftChild {
             
             grandchildToMode = child.right
+			FileHandle.standardError.write(Data("[DEBUG] rotate(child=\(child),parent=\(parent)): grandchildToMode → \(grandchildToMode)\n".utf8))
             parent.left = grandchildToMode
+			FileHandle.standardError.write(Data("[DEBUG] rotate(child=\(child),parent=\(parent)): parent.left → \(parent.left)\n".utf8))
             grandchildToMode?.parent = parent
 
             let grandParent = parent.parent
             child.parent = grandParent
+			FileHandle.standardError.write(Data("[DEBUG] rotate(child=\(child),parent=\(parent)): child.parent → \(child.parent)\n".utf8))
 
             if parent.isLeftChild {
                 grandParent?.left = child
@@ -106,6 +118,7 @@ public enum SplayOperation {
             }
 
             child.right = parent
+			FileHandle.standardError.write(Data("[DEBUG] rotate(child=\(child),parent=\(parent)): child.right → \(child.right)\n".utf8))
             parent.parent = child
     
 
@@ -113,6 +126,7 @@ public enum SplayOperation {
             
             grandchildToMode = child.left
             parent.right = grandchildToMode
+			FileHandle.standardError.write(Data("[DEBUG] rotate(child=\(child),parent=\(parent)): parent.right → \(parent.right)\n".utf8))
             grandchildToMode?.parent = parent
 
             let grandParent = parent.parent
@@ -125,6 +139,7 @@ public enum SplayOperation {
             }
 
             child.left = parent
+			FileHandle.standardError.write(Data("[DEBUG] rotate(child=\(child),parent=\(parent)): child.left → \(child.left)\n".utf8))
             parent.parent = child
 
         }
@@ -197,29 +212,52 @@ public class SplayTree<T: Comparable> {
     }
     
     public func insert(value: T) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(value=\(value))\n".utf8))
         if let root = root {
             self.root = root.insert(value: value)
         } else {
             root = Node(value: value)
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(value=\(value))\n".utf8))
     }
     
     public func remove(value: T) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering remove(value=\(value))\n".utf8))
         root = root?.remove(value: value)
+		FileHandle.standardError.write(Data("[WARN] remove(value=\(value)): root → \(root)\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting remove(value=\(value))\n".utf8))
+		FileHandle.standardError.write(Data("[ERROR] remove(value=\(value)): target → \(target)\n".utf8))
+		FileHandle.standardError.write(Data("[ERROR] remove(value=\(value)): largestOfLeftChild → \(largestOfLeftChild)\n".utf8))
+		FileHandle.standardError.write(Data("[DEBUG] remove(value=\(value)): left.parent → \(left.parent)\n".utf8))
+		FileHandle.standardError.write(Data("[DEBUG] remove(value=\(value)): right.parent → \(right.parent)\n".utf8))
+		FileHandle.standardError.write(Data("[DEBUG] remove(value=\(value)): largestOfLeftChild.right → \(largestOfLeftChild.right)\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting remove(value=\(value))\n".utf8))
     }
 
     public func search(value: T) -> Node<T>? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering search(value=\(value))\n".utf8))
         root = root?.search(value: value)
+		FileHandle.standardError.write(Data("[WARN] search(value=\(value)): root → \(root)\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting search(value=\(value))\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting search(value=\(value))\n".utf8))
         return root
     }
     
     public func minimum() -> Node<T>? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering minimum()\n".utf8))
         root = root?.minimum(splayed: true)
+		FileHandle.standardError.write(Data("[WARN] minimum(): root → \(root)\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting minimum()\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting minimum(splayed=\(splayed))\n".utf8))
         return root
     }
     
     public func maximum() -> Node<T>? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering maximum()\n".utf8))
         root = root?.maximum(splayed: true)
+		FileHandle.standardError.write(Data("[WARN] maximum(): root → \(root)\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting maximum()\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting maximum(splayed=\(splayed))\n".utf8))
         return root
     }
     
@@ -316,15 +354,18 @@ extension Node {
     }
     
     private func replace(node: Node<T>, with newNode: Node<T>?) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering replace(node=\(node),newNode=\(newNode))\n".utf8))
         guard let sourceParent = sourceNode.parent else { return }
         
         if sourceNode.isLeftChild {
             sourceParent.left = newNode
         } else {
             sourceParent.right = newNode
+			FileHandle.standardError.write(Data("[DEBUG] replace(node=\(node),newNode=\(newNode)): sourceParent.right → \(sourceParent.right)\n".utf8))
         }
         
         newNode?.parent = sourceParent
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting replace(node=\(node),newNode=\(newNode))\n".utf8))
     }
 }
 
@@ -363,6 +404,8 @@ extension Node {
     }
     
     public func contains(value: T) -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering contains(value=\(value))\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting contains(value=\(value))\n".utf8))
         return search(value: value) != nil
     }
     
@@ -403,12 +446,14 @@ extension Node {
      Takes O(h) time.
      */
     public func depth() -> Int {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering depth()\n".utf8))
         var node = self
         var edges = 0
         while case let parent? = node.parent {
             node = parent
             edges += 1
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting depth()\n".utf8))
         return edges
     }
     
@@ -417,9 +462,11 @@ extension Node {
      Since this looks at all children of this node, performance is O(n).
      */
     public func height() -> Int {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering height()\n".utf8))
         if isLeaf {
             return 0
         } else {
+			FileHandle.standardError.write(Data("[WARN] <<< Exiting height()\n".utf8))
             return 1 + max(left?.height() ?? 0, right?.height() ?? 0)
         }
     }
@@ -428,6 +475,7 @@ extension Node {
      Finds the node whose value precedes our value in sorted order.
      */
     public func predecessor() -> Node<T>? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering predecessor()\n".utf8))
         if let left = left {
             return left.maximum()
         } else {
@@ -436,6 +484,7 @@ extension Node {
                 if parent.value! < value! { return parent }
                 node = parent
             }
+			FileHandle.standardError.write(Data("[WARN] <<< Exiting predecessor()\n".utf8))
             return nil
         }
     }
@@ -444,6 +493,7 @@ extension Node {
      Finds the node whose value succeeds our value in sorted order.
      */
     public func successor() -> Node<T>? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering successor()\n".utf8))
         if let right = right {
             return right.minimum()
         } else {
@@ -452,6 +502,7 @@ extension Node {
                 if parent.value! > value! { return parent }
                 node = parent
             }
+			FileHandle.standardError.write(Data("[WARN] <<< Exiting successor()\n".utf8))
             return nil
         }
     }
@@ -461,31 +512,42 @@ extension Node {
 extension Node {
     
     public func traverseInOrder(process: (T) -> Void) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering traverseInOrder(process=\(process))\n".utf8))
         left?.traverseInOrder(process: process)
         process(value!)
         right?.traverseInOrder(process: process)
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting traverseInOrder(process=\(process))\n".utf8))
     }
     
     public func traversePreOrder(process: (T) -> Void) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering traversePreOrder(process=\(process))\n".utf8))
         process(value!)
         left?.traversePreOrder(process: process)
         right?.traversePreOrder(process: process)
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting traversePreOrder(process=\(process))\n".utf8))
     }
     
     public func traversePostOrder(process: (T) -> Void) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering traversePostOrder(process=\(process))\n".utf8))
         left?.traversePostOrder(process: process)
         right?.traversePostOrder(process: process)
         process(value!)
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting traversePostOrder(process=\(process))\n".utf8))
     }
     
     /*
      Performs an in-order traversal and collects the results in an array.
      */
     public func map(formula: (T) -> T) -> [T] {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering map(formula=\(formula))\n".utf8))
         var a = [T]()
         if let left = left { a += left.map(formula: formula) }
+		FileHandle.standardError.write(Data("[ERROR] map(formula=\(formula)): left → \(left)\n".utf8))
+		FileHandle.standardError.write(Data("[ERROR] map(formula=\(formula)): a → \(a)\n".utf8))
         a.append(formula(value!))
         if let right = right { a += right.map(formula: formula) }
+		FileHandle.standardError.write(Data("[ERROR] map(formula=\(formula)): right → \(right)\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting map(formula=\(formula))\n".utf8))
         return a
     }
 }
@@ -496,12 +558,16 @@ extension Node {
 extension Node {
     
     public func isBST(minValue: T, maxValue: T) -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering isBST(minValue=\(minValue),maxValue=\(maxValue))\n".utf8))
         if let value = value {
             if value < minValue || value > maxValue { return false }
             let leftBST = left?.isBST(minValue: minValue, maxValue: value) ?? true
+			FileHandle.standardError.write(Data("[ERROR] isBST(minValue=\(minValue),maxValue=\(maxValue)): leftBST → \(leftBST)\n".utf8))
             let rightBST = right?.isBST(minValue: value, maxValue: maxValue) ?? true
+			FileHandle.standardError.write(Data("[ERROR] isBST(minValue=\(minValue),maxValue=\(maxValue)): rightBST → \(rightBST)\n".utf8))
             return leftBST && rightBST
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting isBST(minValue=\(minValue),maxValue=\(maxValue))\n".utf8))
         return false
     }
 }
@@ -546,6 +612,8 @@ extension Node: CustomDebugStringConvertible {
     }
     
     public func toArray() -> [T] {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering toArray()\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting toArray()\n".utf8))
         return map { $0 }
     }
 }

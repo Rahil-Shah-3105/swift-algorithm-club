@@ -1,3 +1,4 @@
+import Foundation
 /*
   A binary search tree.
 
@@ -74,6 +75,7 @@ extension BinarySearchTree {
     Performance: runs in O(h) time, where h is the height of the tree.
   */
   public func insert(value: T) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(value=\(value))\n".utf8))
     if value < self.value {
       if let left = left {
         left.insert(value: value)
@@ -89,6 +91,7 @@ extension BinarySearchTree {
         right?.parent = self
       }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(value=\(value))\n".utf8))
   }
 }
 
@@ -105,6 +108,7 @@ extension BinarySearchTree {
     Performance: runs in O(h) time, where h is the height of the tree.
   */
   @discardableResult public func remove() -> BinarySearchTree? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering remove()\n".utf8))
     let replacement: BinarySearchTree?
 
     // Replacement for current node can be either biggest one on the left or
@@ -128,21 +132,26 @@ extension BinarySearchTree {
 
     // The current node is no longer part of the tree, so clean it up.
     parent = nil
+	FileHandle.standardError.write(Data("[DEBUG] remove(): parent → \(parent)\n".utf8))
     left = nil
     right = nil
 
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting remove()\n".utf8))
     return replacement
   }
 
   private func reconnectParentTo(node: BinarySearchTree?) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering reconnectParentTo(node=\(node))\n".utf8))
     if let parent = parent {
       if isLeftChild {
         parent.left = node
       } else {
         parent.right = node
+		FileHandle.standardError.write(Data("[DEBUG] reconnectParentTo(node=\(node)): parent.right → \(parent.right)\n".utf8))
       }
     }
     node?.parent = parent
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting reconnectParentTo(node=\(node))\n".utf8))
   }
 }
 
@@ -154,6 +163,7 @@ extension BinarySearchTree {
     Performance: runs in O(h) time, where h is the height of the tree.
   */
   public func search(value: T) -> BinarySearchTree? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering search(value=\(value))\n".utf8))
     var node: BinarySearchTree? = self
     while let n = node {
       if value < n.value {
@@ -164,6 +174,7 @@ extension BinarySearchTree {
         return node
       }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting search(value=\(value))\n".utf8))
     return nil
   }
 
@@ -181,6 +192,8 @@ extension BinarySearchTree {
   */
 
   public func contains(value: T) -> Bool {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering contains(value=\(value))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting contains(value=\(value))\n".utf8))
     return search(value: value) != nil
   }
 
@@ -188,10 +201,12 @@ extension BinarySearchTree {
     Returns the leftmost descendent. O(h) time.
   */
   public func minimum() -> BinarySearchTree {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering minimum()\n".utf8))
     var node = self
     while let next = node.left {
       node = next
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting minimum()\n".utf8))
     return node
   }
 
@@ -199,10 +214,12 @@ extension BinarySearchTree {
     Returns the rightmost descendent. O(h) time.
   */
   public func maximum() -> BinarySearchTree {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering maximum()\n".utf8))
     var node = self
     while let next = node.right {
       node = next
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting maximum()\n".utf8))
     return node
   }
 
@@ -211,12 +228,14 @@ extension BinarySearchTree {
     Takes O(h) time.
   */
   public func depth() -> Int {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering depth()\n".utf8))
     var node = self
     var edges = 0
     while let parent = node.parent {
       node = parent
       edges += 1
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting depth()\n".utf8))
     return edges
   }
 
@@ -225,9 +244,11 @@ extension BinarySearchTree {
     Since this looks at all children of this node, performance is O(n).
   */
   public func height() -> Int {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering height()\n".utf8))
     if isLeaf {
       return 0
     } else {
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting height()\n".utf8))
       return 1 + max(left?.height() ?? 0, right?.height() ?? 0)
     }
   }
@@ -236,6 +257,7 @@ extension BinarySearchTree {
     Finds the node whose value precedes our value in sorted order.
   */
   public func predecessor() -> BinarySearchTree? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering predecessor()\n".utf8))
     if let left = left {
       return left.maximum()
     } else {
@@ -244,6 +266,7 @@ extension BinarySearchTree {
         if parent.value < value { return parent }
         node = parent
       }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting predecessor()\n".utf8))
       return nil
     }
   }
@@ -252,6 +275,7 @@ extension BinarySearchTree {
     Finds the node whose value succeeds our value in sorted order.
   */
   public func successor() -> BinarySearchTree? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering successor()\n".utf8))
     if let right = right {
       return right.minimum()
     } else {
@@ -260,6 +284,7 @@ extension BinarySearchTree {
         if parent.value > value { return parent }
         node = parent
       }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting successor()\n".utf8))
       return nil
     }
   }
@@ -269,31 +294,42 @@ extension BinarySearchTree {
 
 extension BinarySearchTree {
   public func traverseInOrder(process: (T) -> Void) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering traverseInOrder(process=\(process))\n".utf8))
     left?.traverseInOrder(process: process)
     process(value)
     right?.traverseInOrder(process: process)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting traverseInOrder(process=\(process))\n".utf8))
   }
 
   public func traversePreOrder(process: (T) -> Void) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering traversePreOrder(process=\(process))\n".utf8))
     process(value)
     left?.traversePreOrder(process: process)
     right?.traversePreOrder(process: process)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting traversePreOrder(process=\(process))\n".utf8))
   }
 
   public func traversePostOrder(process: (T) -> Void) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering traversePostOrder(process=\(process))\n".utf8))
     left?.traversePostOrder(process: process)
     right?.traversePostOrder(process: process)
     process(value)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting traversePostOrder(process=\(process))\n".utf8))
   }
 
   /*
     Performs an in-order traversal and collects the results in an array.
   */
   public func map(formula: (T) -> T) -> [T] {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering map(formula=\(formula))\n".utf8))
     var a = [T]()
     if let left = left { a += left.map(formula: formula) }
+	FileHandle.standardError.write(Data("[ERROR] map(formula=\(formula)): left → \(left)\n".utf8))
+	FileHandle.standardError.write(Data("[ERROR] map(formula=\(formula)): a → \(a)\n".utf8))
     a.append(formula(value))
     if let right = right { a += right.map(formula: formula) }
+	FileHandle.standardError.write(Data("[ERROR] map(formula=\(formula)): right → \(right)\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting map(formula=\(formula))\n".utf8))
     return a
   }
 }
@@ -303,9 +339,13 @@ extension BinarySearchTree {
 */
 extension BinarySearchTree {
   public func isBST(minValue: T, maxValue: T) -> Bool {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering isBST(minValue=\(minValue),maxValue=\(maxValue))\n".utf8))
     if value < minValue || value > maxValue { return false }
     let leftBST = left?.isBST(minValue: minValue, maxValue: value) ?? true
+	FileHandle.standardError.write(Data("[ERROR] isBST(minValue=\(minValue),maxValue=\(maxValue)): leftBST → \(leftBST)\n".utf8))
     let rightBST = right?.isBST(minValue: value, maxValue: maxValue) ?? true
+	FileHandle.standardError.write(Data("[ERROR] isBST(minValue=\(minValue),maxValue=\(maxValue)): rightBST → \(rightBST)\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting isBST(minValue=\(minValue),maxValue=\(maxValue))\n".utf8))
     return leftBST && rightBST
   }
 }
@@ -326,6 +366,8 @@ extension BinarySearchTree: CustomStringConvertible {
   }
 
    public func toArray() -> [T] {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering toArray()\n".utf8))
+      FileHandle.standardError.write(Data("[WARN] <<< Exiting toArray()\n".utf8))
       return map { $0 }
    }
 

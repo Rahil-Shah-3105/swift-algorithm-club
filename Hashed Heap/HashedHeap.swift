@@ -1,3 +1,4 @@
+import Foundation
 // Written by Alejandro Isaza. Adapted from heap implementation written by Kevin Randrup and Matthijs Hollemans.
 
 /// Heap with an index hash map (dictionary) to speed up lookups by value.
@@ -38,14 +39,17 @@ public struct HashedHeap<T: Hashable> {
   ///
   /// - Complexity: O(n)
   private mutating func build(from array: [T]) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering build(array=\(array))\n".utf8))
     elements = array
     for index in elements.indices {
+	FileHandle.standardError.write(Data("[DEBUG] build(array=\(array)): elements → \(elements)\n".utf8))
       indices[elements[index]] = index
     }
     
     for i in stride(from: (elements.count/2 - 1), through: 0, by: -1) {
       shiftDown(i, heapSize: elements.count)
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting build(array=\(array))\n".utf8))
   }
   
   /// Whether the heap is empty.
@@ -70,6 +74,8 @@ public struct HashedHeap<T: Hashable> {
   ///
   /// - Complexity: Amortized constant
   public func index(of element: T) -> Int? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering index(element=\(element))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting index(element=\(element))\n".utf8))
     return indices[element]
   }
   
@@ -77,6 +83,8 @@ public struct HashedHeap<T: Hashable> {
   ///
   /// - Complexity: O(1)
   public func peek() -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering peek()\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting peek()\n".utf8))
     return elements.first
   }
   
@@ -86,9 +94,11 @@ public struct HashedHeap<T: Hashable> {
   ///
   /// - Complexity: O(log n)
   public mutating func insert(_ value: T) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(value=\(value))\n".utf8))
     elements.append(value)
     indices[value] = elements.count - 1
     shiftUp(elements.count - 1)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(value=\(value))\n".utf8))
   }
   
   /// Adds new values to the heap.
@@ -96,17 +106,22 @@ public struct HashedHeap<T: Hashable> {
     for value in sequence {
       insert(value)
     }
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering shiftUp(index=\(index))\n".utf8))
+	FileHandle.standardError.write(Data("[ERROR] shiftUp(index=\(index)): parentIndex → \(parentIndex)\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting shiftUp(index=\(index))\n".utf8))
   }
   
   /// Replaces an element in the hash.
   ///
   /// In a max-heap, the new element should be larger than the old one; in a min-heap it should be smaller.
   public mutating func replace(_ value: T, at index: Int) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering replace(value=\(value),index=\(index))\n".utf8))
     guard index < elements.count else { return }
     
     assert(isOrderedBefore(value, elements[index]))
     set(value, at: index)
     shiftUp(index)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting replace(value=\(value),index=\(index))\n".utf8))
   }
   
   /// Removes the root node from the heap.
@@ -116,6 +131,7 @@ public struct HashedHeap<T: Hashable> {
   /// - Complexity: O(log n)
   @discardableResult
   public mutating func remove() -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering remove()\n".utf8))
     if elements.isEmpty {
       return nil
     } else if elements.count == 1 {
@@ -126,6 +142,9 @@ public struct HashedHeap<T: Hashable> {
       let value = elements[0]
       set(removeLast(), at: 0)
       shiftDown()
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering removeLast()\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting removeLast()\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting remove()\n".utf8))
       return value
     }
   }
@@ -145,12 +164,16 @@ public struct HashedHeap<T: Hashable> {
       shiftUp(index)
     }
     return removeLast()
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering set(newValue=\(newValue),index=\(index))\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting set(newValue=\(newValue),index=\(index))\n".utf8))
   }
 
   /// Removes all elements from the heap.
   public mutating func removeAll() {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering removeAll()\n".utf8))
     elements.removeAll()
     indices.removeAll()
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting removeAll()\n".utf8))
   }
   
   /// Removes the last element from the heap.
@@ -181,7 +204,12 @@ public struct HashedHeap<T: Hashable> {
   }
   
   mutating func shiftDown() {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering shiftDown()\n".utf8))
     shiftDown(0, heapSize: elements.count)
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering shiftDown(index=\(index),heapSize=\(heapSize))\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting shiftDown()\n".utf8))
+	FileHandle.standardError.write(Data("[ERROR] shiftDown(index=\(index),heapSize=\(heapSize)): leftChildIndex → \(leftChildIndex)\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting shiftDown(index=\(index),heapSize=\(heapSize))\n".utf8))
   }
   
   /// Looks at a parent node and makes sure it is still larger (max-heap) or smaller (min-heap) than its childeren.
@@ -219,9 +247,11 @@ public struct HashedHeap<T: Hashable> {
   
   /// Swap two elements in the heap and update the indices hash.
   private mutating func swapAt(_ i: Int, _ j: Int) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering swapAt(i=\(i),j=\(j))\n".utf8))
     elements.swapAt(i, j)
     indices[elements[i]] = i
     indices[elements[j]] = j
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting swapAt(i=\(i),j=\(j))\n".utf8))
   }
   
   /// Returns the index of the parent of the element at index i.
@@ -229,6 +259,8 @@ public struct HashedHeap<T: Hashable> {
   /// - Note: The element at index 0 is the root of the tree and has no parent.
   @inline(__always)
   func parentIndex(of index: Int) -> Int {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering parentIndex(index=\(index))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting parentIndex(index=\(index))\n".utf8))
     return (index - 1) / 2
   }
   
@@ -237,6 +269,8 @@ public struct HashedHeap<T: Hashable> {
   /// - Note: this index can be greater than the heap size, in which case there is no left child.
   @inline(__always)
   func leftChildIndex(of index: Int) -> Int {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering leftChildIndex(index=\(index))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting leftChildIndex(index=\(index))\n".utf8))
     return 2*index + 1
   }
   
@@ -245,6 +279,8 @@ public struct HashedHeap<T: Hashable> {
   /// - Note: this index can be greater than the heap size, in which case there is no right child.
   @inline(__always)
   func rightChildIndex(of index: Int) -> Int {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering rightChildIndex(index=\(index))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting rightChildIndex(index=\(index))\n".utf8))
     return 2*index + 2
   }
 }

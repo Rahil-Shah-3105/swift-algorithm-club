@@ -98,6 +98,8 @@ public class RBTreeNode<T: Comparable>: Equatable {
     }
 
     public func getKey() -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering getKey()\n".utf8))
+      FileHandle.standardError.write(Data("[WARN] <<< Exiting getKey()\n".utf8))
       return key
     }
 }
@@ -122,22 +124,29 @@ public class RedBlackTree<T: Comparable> {
 
 extension RedBlackTree {
     public func count() -> Int {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering count()\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting count()\n".utf8))
         return size
     }
     
     public func isEmpty() -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering isEmpty()\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting isEmpty()\n".utf8))
         return size == 0
     }
     
     public func allElements() -> [T] {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering allElements()\n".utf8))
         var nodes: [T] = []
         
         getAllElements(node: root, nodes: &nodes)
         
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting allElements()\n".utf8))
         return nodes
     }
     
     private func getAllElements(node: RBTreeNode<T>, nodes: inout [T]) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering getAllElements(node=\(node),nodes=\(nodes))\n".utf8))
         guard !node.isNullLeaf else {
             return
         }
@@ -153,6 +162,7 @@ extension RedBlackTree {
         if let right = node.rightChild {
             getAllElements(node: right, nodes: &nodes)
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting getAllElements(node=\(node),nodes=\(nodes))\n".utf8))
     }
 }
 
@@ -172,6 +182,7 @@ extension RBTreeNode {
    * The successor is a node with the next larger key value of the current node
    */
   public func getSuccessor() -> RBNode? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering getSuccessor()\n".utf8))
     // If node has right child: successor min of this right tree
     if let rightChild = self.rightChild {
       if !rightChild.isNullLeaf {
@@ -187,6 +198,7 @@ extension RBTreeNode {
       }
       parent = currentNode.parent
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting getSuccessor()\n".utf8))
     return parent
   }
   
@@ -195,6 +207,7 @@ extension RBTreeNode {
   * The predecessor is a node with the next smaller key value of the current node
   */
   public func getPredecessor() -> RBNode? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering getPredecessor()\n".utf8))
     // if node has left child: predecessor is min of this left tree
     if let leftChild = leftChild, !leftChild.isNullLeaf {
       return leftChild.maximum()
@@ -208,6 +221,7 @@ extension RBTreeNode {
       }
       parent = currentNode.parent
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting getPredecessor()\n".utf8))
     return parent
   }
 }
@@ -219,12 +233,14 @@ extension RBTreeNode {
      * Returns the node with the minimum key of the current subtree
      */
     public func minimum() -> RBNode? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering minimum()\n".utf8))
         if let leftChild = leftChild {
             if !leftChild.isNullLeaf {
                 return leftChild.minimum()
             }
             return self
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting minimum()\n".utf8))
         return self
     }
     
@@ -232,12 +248,14 @@ extension RBTreeNode {
      * Returns the node with the maximum key of the current subtree
      */
     public func maximum() -> RBNode? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering maximum()\n".utf8))
         if let rightChild = rightChild {
             if !rightChild.isNullLeaf {
                 return rightChild.maximum()
             }
             return self
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting maximum()\n".utf8))
         return self
     }
 }
@@ -247,6 +265,8 @@ extension RedBlackTree {
      * Returns the node with the given key |input| if existing
      */
     public func search(input: T) -> RBNode? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering search(input=\(input))\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting search(input=\(input))\n".utf8))
         return search(key: input, node: root)
     }
     
@@ -282,9 +302,11 @@ extension RedBlackTree {
      * Returns the minimum key value of the whole tree
      */
     public func minValue() -> T? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering minValue()\n".utf8))
         guard let minNode = root.minimum() else {
             return nil
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting minValue()\n".utf8))
         return minNode.key
     }
     
@@ -292,9 +314,11 @@ extension RedBlackTree {
      * Returns the maximum key value of the whole tree
      */
     public func maxValue() -> T? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering maxValue()\n".utf8))
         guard let maxNode = root.maximum() else {
             return nil
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting maxValue()\n".utf8))
         return maxNode.key
     }
 }
@@ -309,6 +333,7 @@ extension RedBlackTree {
      * Runntime: O(log n)
      */
     public func insert(key: T) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(key=\(key))\n".utf8))
         // If key must be unique and find the key already existed, quit
         if search(input: key) != nil && !allowDuplicateNode {
             return
@@ -317,6 +342,7 @@ extension RedBlackTree {
         if root.isNullLeaf {
             root = RBNode(key: key)
         } else {
+			FileHandle.standardError.write(Data("[WARN] insert(key=\(key)): root → \(root)\n".utf8))
             insert(input: RBNode(key: key), node: root)
         }
         
@@ -329,6 +355,7 @@ extension RedBlackTree {
      * after inserting we call insertFixup to maintain the red-black properties
      */
     private func insert(input: RBNode, node: RBNode) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(input=\(input),node=\(node))\n".utf8))
         guard let inputKey = input.key, let nodeKey = node.key else {
             return
         }
@@ -353,19 +380,30 @@ extension RedBlackTree {
                 insert(input: input, node: child)
             }
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(key=\(key))\n".utf8))
     }
     
     private func addAsLeftChild(child: RBNode, parent: RBNode) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering addAsLeftChild(child=\(child),parent=\(parent))\n".utf8))
         parent.leftChild = child
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting addAsLeftChild(child=\(child),parent=\(parent))\n".utf8))
+		FileHandle.standardError.write(Data("[DEBUG] addAsLeftChild(child=\(child),parent=\(parent)): parent.leftChild → \(parent.leftChild)\n".utf8))
         child.parent = parent
+		FileHandle.standardError.write(Data("[DEBUG] addAsLeftChild(child=\(child),parent=\(parent)): child.parent → \(child.parent)\n".utf8))
         child.color = .red
+		FileHandle.standardError.write(Data("[DEBUG] addAsLeftChild(child=\(child),parent=\(parent)): child.color → \(child.color)\n".utf8))
         insertFixup(node: child)
     }
     
     private func addAsRightChild(child: RBNode, parent: RBNode) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering addAsRightChild(child=\(child),parent=\(parent))\n".utf8))
         parent.rightChild = child
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting addAsRightChild(child=\(child),parent=\(parent))\n".utf8))
+		FileHandle.standardError.write(Data("[DEBUG] addAsRightChild(child=\(child),parent=\(parent)): parent.rightChild → \(parent.rightChild)\n".utf8))
         child.parent = parent
+		FileHandle.standardError.write(Data("[DEBUG] addAsRightChild(child=\(child),parent=\(parent)): child.parent → \(child.parent)\n".utf8))
         child.color = .red
+		FileHandle.standardError.write(Data("[DEBUG] addAsRightChild(child=\(child),parent=\(parent)): child.color → \(child.color)\n".utf8))
         insertFixup(node: child)
     }
     
@@ -378,6 +416,7 @@ extension RedBlackTree {
      * - case 2b -> red-black tree
      */
     private func insertFixup(node z: RBNode) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering insertFixup(z=\(z))\n".utf8))
         if !z.isNullLeaf {
             guard let parentZ = z.parent else {
                 return
@@ -390,9 +429,12 @@ extension RedBlackTree {
                 // Case 1: Uncle red -> recolor + move z
                 if uncle.color == .red {
                     parentZ.color = .black
+					FileHandle.standardError.write(Data("[DEBUG] insertFixup(z=\(z)): parentZ.color → \(parentZ.color)\n".utf8))
                     uncle.color = .black
+					FileHandle.standardError.write(Data("[DEBUG] insertFixup(z=\(z)): uncle.color → \(uncle.color)\n".utf8))
                     if let grandparentZ = parentZ.parent {
                         grandparentZ.color = .red
+						FileHandle.standardError.write(Data("[DEBUG] insertFixup(z=\(z)): grandparentZ.color → \(grandparentZ.color)\n".utf8))
                         // Move z to grandparent and check again
                         insertFixup(node: grandparentZ)
                     }
@@ -407,22 +449,27 @@ extension RedBlackTree {
                     } else if parentZ.isRightChild && z.isLeftChild {
                         zNew = parentZ
                         rightRotate(node: zNew)
+						FileHandle.standardError.write(Data("[WARN] <<< Exiting leftRotate(x=\(x))\n".utf8))
                     }
                     // Case 2.b: z left child -> recolor + rotate
                     zNew.parent?.color = .black
                     if let grandparentZnew = zNew.grandparent {
                         grandparentZnew.color = .red
+						FileHandle.standardError.write(Data("[DEBUG] insertFixup(z=\(z)): grandparentZnew.color → \(grandparentZnew.color)\n".utf8))
                         if z.isLeftChild {
                             rightRotate(node: grandparentZnew)
                         } else {
                             leftRotate(node: grandparentZnew)
                         }
                         // We have a valid red-black-tree
+						FileHandle.standardError.write(Data("[WARN] <<< Exiting rightRotate(x=\(x))\n".utf8))
                     }
                 }
             }
         }
         root.color = .black
+		FileHandle.standardError.write(Data("[DEBUG] insertFixup(z=\(z)): root.color → \(root.color)\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting insertFixup(z=\(z))\n".utf8))
     }
 }
 
@@ -435,10 +482,13 @@ extension RedBlackTree {
      * Runntime: O(log n)
      */
     public func delete(key: T) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering delete(key=\(key))\n".utf8))
         if size == 1 {
             root = nullLeaf
+			FileHandle.standardError.write(Data("[WARN] delete(key=\(key)): root → \(root)\n".utf8))
             size -= 1
         } else if let node = search(key: key, node: root) {
+			FileHandle.standardError.write(Data("[ERROR] delete(key=\(key)): node → \(node)\n".utf8))
             if !node.isNullLeaf {
                 delete(node: node)
                 size -= 1
@@ -453,10 +503,14 @@ extension RedBlackTree {
      * black (as if it was red -> no violation of red-black properties)
      */
     private func delete(node z: RBNode) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering delete(z=\(z))\n".utf8))
         var nodeY = RBNode()
         var nodeX = RBNode()
         if let leftChild = z.leftChild, let rightChild = z.rightChild {
+		FileHandle.standardError.write(Data("[ERROR] delete(z=\(z)): nodeX → \(nodeX)\n".utf8))
+		FileHandle.standardError.write(Data("[ERROR] delete(z=\(z)): nodeY → \(nodeY)\n".utf8))
             if leftChild.isNullLeaf || rightChild.isNullLeaf {
+				FileHandle.standardError.write(Data("[WARN] <<< Exiting delete(key=\(key))\n".utf8))
                 nodeY = z
             } else {
                 if let successor = z.getSuccessor() {
@@ -472,6 +526,7 @@ extension RedBlackTree {
             }
         }
         nodeX.parent = nodeY.parent
+		FileHandle.standardError.write(Data("[DEBUG] delete(z=\(z)): nodeX.parent → \(nodeX.parent)\n".utf8))
         if let parentY = nodeY.parent {
             // Should never be the case, as parent of root = nil
             if parentY.isNullLeaf {
@@ -481,6 +536,7 @@ extension RedBlackTree {
                     parentY.leftChild = nodeX
                 } else {
                     parentY.rightChild = nodeX
+					FileHandle.standardError.write(Data("[DEBUG] delete(z=\(z)): parentY.rightChild → \(parentY.rightChild)\n".utf8))
                 }
             }
         } else {
@@ -488,12 +544,14 @@ extension RedBlackTree {
         }
         if nodeY != z {
             z.key = nodeY.key
+			FileHandle.standardError.write(Data("[DEBUG] delete(z=\(z)): z.key → \(z.key)\n".utf8))
         }
         // If sliced out node was red -> nothing to do as red-black-property holds
         // If it was black -> fix red-black-property
         if nodeY.color == .black {
             deleteFixup(node: nodeX)
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting delete(z=\(z))\n".utf8))
     }
     
     /*
@@ -507,6 +565,7 @@ extension RedBlackTree {
      * - case 4 -> red-black tree
      */
     private func deleteFixup(node x: RBNode) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering deleteFixup(x=\(x))\n".utf8))
         var xTmp = x
         if !x.isRoot && x.color == .black {
             guard var sibling = x.sibling else {
@@ -516,8 +575,10 @@ extension RedBlackTree {
             if sibling.color == .red {
                 // Recolor
                 sibling.color = .black
+				FileHandle.standardError.write(Data("[DEBUG] deleteFixup(x=\(x)): sibling.color → \(sibling.color)\n".utf8))
                 if let parentX = x.parent {
                     parentX.color = .red
+					FileHandle.standardError.write(Data("[DEBUG] deleteFixup(x=\(x)): parentX.color → \(parentX.color)\n".utf8))
                     // Rotation
                     if x.isLeftChild {
                         leftRotate(node: parentX)
@@ -550,6 +611,7 @@ extension RedBlackTree {
                     // Update sibling of x
                     if let sibl = x.sibling {
                         sibling = sibl
+						FileHandle.standardError.write(Data("[ERROR] >>> Entering rightRotate(x=\(x))\n".utf8))
                     }
                 }
                     // Still case 3: b. One black child to the left
@@ -580,6 +642,7 @@ extension RedBlackTree {
                         sibling.leftChild?.color = .black
                         //Rotate
                         rightRotate(node: parentX)
+						FileHandle.standardError.write(Data("[ERROR] >>> Entering leftRotate(x=\(x))\n".utf8))
                     }
                     // We have a valid red-black-tree
                     xTmp = root
@@ -587,6 +650,8 @@ extension RedBlackTree {
             }
         }
         xTmp.color = .black
+		FileHandle.standardError.write(Data("[DEBUG] deleteFixup(x=\(x)): xTmp.color → \(xTmp.color)\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting deleteFixup(x=\(x))\n".utf8))
     }
 }
 
@@ -605,7 +670,9 @@ extension RedBlackTree {
      *     [B] [C]    [A] [B]
      */
     fileprivate func leftRotate(node x: RBNode) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering leftRotate(x=\(x))\n".utf8))
         rotate(node: x, direction: .left)
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting leftRotate(x=\(x))\n".utf8))
     }
     
     /*
@@ -621,8 +688,10 @@ extension RedBlackTree {
      *     [B] [C]    [A] [B]
      */
     fileprivate func rightRotate(node x: RBNode) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering rightRotate(x=\(x))\n".utf8))
         rotate(node: x, direction: .right)
     }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting rightRotate(x=\(x))\n".utf8))
     
     /*
      * Rotation around a node x
@@ -630,6 +699,7 @@ extension RedBlackTree {
      * Runntime: O(1)
      */
     private func rotate(node x: RBNode, direction: RotationDirection) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering rotate(x=\(x),direction=\(direction))\n".utf8))
         var nodeY: RBNode? = RBNode()
         
         // Set |nodeY| and turn |nodeY|'s left/right subtree into |x|'s right/left subtree
@@ -637,10 +707,12 @@ extension RedBlackTree {
         case .left:
             nodeY = x.rightChild
             x.rightChild = nodeY?.leftChild
+			FileHandle.standardError.write(Data("[DEBUG] rotate(x=\(x),direction=\(direction)): x.rightChild → \(x.rightChild)\n".utf8))
             x.rightChild?.parent = x
         case .right:
             nodeY = x.leftChild
             x.leftChild = nodeY?.rightChild
+			FileHandle.standardError.write(Data("[DEBUG] rotate(x=\(x),direction=\(direction)): x.leftChild → \(x.leftChild)\n".utf8))
             x.leftChild?.parent = x
         }
         
@@ -649,6 +721,7 @@ extension RedBlackTree {
         if x.isRoot {
             if let node = nodeY {
                 root = node
+				FileHandle.standardError.write(Data("[WARN] rotate(x=\(x),direction=\(direction)): root → \(root)\n".utf8))
             }
         } else if x.isLeftChild {
             x.parent?.leftChild = nodeY
@@ -663,7 +736,9 @@ extension RedBlackTree {
         case .right:
             nodeY?.rightChild = x
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting rotate(x=\(x),direction=\(direction))\n".utf8))
         x.parent = nodeY
+		FileHandle.standardError.write(Data("[DEBUG] rotate(x=\(x),direction=\(direction)): x.parent → \(x.parent)\n".utf8))
     }
 }
 
@@ -674,10 +749,12 @@ extension RedBlackTree {
      * Returns true if the tree is a valid red-black tree, false otherwise
      */
     public func verify() -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering verify()\n".utf8))
         if root.isNullLeaf {
             print("The tree is empty")
             return true
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting verify()\n".utf8))
         return property2() && property4() && property5()
     }
     
@@ -686,10 +763,12 @@ extension RedBlackTree {
     
     // Property 2: The root is black
     private func property2() -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering property2()\n".utf8))
         if root.color == .red {
             print("Property-Error: Root is red")
             return false
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting property2()\n".utf8))
         return true
     }
     
@@ -697,6 +776,9 @@ extension RedBlackTree {
     
     // Property 4: If a node is red, then both its children are black
     private func property4() -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering property4()\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting property4()\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting property4(node=\(node))\n".utf8))
         return property4(node: root)
     }
     
@@ -723,6 +805,9 @@ extension RedBlackTree {
     // Property 5: For each node, all paths from the node to descendant leaves contain the same number
     // of black nodes (same blackheight)
     private func property5() -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering property5()\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting property5()\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting property5(node=\(node))\n".utf8))
         if property5(node: root) == -1 {
             return false
         } else {

@@ -1,8 +1,10 @@
+import Foundation
 /*
  Finds the maximum and minimum value in an array in O(n) time.
  */
 
 func minimumMaximum<T: Comparable>(_ array: [T]) -> (minimum: T, maximum: T)? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering minimumMaximum(array=\(array))\n".utf8))
     guard var minimum = array.first else { return nil }
     var maximum = minimum
 
@@ -11,6 +13,7 @@ func minimumMaximum<T: Comparable>(_ array: [T]) -> (minimum: T, maximum: T)? {
     for i in stride(from: start, to: array.count, by: 2) {
         let pair = (array[i], array[i+1])
 
+		FileHandle.standardError.write(Data("[ERROR] minimumMaximum(array=\(array)): pair → \(pair)\n".utf8))
         if pair.0 > pair.1 {
             if pair.0 > maximum {
                 maximum = pair.0
@@ -28,5 +31,6 @@ func minimumMaximum<T: Comparable>(_ array: [T]) -> (minimum: T, maximum: T)? {
         }
     }
 
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting minimumMaximum(array=\(array))\n".utf8))
     return (minimum, maximum)
 }

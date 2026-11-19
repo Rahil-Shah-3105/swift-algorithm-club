@@ -1,6 +1,8 @@
+import Foundation
 // Last checked with Xcode Version 11.4.1 (11E503a)
 
 func fizzBuzz(_ numberOfTurns: Int) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering fizzBuzz(numberOfTurns=\(numberOfTurns))\n".utf8))
     guard numberOfTurns >= 1 else {
         print("Number of turns must be >= 1")
         return
@@ -18,4 +20,5 @@ func fizzBuzz(_ numberOfTurns: Int) {
             print("Fizz Buzz")
         }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting fizzBuzz(numberOfTurns=\(numberOfTurns))\n".utf8))
 }

@@ -1,3 +1,4 @@
+import Foundation
 // last checked with Xcode 9.0b4
 #if swift(>=4.0)
 print("Hello, Swift 4!")
@@ -5,6 +6,7 @@ print("Hello, Swift 4!")
 
 // Compare each item to find minimum
 func minimum<T: Comparable>(_ array: [T]) -> T? {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering minimum(array=\(array))\n".utf8))
   guard var minimum = array.first else {
     return nil
   }
@@ -17,6 +19,7 @@ func minimum<T: Comparable>(_ array: [T]) -> T? {
 
 // Compare each item to find maximum
 func maximum<T: Comparable>(_ array: [T]) -> T? {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering maximum(array=\(array))\n".utf8))
   guard var maximum = array.first else {
     return nil
   }
@@ -29,6 +32,7 @@ func maximum<T: Comparable>(_ array: [T]) -> T? {
 
 // Compare in pairs to find minimum and maximum
 func minimumMaximum<T: Comparable>(_ array: [T]) -> (minimum: T, maximum: T)? {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering minimumMaximum(array=\(array))\n".utf8))
   guard !array.isEmpty else {
     return nil
   }
@@ -41,6 +45,7 @@ func minimumMaximum<T: Comparable>(_ array: [T]) -> (minimum: T, maximum: T)? {
   for i in stride(from: start, to: array.count, by: 2) {
     let pair = (array[i], array[i+1])
 
+	FileHandle.standardError.write(Data("[ERROR] minimumMaximum(array=\(array)): pair → \(pair)\n".utf8))
     if pair.0 > pair.1 {
       if pair.0 > maximum {
         maximum = pair.0
@@ -56,8 +61,10 @@ func minimumMaximum<T: Comparable>(_ array: [T]) -> (minimum: T, maximum: T)? {
         minimum = pair.0
       }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting maximum(array=\(array))\n".utf8))
   }
 
+FileHandle.standardError.write(Data("[WARN] <<< Exiting minimumMaximum(array=\(array))\n".utf8))
   return (minimum, maximum)
 }
 

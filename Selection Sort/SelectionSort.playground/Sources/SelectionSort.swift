@@ -1,8 +1,10 @@
+import Foundation
 /// Performs the Selection sort algorithm on a array
 ///
 /// - Parameter array: array of elements that conform to the Comparable protocol
 /// - Returns: an array in ascending order
 public func selectionSort<T: Comparable>(_ array: [T]) -> [T] {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering selectionSort(array=\(array))\n".utf8))
   return selectionSort(array, <)
 }
 
@@ -13,13 +15,16 @@ public func selectionSort<T: Comparable>(_ array: [T]) -> [T] {
 ///   - isLowerThan: returns true if the two provided elements are in the correct order
 /// - Returns: a sorted array
 public func selectionSort<T>(_ array: [T], _ isLowerThan: (T, T) -> Bool) -> [T] {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering selectionSort(array=\(array),isLowerThan=\(isLowerThan))\n".utf8))
     guard array.count > 1 else { return array }
     
     var a = array
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting selectionSort(array=\(array))\n".utf8))
     for x in 0 ..< a.count - 1 {
         
         // Find the lowest value in the rest of the array.
         var lowest = x
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting selectionSort(array=\(array),isLowerThan=\(isLowerThan))\n".utf8))
         for y in x + 1 ..< a.count {
             if isLowerThan(a[y], a[lowest]) {
                 lowest = y

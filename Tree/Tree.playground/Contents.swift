@@ -1,3 +1,4 @@
+import Foundation
 //: Playground - noun: a place where people can play
 
 let tree = TreeNode<String>(value: "beverages")
@@ -43,6 +44,7 @@ teaNode.parent!.parent
 
 extension TreeNode where T: Equatable {
   func search(_ value: T) -> TreeNode? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering search(value=\(value))\n".utf8))
     if value == self.value {
       return self
     }
@@ -51,6 +53,7 @@ extension TreeNode where T: Equatable {
         return found
       }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting search(value=\(value))\n".utf8))
     return nil
   }
 }

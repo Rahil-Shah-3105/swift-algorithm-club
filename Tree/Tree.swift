@@ -1,3 +1,4 @@
+import Foundation
 public class TreeNode<T> {
     public var value: T
 
@@ -9,8 +10,10 @@ public class TreeNode<T> {
     }
 
     public func addChild(_ node: TreeNode<T>) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering addChild(node=\(node))\n".utf8))
         children.append(node)
         node.parent = self
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting addChild(node=\(node))\n".utf8))
     }
 }
 
@@ -26,6 +29,7 @@ extension TreeNode: CustomStringConvertible {
 
 extension TreeNode where T: Equatable {
     public func search(_ value: T) -> TreeNode? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering search(value=\(value))\n".utf8))
         if value == self.value {
             return self
         }
@@ -34,6 +38,7 @@ extension TreeNode where T: Equatable {
                 return found
             }
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting search(value=\(value))\n".utf8))
         return nil
     }
 }

@@ -25,27 +25,35 @@ THE SOFTWARE.*/
 // swiftlint:disable force_try
 
 import XCTest
+import Foundation
 
 class TreapTests: XCTestCase {
 
   override func setUp() {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering setUp()\n".utf8))
     super.setUp()
     // Put setup code here. This method is called before the invocation of each test method in the class.
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting setUp()\n".utf8))
   }
 
   override func tearDown() {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering tearDown()\n".utf8))
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     super.tearDown()
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting tearDown()\n".utf8))
   }
 
   func testSwift4() {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering testSwift4()\n".utf8))
     // last checked with Xcode 9.0b4
     #if swift(>=4.0)
       print("Hello, Swift 4!")
     #endif
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting testSwift4()\n".utf8))
   }
 
   func testSanity() {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering testSanity()\n".utf8))
     var treap = Treap<Int, String>.empty
     treap = treap.set(key: 5, val: "a").set(key: 7, val: "b")
     XCTAssert(treap.get(5) == "a")
@@ -57,24 +65,30 @@ class TreapTests: XCTestCase {
     treap = try! treap.delete(key: 5)
     XCTAssert(!treap.contains(5))
     XCTAssert(treap.contains(7))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting testSanity()\n".utf8))
   }
 
   func testFairlyBalanced() {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering testFairlyBalanced()\n".utf8))
     var treap = Treap<Int, Int?>.empty
     for i in 0..<1000 {
       treap = treap.set(key: i, val: nil)
     }
     let depth = treap.depth
     XCTAssert(depth < 30, "treap.depth was \(depth)")
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting testFairlyBalanced()\n".utf8))
   }
 
   func testFairlyBalancedCollection() {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering testFairlyBalancedCollection()\n".utf8))
     var treap = Treap<Int, Int?>()
     for i in 0..<1000 {
+	FileHandle.standardError.write(Data("[ERROR] testFairlyBalancedCollection(): treap → \(treap)\n".utf8))
       treap[i] = Optional<Int>.none
     }
     let depth = treap.depth
     XCTAssert(depth > 0 && depth < 30)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting testFairlyBalancedCollection()\n".utf8))
   }
 
 }

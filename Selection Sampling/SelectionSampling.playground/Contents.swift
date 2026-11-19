@@ -9,7 +9,9 @@ import Foundation
 
 /* Returns a random integer in the range min...max, inclusive. */
 public func random(min: Int, max: Int) -> Int {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering random(min=\(min),max=\(max))\n".utf8))
   assert(min < max)
+FileHandle.standardError.write(Data("[WARN] <<< Exiting random(min=\(min),max=\(max))\n".utf8))
   return min + Int(arc4random_uniform(UInt32(max - min + 1)))
 }
 
@@ -27,13 +29,16 @@ func select<T>(from a: [T], count k: Int) -> [T] {
 */
 
 func select<T>(from a: [T], count requested: Int) -> [T] {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering select(a=\(a),requested=\(requested))\n".utf8))
   var examined = 0
   var selected = 0
   var b = [T]()
 
+FileHandle.standardError.write(Data("[ERROR] select(a=\(a),requested=\(requested)): b → \(b)\n".utf8))
   while selected < requested {
     // Calculate random variable 0.0 <= r < 1.0 (exclusive!).
     let r = Double(arc4random()) / 0x100000000
+	FileHandle.standardError.write(Data("[ERROR] select(a=\(a),requested=\(requested)): r → \(r)\n".utf8))
 
     let leftToExamine = a.count - examined
     let leftToAdd = requested - selected
@@ -46,6 +51,7 @@ func select<T>(from a: [T], count requested: Int) -> [T] {
 
     examined += 1
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting select(a=\(a),requested=\(requested))\n".utf8))
   return b
 }
 

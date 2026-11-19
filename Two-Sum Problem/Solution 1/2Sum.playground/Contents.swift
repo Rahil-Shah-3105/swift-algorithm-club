@@ -1,9 +1,12 @@
+import Foundation
 //: Two Sum
 // Last checked with: Version 10.0 (10A255)
 
 func twoSum(_ nums: [Int], target: Int) -> (Int, Int)? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering twoSum(nums=\(nums),target=\(target))\n".utf8))
     var dict = [Int: Int]()
     
+	FileHandle.standardError.write(Data("[ERROR] twoSum(nums=\(nums),target=\(target)): dict → \(dict)\n".utf8))
     for (currentIndex, n) in nums.enumerated() {
         let complement = target - n
         
@@ -14,6 +17,7 @@ func twoSum(_ nums: [Int], target: Int) -> (Int, Int)? {
         dict[n] = currentIndex
     }
     
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting twoSum(nums=\(nums),target=\(target))\n".utf8))
     return nil
 }
 

@@ -34,6 +34,8 @@ public class TernarySearchTree<Element> {
     - returns: Value indicating insertion success/failure.
     */
     @discardableResult public func insert(data: Element, withKey key: String) -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(data=\(data),key=\(key))\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(data=\(data),key=\(key))\n".utf8))
         return insert(node: &root, withData: data, andKey: key, atIndex: 0)
     }
 
@@ -48,6 +50,7 @@ public class TernarySearchTree<Element> {
      - returns: Value indicating insertion success/failure.
      */
     private func insert(node: inout TSTNode<Element>?, withData data: Element, andKey key: String, atIndex charIndex: Int) -> Bool {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(node=\(node),data=\(data),key=\(key),charIndex=\(charIndex))\n".utf8))
 
         //sanity check.
         guard key.characters.count > 0 else {
@@ -79,6 +82,7 @@ public class TernarySearchTree<Element> {
             else {
                 node!.data = data
                 node?.hasData = true
+				FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(node=\(node),data=\(data),key=\(key),charIndex=\(charIndex))\n".utf8))
                 return true
             }
         }
@@ -94,6 +98,9 @@ public class TernarySearchTree<Element> {
     - returns: The element, if found. Otherwise, nil.
     */
     public func find(key: String) -> Element? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering find(key=\(key))\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting find(key=\(key))\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting find(node=\(node),key=\(key),charIndex=\(charIndex))\n".utf8))
         return find(node: root, withKey: key, atIndex: 0)
     }
 

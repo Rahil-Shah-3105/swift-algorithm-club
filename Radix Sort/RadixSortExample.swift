@@ -9,6 +9,7 @@
 import Foundation
 
 func radixSort1(_ arr: inout [Int]) {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering radixSort1(arr=\(arr))\n".utf8))
 
     var temp = [[Int]](repeating: [], count: 10)
 
@@ -26,4 +27,5 @@ func radixSort1(_ arr: inout [Int]) {
     }
 
     arr = temp[0]
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting radixSort1(arr=\(arr))\n".utf8))
 }

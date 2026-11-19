@@ -41,6 +41,7 @@ open class AdjacencyMatrixGraph<T>: AbstractGraph<T> where T: Hashable {
   // Adds a new vertex to the matrix.
   // Performance: possibly O(n^2) because of the resizing of the matrix.
   open override func createVertex(_ data: T) -> Vertex<T> {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering createVertex(data=\(data))\n".utf8))
     // check if the vertex already exists
     let matchingVertices = vertices.filter { vertex in
       return vertex.data == data
@@ -53,6 +54,7 @@ open class AdjacencyMatrixGraph<T>: AbstractGraph<T> where T: Hashable {
     // if the vertex doesn't exist, create a new one
     let vertex = Vertex(data: data, index: adjacencyMatrix.count)
 
+	FileHandle.standardError.write(Data("[ERROR] createVertex(data=\(data)): vertex → \(vertex)\n".utf8))
     // Expand each existing row to the right one column.
     for i in 0 ..< adjacencyMatrix.count {
       adjacencyMatrix[i].append(nil)
@@ -62,32 +64,43 @@ open class AdjacencyMatrixGraph<T>: AbstractGraph<T> where T: Hashable {
     let newRow = [Double?](repeating: nil, count: adjacencyMatrix.count + 1)
     adjacencyMatrix.append(newRow)
 
+	FileHandle.standardError.write(Data("[ERROR] createVertex(data=\(data)): newRow → \(newRow)\n".utf8))
     _vertices.append(vertex)
 
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting createVertex(data=\(data))\n".utf8))
     return vertex
   }
 
   open override func addDirectedEdge(_ from: Vertex<T>, to: Vertex<T>, withWeight weight: Double?) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering addDirectedEdge(from=\(from),to=\(to),weight=\(weight))\n".utf8))
     adjacencyMatrix[from.index][to.index] = weight
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting addDirectedEdge(from=\(from),to=\(to),weight=\(weight))\n".utf8))
   }
 
   open override func addUndirectedEdge(_ vertices: (Vertex<T>, Vertex<T>), withWeight weight: Double?) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering addUndirectedEdge(vertices=\(vertices),weight=\(weight))\n".utf8))
     addDirectedEdge(vertices.0, to: vertices.1, withWeight: weight)
     addDirectedEdge(vertices.1, to: vertices.0, withWeight: weight)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting addUndirectedEdge(vertices=\(vertices),weight=\(weight))\n".utf8))
   }
 
   open override func weightFrom(_ sourceVertex: Vertex<T>, to destinationVertex: Vertex<T>) -> Double? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering weightFrom(sourceVertex=\(sourceVertex),destinationVertex=\(destinationVertex))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting weightFrom(sourceVertex=\(sourceVertex),destinationVertex=\(destinationVertex))\n".utf8))
     return adjacencyMatrix[sourceVertex.index][destinationVertex.index]
   }
 
   open override func edgesFrom(_ sourceVertex: Vertex<T>) -> [Edge<T>] {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering edgesFrom(sourceVertex=\(sourceVertex))\n".utf8))
     var outEdges = [Edge<T>]()
     let fromIndex = sourceVertex.index
+	FileHandle.standardError.write(Data("[ERROR] edgesFrom(sourceVertex=\(sourceVertex)): outEdges → \(outEdges)\n".utf8))
     for column in 0..<adjacencyMatrix.count {
       if let weight = adjacencyMatrix[fromIndex][column] {
         outEdges.append(Edge(from: sourceVertex, to: vertices[column], weight: weight))
       }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting edgesFrom(sourceVertex=\(sourceVertex))\n".utf8))
     return outEdges
   }
 

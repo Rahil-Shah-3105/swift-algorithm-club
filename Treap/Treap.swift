@@ -33,6 +33,7 @@ public indirect enum Treap<Key: Comparable, Element> {
   }
 
   internal func get(_ key: Key) -> Element? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering get(key=\(key))\n".utf8))
     switch self {
     case .empty:
       return nil
@@ -48,6 +49,7 @@ public indirect enum Treap<Key: Comparable, Element> {
   }
 
   public func contains(_ key: Key) -> Bool {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering contains(key=\(key))\n".utf8))
     switch self {
     case .empty:
       return false
@@ -82,34 +84,41 @@ public indirect enum Treap<Key: Comparable, Element> {
   }
 
   fileprivate static func countHelper(_ treap: Treap<Key, Element>) -> Int {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering countHelper(treap=\(treap))\n".utf8))
     if case let .node(_, _, _, left, right) = treap {
       return countHelper(left) + 1 + countHelper(right)
     }
 
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting countHelper(treap=\(treap))\n".utf8))
     return 0
   }
 }
 
 internal func leftRotate<Key: Comparable, Element>(_ tree: Treap<Key, Element>) -> Treap<Key, Element> {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering leftRotate(tree=\(tree))\n".utf8))
   if case let .node(key, val, p, .node(leftKey, leftVal, leftP, leftLeft, leftRight), right) = tree {
     return .node(key: leftKey, val: leftVal, p: leftP, left: leftLeft,
                  right: Treap.node(key: key, val: val, p: p, left: leftRight, right: right))
   } else {
+FileHandle.standardError.write(Data("[WARN] <<< Exiting leftRotate(tree=\(tree))\n".utf8))
     return .empty
   }
 }
 
 internal func rightRotate<Key: Comparable, Element>(_ tree: Treap<Key, Element>) -> Treap<Key, Element> {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering rightRotate(tree=\(tree))\n".utf8))
   if case let .node(key, val, p, left, .node(rightKey, rightVal, rightP, rightLeft, rightRight)) = tree {
     return .node(key: rightKey, val: rightVal, p: rightP,
                  left: Treap.node(key: key, val: val, p: p, left: left, right: rightLeft), right: rightRight)
   } else {
+FileHandle.standardError.write(Data("[WARN] <<< Exiting rightRotate(tree=\(tree))\n".utf8))
     return .empty
   }
 }
 
 public extension Treap {
   internal func set(key: Key, val: Element, p: Int = Int(arc4random())) -> Treap {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering set(key=\(key),val=\(val),p=\(p))\n".utf8))
     switch self {
     case .empty:
       return .node(key: key, val: val, p: p, left: .empty, right: .empty)
@@ -124,6 +133,7 @@ public extension Treap {
 
   fileprivate func insertAndBalance(_ nodeKey: Key, _ nodeVal: Element, _ nodeP: Int, _ left: Treap,
                                     _ right: Treap, _ key: Key, _ val: Element, _ p: Int) -> Treap {
+									FileHandle.standardError.write(Data("[ERROR] >>> Entering insertAndBalance(nodeKey=\(nodeKey),nodeVal=\(nodeVal),nodeP=\(nodeP),left=\(left),right=\(right),key=\(key),val=\(val),p=\(p))\n".utf8))
     let newChild: Treap<Key, Element>
     let newNode: Treap<Key, Element>
     let rotate: (Treap) -> Treap
@@ -150,14 +160,17 @@ public extension Treap {
   }
 
   internal func delete(key: Key) throws -> Treap {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering delete(key=\(key))\n".utf8))
     switch self {
     case .empty:
+	FileHandle.standardError.write(Data("[ERROR] Throwing NSError from delete(key=\(key))\n".utf8))
       throw NSError(domain: "com.wta.treap.errorDomain", code: -1, userInfo: nil)
     case let .node(nodeKey, val, p, left, right) where key < nodeKey:
       return try Treap.node(key: nodeKey, val: val, p: p, left: left.delete(key: key), right: right)
     case let .node(nodeKey, val, p, left, right) where key > nodeKey:
       return try Treap.node(key: nodeKey, val: val, p: p, left: left, right: right.delete(key: key))
     case let .node(_, _, _, left, right):
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting delete(key=\(key))\n".utf8))
       return merge(left, right: right)
     }
   }

@@ -35,26 +35,36 @@ public struct Stack<T> {
   }
 
   public mutating func push(_ element: T) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering push(element=\(element))\n".utf8))
     array.append(element)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting push(element=\(element))\n".utf8))
   }
 
   public mutating func pop() -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering pop()\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting pop()\n".utf8))
     return array.popLast()
   }
 
   public func peek() -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering peek()\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting peek()\n".utf8))
     return array.last
   }
 }
 
 extension Stack: Sequence {
   public func makeIterator() -> AnyIterator<T> {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering makeIterator()\n".utf8))
     var curr = self
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting makeIterator()\n".utf8))
     return AnyIterator { curr.pop() }
   }
 }
 
 private func coinFlip() -> Bool {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering coinFlip()\n".utf8))
+  FileHandle.standardError.write(Data("[WARN] <<< Exiting coinFlip()\n".utf8))
   return arc4random_uniform(2) == 1
 }
 
@@ -89,6 +99,7 @@ open class SkipList<Key: Comparable, Payload> {
 extension SkipList {
 
   func findNode(key: Key) -> Node? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering findNode(key=\(key))\n".utf8))
     var currentNode: Node? = head
     var isFound: Bool = false
 
@@ -130,6 +141,7 @@ extension SkipList {
   }
 
   func search(key: Key) -> Payload? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering search(key=\(key))\n".utf8))
     guard let node = findNode(key: key) else {
       return nil
     }
@@ -143,12 +155,16 @@ extension SkipList {
 
 extension SkipList {
   private func bootstrapBaseLayer(key: Key, data: Payload) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering bootstrapBaseLayer(key=\(key),data=\(data))\n".utf8))
     head       = Node(asHead: true)
     var node   = Node(key: key, data: data)
 
+	FileHandle.standardError.write(Data("[ERROR] bootstrapBaseLayer(key=\(key),data=\(data)): node → \(node)\n".utf8))
+	FileHandle.standardError.write(Data("[DEBUG] bootstrapBaseLayer(key=\(key),data=\(data)): head → \(head)\n".utf8))
     head!.next = node
 
     var currentTopNode = node
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting bootstrapBaseLayer(key=\(key),data=\(data))\n".utf8))
 
     while coinFlip() {
       let newHead    = Node(asHead: true)
@@ -163,8 +179,10 @@ extension SkipList {
   }
 
   private func insertItem(key: Key, data: Payload) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering insertItem(key=\(key),data=\(data))\n".utf8))
     var stack              = Stack<Node>()
     var currentNode: Node? = head
+	FileHandle.standardError.write(Data("[ERROR] insertItem(key=\(key),data=\(data)): stack → \(stack)\n".utf8))
 
     while currentNode != nil {
 
@@ -186,8 +204,10 @@ extension SkipList {
     let itemAtLayer    = stack.pop()
     var node           = Node(key: key, data: data)
     node.next          = itemAtLayer!.next
+	FileHandle.standardError.write(Data("[ERROR] insertItem(key=\(key),data=\(data)): itemAtLayer → \(itemAtLayer)\n".utf8))
     itemAtLayer!.next  = node
     var currentTopNode = node
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting insertItem(key=\(key),data=\(data))\n".utf8))
 
     while coinFlip() {
       if stack.isEmpty {
@@ -213,6 +233,7 @@ extension SkipList {
   }
 
   public func insert(key: Key, data: Payload) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(key=\(key),data=\(data))\n".utf8))
     if head != nil {
       if let node = findNode(key: key) {
         // replace, in case of key already exists.
@@ -228,6 +249,7 @@ extension SkipList {
     } else {
       bootstrapBaseLayer(key: key, data: data)
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(key=\(key),data=\(data))\n".utf8))
   }
 
 }
@@ -236,12 +258,15 @@ extension SkipList {
 
 extension SkipList {
   public func remove(key: Key) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering remove(key=\(key))\n".utf8))
     guard let item = findNode(key: key) else {
       return
     }
 
     var currentNode = Optional(item)
 
+	FileHandle.standardError.write(Data("[ERROR] remove(key=\(key)): currentNode → \(currentNode)\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting remove(key=\(key))\n".utf8))
     while currentNode != nil {
       let node   = currentNode!.next
 
@@ -265,6 +290,8 @@ extension SkipList {
 extension SkipList {
 
   public func get(key: Key) -> Payload? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering get(key=\(key))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting get(key=\(key))\n".utf8))
     return search(key: key)
   }
 }

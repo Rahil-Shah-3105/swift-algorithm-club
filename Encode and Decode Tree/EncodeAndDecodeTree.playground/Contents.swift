@@ -1,6 +1,8 @@
+import Foundation
 //: Playground - noun: a place where people can play
 
 func printTree(_ root: BinaryNode<String>?) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering printTree(root=\(root))\n".utf8))
     guard let root = root else {
         return
     }
@@ -12,6 +14,7 @@ func printTree(_ root: BinaryNode<String>?) {
 
     printTree(root.left)
     printTree(root.right)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting printTree(root=\(root))\n".utf8))
 }
 
 let coder = BinaryNodeCoder<String>()

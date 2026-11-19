@@ -1,8 +1,11 @@
+import Foundation
 //: Playground - noun: a place where people can play
 
 func ZetaAlgorithm(ptrn: String) -> [Int]? {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering ZetaAlgorithm(ptrn=\(ptrn))\n".utf8))
   let pattern = Array(ptrn)
   let patternLength = pattern.count
+FileHandle.standardError.write(Data("[ERROR] ZetaAlgorithm(ptrn=\(ptrn)): pattern → \(pattern)\n".utf8))
 
   guard patternLength > 0 else {
     return nil
@@ -10,6 +13,7 @@ func ZetaAlgorithm(ptrn: String) -> [Int]? {
 
   var zeta = [Int](repeating: 0, count: patternLength)
 
+FileHandle.standardError.write(Data("[ERROR] ZetaAlgorithm(ptrn=\(ptrn)): zeta → \(zeta)\n".utf8))
   var left = 0
   var right = 0
   var k_1 = 0
@@ -53,15 +57,18 @@ func ZetaAlgorithm(ptrn: String) -> [Int]? {
       }
     }
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting ZetaAlgorithm(ptrn=\(ptrn))\n".utf8))
   return zeta
 }
 
 extension String {
 
   func indexesOf(pattern: String) -> [Int]? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering indexesOf(pattern=\(pattern))\n".utf8))
     let patternLength = pattern.count
     let zeta = ZetaAlgorithm(ptrn: pattern + "💲" + self)
 
+	FileHandle.standardError.write(Data("[ERROR] indexesOf(pattern=\(pattern)): zeta → \(zeta)\n".utf8))
     guard zeta != nil else {
       return nil
     }
@@ -79,6 +86,7 @@ extension String {
       return nil
     }
 
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting indexesOf(pattern=\(pattern))\n".utf8))
     return indexes
   }
 }

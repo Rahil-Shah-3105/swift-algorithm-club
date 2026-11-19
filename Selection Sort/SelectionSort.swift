@@ -1,4 +1,6 @@
+import Foundation
 public func selectionSort<T: Comparable>(_ array: [T], _ isOrderedBefore: (T, T) -> Bool) -> [T] {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering selectionSort(array=\(array),isOrderedBefore=\(isOrderedBefore))\n".utf8))
     guard array.count > 1 else { return array }
 
     var a = array
@@ -6,6 +8,7 @@ public func selectionSort<T: Comparable>(_ array: [T], _ isOrderedBefore: (T, T)
 
         // Find the lowest value in the rest of the array.
         var lowest = x
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting selectionSort(array=\(array),isOrderedBefore=\(isOrderedBefore))\n".utf8))
         for y in x + 1 ..< a.count {
             if isOrderedBefore(a[y], a[lowest]) {
                 lowest = y

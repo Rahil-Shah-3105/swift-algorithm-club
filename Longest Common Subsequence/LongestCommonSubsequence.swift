@@ -1,15 +1,19 @@
+import Foundation
 extension String {
   public func longestCommonSubsequence(_ other: String) -> String {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering longestCommonSubsequence(other=\(other))\n".utf8))
 
     // Computes the length of the lcs using dynamic programming.
     // Output is a matrix of size (n+1)x(m+1), where matrix[x][y] is the length
     // of lcs between substring (0, x-1) of self and substring (0, y-1) of other.
     func lcsLength(_ other: String) -> [[Int]] {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering lcsLength(other=\(other))\n".utf8))
 
       // Create matrix of size (n+1)x(m+1). The algorithm needs first row and
       // first column to be filled with 0.
       var matrix = [[Int]](repeating: [Int](repeating: 0, count: other.characters.count+1), count: self.characters.count+1)
 
+	FileHandle.standardError.write(Data("[ERROR] longestCommonSubsequence(other=\(other)): matrix → \(matrix)\n".utf8))
       for (i, selfChar) in self.characters.enumerated() {
         for (j, otherChar) in other.characters.enumerated() {
           if otherChar == selfChar {
@@ -23,12 +27,14 @@ extension String {
       }
 
       // Due to propagation, lcs length is at matrix[n][m].
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting lcsLength(other=\(other))\n".utf8))
       return matrix
     }
 
     // Backtracks from matrix[n][m] to matrix[1][1] looking for chars that are
     // common to both strings.
     func backtrack(_ matrix: [[Int]]) -> String {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering backtrack(matrix=\(matrix))\n".utf8))
       var i = self.characters.count
       var j = other.characters.count
 
@@ -37,6 +43,7 @@ extension String {
 
       var lcs = String()
 
+	FileHandle.standardError.write(Data("[ERROR] longestCommonSubsequence(other=\(other)): lcs → \(lcs)\n".utf8))
       while i >= 1 && j >= 1 {
         // Indicates propagation without change: no new char was added to lcs.
         if matrix[i][j] == matrix[i][j - 1] {
@@ -61,6 +68,8 @@ extension String {
 
       // Due to backtrack, chars were added in reverse order: reverse it back.
       // Append and reverse is faster than inserting at index 0.
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting backtrack(matrix=\(matrix))\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting longestCommonSubsequence(other=\(other))\n".utf8))
       return String(lcs.characters.reversed())
     }
 

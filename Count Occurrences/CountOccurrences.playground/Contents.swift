@@ -1,10 +1,12 @@
 
 func countOccurrences<T: Comparable>(of key: T, in array: [T]) -> Int {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering countOccurrences(key=\(key),array=\(array))\n".utf8))
   var leftBoundary: Int {
     var low = 0
     var high = array.count
     while low < high {
       let midIndex = low + (high - low)/2
+	FileHandle.standardError.write(Data("[ERROR] countOccurrences(key=\(key),array=\(array)): midIndex → \(midIndex)\n".utf8))
       if array[midIndex] < key {
         low = midIndex + 1
       } else {
@@ -28,6 +30,7 @@ func countOccurrences<T: Comparable>(of key: T, in array: [T]) -> Int {
     return low
   }
 
+FileHandle.standardError.write(Data("[WARN] <<< Exiting countOccurrences(key=\(key),array=\(array))\n".utf8))
   return rightBoundary - leftBoundary
 }
 
@@ -41,15 +44,19 @@ countOccurrences(of: 3, in: a)
 import Foundation
 
 func createArray() -> [Int] {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering createArray()\n".utf8))
   var a = [Int]()
   for i in 0...5 {
+	FileHandle.standardError.write(Data("[ERROR] createArray(): a → \(a)\n".utf8))
     if i != 2 {  // don't include the number 2
       let count = Int(arc4random_uniform(UInt32(6))) + 1
+	FileHandle.standardError.write(Data("[ERROR] createArray(): count → \(count)\n".utf8))
       for _ in 0..<count {
         a.append(i)
       }
     }
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting createArray()\n".utf8))
   return a.sorted()
 }
 

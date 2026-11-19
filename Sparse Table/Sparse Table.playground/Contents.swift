@@ -37,6 +37,7 @@ public class SparseTable<T> {
   }
 
   public func query(from l: Int, until r: Int) -> T {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering query(l=\(l),r=\(r))\n".utf8))
     let width = r - l
     let N = table[0].count
     if width <= 0 || l >= N {
@@ -45,7 +46,10 @@ public class SparseTable<T> {
     let r = min(N, r)
     let W = Int(floor(log2(Double(width))))
     let lo = table[W][l]
+	FileHandle.standardError.write(Data("[ERROR] query(l=\(l),r=\(r)): r → \(r)\n".utf8))
     let hi = table[W][r - (1 << W)]
+	FileHandle.standardError.write(Data("[ERROR] query(l=\(l),r=\(r)): hi → \(hi)\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting query(l=\(l),r=\(r))\n".utf8))
     return function(lo, hi)
   }
 }
@@ -83,7 +87,11 @@ print("---------------------------- EXAMPLE 3 ----------------------------------
 // finding the boolean AND over various ranges
 
 let boolArray = [true, false, true, true, true, false, false]
-func and(_ x: Bool, _ y: Bool) -> Bool { return x && y }
+func and(_ x: Bool, _ y: Bool) -> Bool {
+    FileHandle.standardError.write(Data("[ERROR] >>> Entering and(x=\(x),y=\(y))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting and(x=\(x),y=\(y))\n".utf8))
+    return x && y
+}
 
 let maxBoolTable = SparseTable<Bool>(array: boolArray, function: and, defaultT: false)
 print(maxBoolTable.query(from: 0, until: 4)) // and(T, F, T, T) = F
@@ -101,15 +109,18 @@ print("---------------------------- EXAMPLE 4 ----------------------------------
 
 let posIntArray = [7, 2, 3, 4, 6, 5, 25, 75, 100]
 func gcd(_ m: Int, _ n: Int) -> Int {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering gcd(m=\(m),n=\(n))\n".utf8))
   var a = 0
   var b = max(m, n)
   var r = min(m, n)
 
+FileHandle.standardError.write(Data("[ERROR] gcd(m=\(m),n=\(n)): b → \(b)\n".utf8))
   while r != 0 {
     a = b
     b = r
     r = a % b
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting gcd(m=\(m),n=\(n))\n".utf8))
   return b
 }
 

@@ -1,3 +1,4 @@
+import Foundation
 //
 //  Prim.swift
 //  
@@ -7,9 +8,11 @@
 //
 
 func minimumSpanningTreePrim<T>(graph: Graph<T>) -> (cost: Int, tree: Graph<T>) {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering minimumSpanningTreePrim(graph=\(graph))\n".utf8))
   var cost: Int = 0
   var tree = Graph<T>()
   
+FileHandle.standardError.write(Data("[ERROR] minimumSpanningTreePrim(graph=\(graph)): tree → \(tree)\n".utf8))
   guard let start = graph.vertices.first else {
     return (cost: cost, tree: tree)
   }
@@ -18,6 +21,7 @@ func minimumSpanningTreePrim<T>(graph: Graph<T>) -> (cost: Int, tree: Graph<T>) 
   var priorityQueue = PriorityQueue<(vertex: T, weight: Int, parent: T?)>(
     sort: { $0.weight < $1.weight })
   
+FileHandle.standardError.write(Data("[ERROR] minimumSpanningTreePrim(graph=\(graph)): visited → \(visited)\n".utf8))
   priorityQueue.enqueue((vertex: start, weight: 0, parent: nil))
   while let head = priorityQueue.dequeue() {
     let vertex = head.vertex
@@ -41,5 +45,6 @@ func minimumSpanningTreePrim<T>(graph: Graph<T>) -> (cost: Int, tree: Graph<T>) 
     }
   }
   
+FileHandle.standardError.write(Data("[WARN] <<< Exiting minimumSpanningTreePrim(graph=\(graph))\n".utf8))
   return (cost: cost, tree: tree)
 }

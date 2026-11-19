@@ -1,3 +1,4 @@
+import Foundation
 //: Playground - noun: a place where people can play
 
 public indirect enum BinaryTree<T> {
@@ -50,27 +51,33 @@ tree.count  // 12
 
 extension BinaryTree {
   public func traverseInOrder(process: (T) -> Void) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering traverseInOrder(process=\(process))\n".utf8))
     if case let .node(left, value, right) = self {
       left.traverseInOrder(process: process)
       process(value)
       right.traverseInOrder(process: process)
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting traverseInOrder(process=\(process))\n".utf8))
   }
 
   public func traversePreOrder(process: (T) -> Void) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering traversePreOrder(process=\(process))\n".utf8))
     if case let .node(left, value, right) = self {
       process(value)
       left.traversePreOrder(process: process)
       right.traversePreOrder(process: process)
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting traversePreOrder(process=\(process))\n".utf8))
   }
 
   public func traversePostOrder(process: (T) -> Void) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering traversePostOrder(process=\(process))\n".utf8))
     if case let .node(left, value, right) = self {
       left.traversePostOrder(process: process)
       right.traversePostOrder(process: process)
       process(value)
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting traversePostOrder(process=\(process))\n".utf8))
   }
 }
 

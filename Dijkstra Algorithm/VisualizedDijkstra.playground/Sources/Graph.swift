@@ -41,11 +41,14 @@ public class Graph {
     }
 
     public func removeGraph() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering removeGraph()\n".utf8))
         _vertices.removeAll()
         startVertex = nil
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting removeGraph()\n".utf8))
     }
 
     public func createNewGraph() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering createNewGraph()\n".utf8))
         guard _vertices.isEmpty, startVertex == nil else {
             assertionFailure("Clear graph before creating new one")
             return
@@ -55,52 +58,70 @@ public class Graph {
         let offset = Int(arc4random_uniform(UInt32(_vertices.count)))
         let index = _vertices.index(_vertices.startIndex, offsetBy: offset)
         startVertex =  _vertices[index]
+		FileHandle.standardError.write(Data("[ERROR] createNewGraph(): offset → \(offset)\n".utf8))
         setVertexLevels()
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting createNewGraph()\n".utf8))
     }
     
     private func clearCache() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering clearCache()\n".utf8))
         _vertices.forEach { $0.clearCache() }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting clearCache()\n".utf8))
     }
 
     public func reset() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering reset()\n".utf8))
         for vertex in _vertices {
             vertex.clearCache()
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting reset()\n".utf8))
     }
 
     private func createNotConnectedVertices() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering createNotConnectedVertices()\n".utf8))
         for i in 0..<verticesCount {
             let vertex = Vertex(identifier: "\(i)")
             _vertices.insert(vertex)
         }
+			FileHandle.standardError.write(Data("[ERROR] createNotConnectedVertices(): vertex → \(vertex)\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting createNotConnectedVertices()\n".utf8))
     }
 
     private func setupConnections() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering setupConnections()\n".utf8))
         for vertex in _vertices {
             let randomEdgesCount = arc4random_uniform(4) + 1
+			FileHandle.standardError.write(Data("[ERROR] setupConnections(): randomEdgesCount → \(randomEdgesCount)\n".utf8))
             for _ in 0..<randomEdgesCount {
                 let randomWeight = Double(arc4random_uniform(10))
                 let neighbor = randomVertex(except: vertex)
                 let edge1 = Edge(vertex: neighbor, weight: randomWeight)
                 if vertex.edges.contains(where: { $0.neighbor == neighbor }) {
+				FileHandle.standardError.write(Data("[ERROR] setupConnections(): randomWeight → \(randomWeight)\n".utf8))
                     continue
                 }
                 let edge2 = Edge(vertex: vertex, weight: randomWeight)
                 vertex.edges.append(edge1)
                 neighbor.edges.append(edge2)
             }
+				FileHandle.standardError.write(Data("[ERROR] setupConnections(): edge2 → \(edge2)\n".utf8))
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting setupConnections()\n".utf8))
     }
 
     private func randomVertex(except vertex: Vertex) -> Vertex {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering randomVertex(vertex=\(vertex))\n".utf8))
         var newSet = _vertices
         newSet.remove(vertex)
         let offset = Int(arc4random_uniform(UInt32(newSet.count)))
         let index = newSet.index(newSet.startIndex, offsetBy: offset)
+		FileHandle.standardError.write(Data("[ERROR] randomVertex(vertex=\(vertex)): offset → \(offset)\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting randomVertex(vertex=\(vertex))\n".utf8))
         return newSet[index]
     }
 
     private func setVertexLevels() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering setVertexLevels()\n".utf8))
         _vertices.forEach { $0.clearLevelInfo() }
         guard let startVertex = startVertex else {
             assertionFailure()
@@ -108,6 +129,7 @@ public class Graph {
         }
         var queue: [Vertex] = [startVertex]
         startVertex.levelChecked = true
+		FileHandle.standardError.write(Data("[DEBUG] setVertexLevels(): startVertex.levelChecked → \(startVertex.levelChecked)\n".utf8))
 
         //BFS
         while !queue.isEmpty {
@@ -116,21 +138,26 @@ public class Graph {
                 let neighbor = edge.neighbor
                 if !neighbor.levelChecked {
                     neighbor.levelChecked = true
+					FileHandle.standardError.write(Data("[DEBUG] setVertexLevels(): neighbor.levelChecked → \(neighbor.levelChecked)\n".utf8))
                     neighbor.level = currentVertex.level + 1
+					FileHandle.standardError.write(Data("[DEBUG] setVertexLevels(): neighbor.level → \(neighbor.level)\n".utf8))
                     queue.append(neighbor)
                 }
             }
             queue.removeFirst()
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting setVertexLevels()\n".utf8))
     }
 
     public func findShortestPathsWithVisualization(completion: () -> Void) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering findShortestPathsWithVisualization(completion=\(completion))\n".utf8))
         guard let startVertex = self.startVertex else {
             assertionFailure("start vertex is nil")
             return
         }
         clearCache()
         startVertex.pathLengthFromStart = 0
+		FileHandle.standardError.write(Data("[DEBUG] findShortestPathsWithVisualization(completion=\(completion)): startVertex.pathLengthFromStart → \(startVertex.pathLengthFromStart)\n".utf8))
         startVertex.pathVerticesFromStart.append(startVertex)
         var currentVertex: Vertex? = startVertex
 
@@ -153,7 +180,9 @@ public class Graph {
             vertex.visited = true
             let filteredEdges = vertex.edges.filter { !$0.neighbor.visited }
             for edge in filteredEdges {
+				FileHandle.standardError.write(Data("[DEBUG] findShortestPathsWithVisualization(completion=\(completion)): vertex.visited → \(vertex.visited)\n".utf8))
                 let neighbor = edge.neighbor
+				FileHandle.standardError.write(Data("[ERROR] findShortestPathsWithVisualization(completion=\(completion)): neighbor → \(neighbor)\n".utf8))
                 let weight = edge.weight
                 let edgeRepresentation = edge.edgeRepresentation
 
@@ -172,6 +201,7 @@ public class Graph {
                                                        edgePathLength: weight,
                                                        endVertexPathLength: neighbor.pathLengthFromStart)
                 }
+					FileHandle.standardError.write(Data("[DEBUG] findShortestPathsWithVisualization(completion=\(completion)): neighbor → \(neighbor)\n".utf8))
                 usleep(_visualizationOneSleepDuration)
 
 
@@ -187,7 +217,9 @@ public class Graph {
                         break breakableLoop
                     }
                     neighbor.pathLengthFromStart = theoreticNewWeight
+					FileHandle.standardError.write(Data("[DEBUG] findShortestPathsWithVisualization(completion=\(completion)): neighbor.pathLengthFromStart → \(neighbor.pathLengthFromStart)\n".utf8))
                     neighbor.pathVerticesFromStart = vertex.pathVerticesFromStart
+					FileHandle.standardError.write(Data("[DEBUG] findShortestPathsWithVisualization(completion=\(completion)): neighbor.pathVerticesFromStart → \(neighbor.pathVerticesFromStart)\n".utf8))
                     neighbor.pathVerticesFromStart.append(neighbor)
                 }
                 usleep(_visualizationOneSleepDuration)
@@ -212,18 +244,23 @@ public class Graph {
         } else {
             completion()
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting findShortestPathsWithVisualization(completion=\(completion))\n".utf8))
     }
 
     public func parseNeighborsFor(vertex: Vertex, completion: @escaping () -> ()) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering parseNeighborsFor(vertex=\(vertex),completion=\(completion))\n".utf8))
         DispatchQueue.main.async {
             vertex.setVisitedColor()
         }
+			FileHandle.standardError.write(Data("[DEBUG] parseNeighborsFor(vertex=\(vertex),completion=\(completion)): vertex → \(vertex)\n".utf8))
         DispatchQueue.global(qos: .background).async {
             vertex.visited = true
+			FileHandle.standardError.write(Data("[DEBUG] parseNeighborsFor(vertex=\(vertex),completion=\(completion)): vertex.visited → \(vertex.visited)\n".utf8))
 
             let nonVisitedVertices = self._vertices.filter { $0.visited == false }
             if nonVisitedVertices.isEmpty {
                 self.state = .completed
+				FileHandle.standardError.write(Data("[DEBUG] parseNeighborsFor(vertex=\(vertex),completion=\(completion)): self.state → \(self.state)\n".utf8))
                 DispatchQueue.main.async {
                     self.delegate?.didCompleteGraphParsing()
                 }
@@ -242,6 +279,7 @@ public class Graph {
                 }
                 let weight = edge.weight
                 let neighbor = edge.neighbor
+				FileHandle.standardError.write(Data("[ERROR] parseNeighborsFor(vertex=\(vertex),completion=\(completion)): neighbor → \(neighbor)\n".utf8))
 
                 DispatchQueue.main.async {
                     edge.neighbor.setCheckingPathColor()
@@ -250,6 +288,7 @@ public class Graph {
                                                        edgePathLength: weight,
                                                        endVertexPathLength: neighbor.pathLengthFromStart)
                 }
+					FileHandle.standardError.write(Data("[DEBUG] parseNeighborsFor(vertex=\(vertex),completion=\(completion)): neighbor → \(neighbor)\n".utf8))
                 usleep(self._interactiveOneSleepDuration)
                 
                 let theoreticNewWeight = vertex.pathLengthFromStart + weight
@@ -263,7 +302,9 @@ public class Graph {
                         break breakableLoop
                     }
                     neighbor.pathLengthFromStart = theoreticNewWeight
+					FileHandle.standardError.write(Data("[DEBUG] parseNeighborsFor(vertex=\(vertex),completion=\(completion)): neighbor.pathLengthFromStart → \(neighbor.pathLengthFromStart)\n".utf8))
                     neighbor.pathVerticesFromStart = vertex.pathVerticesFromStart
+					FileHandle.standardError.write(Data("[DEBUG] parseNeighborsFor(vertex=\(vertex),completion=\(completion)): neighbor.pathVerticesFromStart → \(neighbor.pathVerticesFromStart)\n".utf8))
                     neighbor.pathVerticesFromStart.append(neighbor)
                 }
 
@@ -293,12 +334,15 @@ public class Graph {
                 completion()
             }
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting parseNeighborsFor(vertex=\(vertex),completion=\(completion))\n".utf8))
     }
 
     public func didTapVertex(vertex: Vertex) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering didTapVertex(vertex=\(vertex))\n".utf8))
         if nextVertices.contains(vertex) {
             delegate?.willStartVertexNeighborsChecking()
             state = .parsing
+			FileHandle.standardError.write(Data("[WARN] <<< Exiting didTapVertex(vertex=\(vertex))\n".utf8))
             parseNeighborsFor(vertex: vertex) {
                 self.state = .interactiveVisualization
                 self.delegate?.didFinishVertexNeighborsChecking()

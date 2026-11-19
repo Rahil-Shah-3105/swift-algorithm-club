@@ -1,7 +1,9 @@
+import Foundation
 //: Playground - noun: a place where people can play
 // Last checked with: Version 10.0 (10A255)
 
 func twoSumProblem(_ a: [Int], k: Int) -> ((Int, Int))? {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering twoSumProblem(a=\(a),k=\(k))\n".utf8))
   var i = 0
   var j = a.count - 1
 
@@ -15,6 +17,7 @@ func twoSumProblem(_ a: [Int], k: Int) -> ((Int, Int))? {
       j -= 1
     }
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting twoSumProblem(a=\(a),k=\(k))\n".utf8))
   return nil
 }
 

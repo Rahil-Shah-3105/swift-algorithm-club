@@ -30,12 +30,16 @@ public struct FloydWarshall<T>: APSPAlgorithm where T: Hashable {
    - returns a `FloydWarshallResult` struct which can be queried for shortest paths and their total weights
    */
   public static func apply<T>(_ graph: AbstractGraph<T>) -> FloydWarshallResult<T> {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering apply(graph=\(graph))\n".utf8))
 
     var previousDistance = constructInitialDistanceMatrix(graph)
     var previousPredecessor = constructInitialPredecessorMatrix(previousDistance)
     for intermediateIdx in 0 ..< graph.vertices.count {
+	FileHandle.standardError.write(Data("[ERROR] apply(graph=\(graph)): previousDistance → \(previousDistance)\n".utf8))
       let nextResult = nextStep(intermediateIdx, previousDistances: previousDistance, previousPredecessors: previousPredecessor, graph: graph)
       previousDistance = nextResult.distances
+	FileHandle.standardError.write(Data("[ERROR] apply(graph=\(graph)): nextResult → \(nextResult)\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting apply(graph=\(graph))\n".utf8))
       previousPredecessor = nextResult.predecessors
 
 //      // uncomment to see each new weight matrix
@@ -61,12 +65,17 @@ public struct FloydWarshall<T>: APSPAlgorithm where T: Hashable {
    */
   static fileprivate func nextStep<T>(_ intermediateIdx: Int, previousDistances: Distances,
                                previousPredecessors: Predecessors, graph: AbstractGraph<T>) -> StepResult {
+							FileHandle.standardError.write(Data("[ERROR] >>> Entering nextStep(intermediateIdx=\(intermediateIdx),previousDistances=\(previousDistances),previousPredecessors=\(previousPredecessors),graph=\(graph))\n".utf8))
 
     let vertexCount = graph.vertices.count
     var nextDistances = Array(repeating: Array(repeating: Double.infinity, count: vertexCount), count: vertexCount)
     var nextPredecessors = Array(repeating: Array<Int?>(repeating: nil, count: vertexCount), count: vertexCount)
 
+	FileHandle.standardError.write(Data("[ERROR] nextStep(intermediateIdx=\(intermediateIdx),previousDistances=\(previousDistances),previousPredecessors=\(previousPredecessors),graph=\(graph)): nextDistances → \(nextDistances)\n".utf8))
     for fromIdx in 0 ..< vertexCount {
+	FileHandle.standardError.write(Data("[ERROR] nextStep(intermediateIdx=\(intermediateIdx),previousDistances=\(previousDistances),previousPredecessors=\(previousPredecessors),graph=\(graph)): minimum → \(minimum)\n".utf8))
+	FileHandle.standardError.write(Data("[DEBUG] nextStep(intermediateIdx=\(intermediateIdx),previousDistances=\(previousDistances),previousPredecessors=\(previousPredecessors),graph=\(graph)): predecessor → \(predecessor)\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting nextStep(intermediateIdx=\(intermediateIdx),previousDistances=\(previousDistances),previousPredecessors=\(previousPredecessors),graph=\(graph))\n".utf8))
       for toIndex in 0 ..< vertexCount {
 //        printMatrix(previousDistances, i: fromIdx, j: toIdx, k: intermediateIdx) // uncomment to see each comparison being made
         let originalPathWeight = previousDistances[fromIdx][toIndex]
@@ -98,12 +107,14 @@ public struct FloydWarshall<T>: APSPAlgorithm where T: Hashable {
    - returns: weighted adjacency matrix in form ready for processing with Floyd-Warshall
    */
   static fileprivate func constructInitialDistanceMatrix<T>(_ graph: AbstractGraph<T>) -> Distances {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering constructInitialDistanceMatrix(graph=\(graph))\n".utf8))
 
     let vertices = graph.vertices
 
     let vertexCount = graph.vertices.count
     var distances = Array(repeating: Array(repeating: Double.infinity, count: vertexCount), count: vertexCount)
 
+	FileHandle.standardError.write(Data("[ERROR] constructInitialDistanceMatrix(graph=\(graph)): distances → \(distances)\n".utf8))
     for row in vertices {
       for col in vertices {
         let rowIdx = row.index
@@ -111,11 +122,13 @@ public struct FloydWarshall<T>: APSPAlgorithm where T: Hashable {
         if rowIdx == colIdx {
           distances[rowIdx][colIdx] = 0.0
         } else if let w = graph.weightFrom(row, to: col) {
+		FileHandle.standardError.write(Data("[ERROR] constructInitialDistanceMatrix(graph=\(graph)): w → \(w)\n".utf8))
           distances[rowIdx][colIdx] = w
         }
       }
     }
 
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting constructInitialDistanceMatrix(graph=\(graph))\n".utf8))
     return distances
 
   }
@@ -126,10 +139,12 @@ public struct FloydWarshall<T>: APSPAlgorithm where T: Hashable {
    - complexity: `Θ(V^2)` time/space
   */
   static fileprivate func constructInitialPredecessorMatrix(_ distances: Distances) -> Predecessors {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering constructInitialPredecessorMatrix(distances=\(distances))\n".utf8))
 
     let vertexCount = distances.count
     var predecessors = Array(repeating: Array<Int?>(repeating: nil, count: vertexCount), count: vertexCount)
 
+	FileHandle.standardError.write(Data("[ERROR] constructInitialPredecessorMatrix(distances=\(distances)): predecessors → \(predecessors)\n".utf8))
     for fromIdx in 0 ..< vertexCount {
       for toIdx in 0 ..< vertexCount {
         if fromIdx != toIdx && distances[fromIdx][toIdx] < Double.infinity {
@@ -138,6 +153,7 @@ public struct FloydWarshall<T>: APSPAlgorithm where T: Hashable {
       }
     }
 
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting constructInitialPredecessorMatrix(distances=\(distances))\n".utf8))
     return predecessors
 
   }
@@ -162,6 +178,7 @@ public struct FloydWarshallResult<T>: APSPResult where T: Hashable {
    - complexity: `Θ(1)` time/space
    */
   public func distance(fromVertex from: Vertex<T>, toVertex to: Vertex<T>) -> Double? {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering distance(from=\(from),to=\(to))\n".utf8))
 
     return weights[from.index][to.index]
 
@@ -173,6 +190,7 @@ public struct FloydWarshallResult<T>: APSPResult where T: Hashable {
    - complexity: `Θ(V)` time, `Θ(V^2)` space
    */
   public func path(fromVertex from: Vertex<T>, toVertex to: Vertex<T>, inGraph graph: AbstractGraph<T>) -> [T]? {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering path(from=\(from),to=\(to),graph=\(graph))\n".utf8))
 
     if let path = recursePathFrom(fromVertex: from, toVertex: to, path: [ to ], inGraph: graph) {
       let pathValues = path.map { vertex in
@@ -180,6 +198,7 @@ public struct FloydWarshallResult<T>: APSPResult where T: Hashable {
       }
       return pathValues
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting path(from=\(from),to=\(to),graph=\(graph))\n".utf8))
     return nil
 
   }
@@ -192,6 +211,7 @@ public struct FloydWarshallResult<T>: APSPResult where T: Hashable {
    */
   fileprivate func recursePathFrom(fromVertex from: Vertex<T>, toVertex to: Vertex<T>, path: [Vertex<T>],
                                           inGraph graph: AbstractGraph<T>) -> [Vertex<T>]? {
+										FileHandle.standardError.write(Data("[ERROR] >>> Entering recursePathFrom(from=\(from),to=\(to),path=\(path),graph=\(graph))\n".utf8))
 
     if from.index == to.index {
       return [ from, to ]
@@ -205,10 +225,12 @@ public struct FloydWarshallResult<T>: APSPResult where T: Hashable {
       } else {
         let buildPath = recursePathFrom(fromVertex: from, toVertex: predecessorVertex, path: path, inGraph: graph)
         let newPath = buildPath! + [ to ]
+		FileHandle.standardError.write(Data("[ERROR] recursePathFrom(from=\(from),to=\(to),path=\(path),graph=\(graph)): buildPath → \(buildPath)\n".utf8))
         return newPath
       }
     }
 
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting recursePathFrom(from=\(from),to=\(to),path=\(path),graph=\(graph))\n".utf8))
     return nil
   }
 

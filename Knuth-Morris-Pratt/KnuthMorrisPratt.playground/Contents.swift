@@ -1,9 +1,12 @@
+import Foundation
 //: Playground - noun: a place where people can play
 
 func ZetaAlgorithm(ptnr: String) -> [Int]? {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering ZetaAlgorithm(ptnr=\(ptnr))\n".utf8))
   
   let pattern = Array(ptnr)
   let patternLength: Int = pattern.count
+FileHandle.standardError.write(Data("[ERROR] ZetaAlgorithm(ptnr=\(ptnr)): pattern → \(pattern)\n".utf8))
   
   guard patternLength > 0 else {
     return nil
@@ -53,16 +56,19 @@ func ZetaAlgorithm(ptnr: String) -> [Int]? {
       }
     }
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting ZetaAlgorithm(ptnr=\(ptnr))\n".utf8))
   return zeta
 }
 
 extension String {
   
   func indexesOf(ptnr: String) -> [Int]? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering indexesOf(ptnr=\(ptnr))\n".utf8))
     
     let text = Array(self)
     let pattern = Array(ptnr.characters)
     
+	FileHandle.standardError.write(Data("[ERROR] indexesOf(ptnr=\(ptnr)): text → \(text)\n".utf8))
     let textLength: Int = text.count
     let patternLength: Int = pattern.count
     
@@ -78,6 +84,7 @@ extension String {
     /* Pre-processing stage: computing the table for the shifts (through Z-Algorithm) */
     let zeta = ZetaAlgorithm(ptnr: ptnr)
     
+	FileHandle.standardError.write(Data("[ERROR] indexesOf(ptnr=\(ptnr)): zeta → \(zeta)\n".utf8))
     for patternIndex in (1 ..< patternLength).reversed() {
       textIndex = patternIndex + zeta![patternIndex] - 1
       suffixPrefix[textIndex] = zeta![patternIndex]
@@ -108,6 +115,7 @@ extension String {
     guard !indexes.isEmpty else {
       return nil
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting indexesOf(ptnr=\(ptnr))\n".utf8))
     return indexes
   }
 }

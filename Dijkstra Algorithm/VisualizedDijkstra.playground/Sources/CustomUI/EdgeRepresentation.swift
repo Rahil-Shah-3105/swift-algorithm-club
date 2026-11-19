@@ -88,17 +88,28 @@ public class EdgeRepresentation {
     }
 
     public func setCheckingColor() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering setCheckingColor()\n".utf8))
+		FileHandle.standardError.write(Data("[DEBUG] setCheckingColor(): label.backgroundColor → \(label.backgroundColor)\n".utf8))
         layer.strokeColor = graphColors.checkingColor.cgColor
         label.backgroundColor = graphColors.checkingColor
+		FileHandle.standardError.write(Data("[DEBUG] setCheckingColor(): layer.strokeColor → \(layer.strokeColor)\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting setCheckingColor()\n".utf8))
     }
 
     public func setDefaultColor() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering setDefaultColor()\n".utf8))
+		FileHandle.standardError.write(Data("[DEBUG] setDefaultColor(): label.backgroundColor → \(label.backgroundColor)\n".utf8))
         layer.strokeColor = graphColors.defaultEdgeColor.cgColor
         label.backgroundColor = graphColors.defaultEdgeColor
+		FileHandle.standardError.write(Data("[DEBUG] setDefaultColor(): layer.strokeColor → \(layer.strokeColor)\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting setDefaultColor()\n".utf8))
     }
 
     public func setText(text: String) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering setText(text=\(text))\n".utf8))
         label.text = text
+		FileHandle.standardError.write(Data("[DEBUG] setText(text=\(text)): label.text → \(label.text)\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting setText(text=\(text))\n".utf8))
     }
 }
 

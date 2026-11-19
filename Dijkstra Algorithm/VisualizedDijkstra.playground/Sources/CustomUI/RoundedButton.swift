@@ -13,8 +13,12 @@ public class RoundedButton: UIButton {
     }
 
     private func commonInit() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering commonInit()\n".utf8))
         backgroundColor = graphColors.buttonsBackgroundColor
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting commonInit()\n".utf8))
+		FileHandle.standardError.write(Data("[DEBUG] commonInit(): backgroundColor → \(backgroundColor)\n".utf8))
         titleLabel?.adjustsFontSizeToFitWidth = true
         layer.cornerRadius = 7
+		FileHandle.standardError.write(Data("[DEBUG] commonInit(): layer.cornerRadius → \(layer.cornerRadius)\n".utf8))
     }
 }

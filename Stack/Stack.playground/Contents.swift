@@ -1,3 +1,4 @@
+import Foundation
 /**
   Stack
 
@@ -41,7 +42,9 @@ public struct Stack<T> {
      - Parameter element: The item being pushed.
   */
   public mutating func push(_ element: T) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering push(element=\(element))\n".utf8))
     array.append(element)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting push(element=\(element))\n".utf8))
   }
 
   /**
@@ -50,6 +53,8 @@ public struct Stack<T> {
      - Returns: The item at the top of the stack.
   */
   public mutating func pop() -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering pop()\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting pop()\n".utf8))
     return array.popLast()
   }
 

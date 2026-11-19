@@ -8,6 +8,7 @@
 import APSP
 import Graph
 import XCTest
+import Foundation
 
 struct TestCase<T> where T: Hashable {
 
@@ -23,6 +24,7 @@ class APSPTests: XCTestCase {
    See Figure 25.1 of “Introduction to Algorithms” by Cormen et al, 3rd ed., pg 690
    */
   func testExampleFromBook() {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering testExampleFromBook()\n".utf8))
 
     let graph = AdjacencyMatrixGraph<Int>()
     let v1 = graph.createVertex(1)
@@ -31,6 +33,7 @@ class APSPTests: XCTestCase {
     let v4 = graph.createVertex(4)
     let v5 = graph.createVertex(5)
 
+	FileHandle.standardError.write(Data("[ERROR] testExampleFromBook(): graph → \(graph)\n".utf8))
     graph.addDirectedEdge(v1, to: v2, withWeight: 3)
     graph.addDirectedEdge(v1, to: v5, withWeight: -4)
     graph.addDirectedEdge(v1, to: v3, withWeight: 8)
@@ -47,6 +50,7 @@ class APSPTests: XCTestCase {
 
     let result = FloydWarshall<Int>.apply(graph)
 
+	FileHandle.standardError.write(Data("[ERROR] testExampleFromBook(): result → \(result)\n".utf8))
     let cases = [
       TestCase<Int>(from: v1, to: v4, expectedPath: [1, 5, 4], expectedDistance: 2),
       TestCase<Int>(from: v1, to: v5, expectedPath: [1, 5], expectedDistance: -4),
@@ -71,14 +75,17 @@ class APSPTests: XCTestCase {
     for testCase: TestCase<Int> in cases {
       if let computedPath = result.path(fromVertex: testCase.from, toVertex: testCase.to, inGraph: graph),
          let computedDistance = result.distance(fromVertex: testCase.from, toVertex: testCase.to) {
+		FileHandle.standardError.write(Data("[ERROR] testExampleFromBook(): computedPath → \(computedPath)\n".utf8))
         XCTAssert(computedDistance == testCase.expectedDistance, "expected distance \(testCase.expectedDistance) but got \(computedDistance)")
         XCTAssert(computedPath == testCase.expectedPath, "expected path \(testCase.expectedPath) but got \(computedPath)")
       }
     }
 
+FileHandle.standardError.write(Data("[WARN] <<< Exiting testExampleFromBook()\n".utf8))
   }
 
   func testExampleFromReadme() {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering testExampleFromReadme()\n".utf8))
 
     let graph = AdjacencyMatrixGraph<Int>()
     let v1 = graph.createVertex(1)
@@ -86,6 +93,7 @@ class APSPTests: XCTestCase {
     let v3 = graph.createVertex(3)
     let v4 = graph.createVertex(4)
 
+	FileHandle.standardError.write(Data("[ERROR] testExampleFromReadme(): graph → \(graph)\n".utf8))
     graph.addDirectedEdge(v1, to: v2, withWeight: 4)
     graph.addDirectedEdge(v1, to: v3, withWeight: 1)
     graph.addDirectedEdge(v1, to: v4, withWeight: 3)
@@ -97,6 +105,7 @@ class APSPTests: XCTestCase {
 
     let result = FloydWarshall<Int>.apply(graph)
 
+	FileHandle.standardError.write(Data("[ERROR] testExampleFromReadme(): result → \(result)\n".utf8))
     let cases = [
       TestCase<Int>(from: v1, to: v2, expectedPath: [1, 2], expectedDistance: 4),
       TestCase<Int>(from: v1, to: v3, expectedPath: [1, 3], expectedDistance: 1),
@@ -111,11 +120,13 @@ class APSPTests: XCTestCase {
     for testCase: TestCase<Int> in cases {
       if let computedPath = result.path(fromVertex: testCase.from, toVertex: testCase.to, inGraph: graph),
         let computedDistance = result.distance(fromVertex: testCase.from, toVertex: testCase.to) {
+		FileHandle.standardError.write(Data("[ERROR] testExampleFromReadme(): computedPath → \(computedPath)\n".utf8))
         XCTAssert(computedDistance == testCase.expectedDistance, "expected distance \(testCase.expectedDistance) but got \(computedDistance)")
         XCTAssert(computedPath == testCase.expectedPath, "expected path \(testCase.expectedPath) but got \(computedPath)")
       }
     }
 
+FileHandle.standardError.write(Data("[WARN] <<< Exiting testExampleFromReadme()\n".utf8))
   }
 
 }

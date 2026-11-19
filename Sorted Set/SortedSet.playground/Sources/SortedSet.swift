@@ -1,3 +1,4 @@
+import Foundation
 /*
  An Sorted Set is a collection where all items in the set follow an ordering,
  usually sorted from 'least' to 'most'. The way you value and compare items
@@ -33,24 +34,30 @@ public struct SortedSet<T: Comparable> {
   
   // Removes an item if it exists. Performance: O(n)
   public mutating func remove(_ item: T) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering remove(item=\(item))\n".utf8))
     if let index = index(of: item) {
       internalSet.remove(at: index)
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting remove(item=\(item))\n".utf8))
   }
   
   // Returns true if and only if the item exists somewhere in the set.
   public func exists(_ item: T) -> Bool {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering exists(item=\(item))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting exists(item=\(item))\n".utf8))
     return index(of: item) != nil
   }
   
   // Returns the index of an item if it exists, or -1 otherwise.
   public func index(of item: T) -> Int? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering index(item=\(item))\n".utf8))
     var leftBound = 0
     var rightBound = count - 1
     
     while leftBound <= rightBound {
       let mid = leftBound + ((rightBound - leftBound) / 2)
       
+	FileHandle.standardError.write(Data("[ERROR] index(item=\(item)): mid → \(mid)\n".utf8))
       if internalSet[mid] > item {
         rightBound = mid - 1
       } else if internalSet[mid] < item {
@@ -95,23 +102,31 @@ public struct SortedSet<T: Comparable> {
   
   // Returns the 'maximum' or 'largest' value in the set.
   public func max() -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering max()\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting max()\n".utf8))
     return count == 0 ? nil : internalSet[count - 1]
   }
   
   // Returns the 'minimum' or 'smallest' value in the set.
   public func min() -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering min()\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting min()\n".utf8))
     return count == 0 ? nil : internalSet[0]
   }
   
   // Returns the k-th largest element in the set, if k is in the range
   // [1, count]. Returns nil otherwise.
   public func kLargest(_ k: Int) -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering kLargest(k=\(k))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting kLargest(k=\(k))\n".utf8))
     return k > count || k <= 0 ? nil : internalSet[count - k]
   }
   
   // Returns the k-th smallest element in the set, if k is in the range
   // [1, count]. Returns nil otherwise.
   public func kSmallest(_ k: Int) -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering kSmallest(k=\(k))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting kSmallest(k=\(k))\n".utf8))
     return k > count || k <= 0 ? nil : internalSet[k - 1]
   }
 }

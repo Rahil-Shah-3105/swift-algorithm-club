@@ -1,3 +1,4 @@
+import Foundation
 /*
  Hash Table: A symbol table of generic key-value pairs.
  
@@ -70,12 +71,14 @@ public struct HashTable<Key: Hashable, Value> {
      Returns the value for the given key.
      */
     public func value(forKey key: Key) -> Value? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering value(key=\(key))\n".utf8))
         let index = self.index(forKey: key)
         for element in buckets[index] {
             if element.key == key {
                 return element.value
             }
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting value(key=\(key))\n".utf8))
         return nil  // key not in hash table
     }
 
@@ -84,6 +87,7 @@ public struct HashTable<Key: Hashable, Value> {
      or adds a new key-value pair if the key does not exist.
      */
     @discardableResult public mutating func updateValue(_ value: Value, forKey key: Key) -> Value? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering updateValue(value=\(value),key=\(key))\n".utf8))
         let index = self.index(forKey: key)
 
         // Do we already have this key in the bucket?
@@ -98,6 +102,7 @@ public struct HashTable<Key: Hashable, Value> {
         // This key isn't in the bucket yet; add it to the chain.
         buckets[index].append((key: key, value: value))
         count += 1
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting updateValue(value=\(value),key=\(key))\n".utf8))
         return nil
     }
 
@@ -106,6 +111,7 @@ public struct HashTable<Key: Hashable, Value> {
      associated value from the hash table.
      */
     @discardableResult public mutating func removeValue(forKey key: Key) -> Value? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering removeValue(key=\(key))\n".utf8))
         let index = self.index(forKey: key)
 
         // Find the element in the bucket's chain and remove it.
@@ -116,6 +122,7 @@ public struct HashTable<Key: Hashable, Value> {
                 return element.value
             }
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting removeValue(key=\(key))\n".utf8))
         return nil  // key not in hash table
     }
 
@@ -123,8 +130,10 @@ public struct HashTable<Key: Hashable, Value> {
      Removes all key-value pairs from the hash table.
      */
     public mutating func removeAll() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering removeAll()\n".utf8))
         buckets = Array<Bucket>(repeatElement([], count: buckets.count))
         count = 0
+		FileHandle.standardError.write(Data("[DEBUG] removeAll(): count → \(count)\n".utf8))
     }
 
     /**

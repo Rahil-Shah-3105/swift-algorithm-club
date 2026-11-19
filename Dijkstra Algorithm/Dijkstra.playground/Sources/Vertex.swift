@@ -12,8 +12,11 @@ open class Vertex {
     }
 
     open func clearCache() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering clearCache()\n".utf8))
         pathLengthFromStart = Double.infinity
         pathVerticesFromStart = []
+		FileHandle.standardError.write(Data("[DEBUG] clearCache(): pathLengthFromStart → \(pathLengthFromStart)\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting clearCache()\n".utf8))
     }
 }
 

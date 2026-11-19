@@ -1,3 +1,4 @@
+import Foundation
 /// Conformers of this protocol represent a pair of comparable values
 /// This can be useful in many data structures and algorithms where items
 /// stored contain a value, but are ordered or retrieved according to a key.
@@ -72,6 +73,8 @@ struct IntegerPair : KeyValuePair {
   var value : Int
   
   func copy() -> IntegerPair {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering copy()\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting copy()\n".utf8))
     return IntegerPair(key: self.key, value: self.value)
   }
 }

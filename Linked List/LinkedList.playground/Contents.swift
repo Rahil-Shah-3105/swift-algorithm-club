@@ -1,3 +1,4 @@
+import Foundation
 //: # Linked Lists
 
 // For best results, don't forget to select "Show Rendered Markup" from XCode's "Editor" menu
@@ -87,6 +88,7 @@ public final class LinkedList<T> {
             }
             
             assert(node != nil, "index is out of bounds.")
+			FileHandle.standardError.write(Data("[WARN] <<< Exiting node(index=\(index))\n".utf8))
             return node!
         }
     }
@@ -95,27 +97,35 @@ public final class LinkedList<T> {
     ///
     /// - Parameter value: The data value to be appended
     public func append(_ value: T) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering append(value=\(value))\n".utf8))
         let newNode = Node(value: value)
         append(newNode)
+		FileHandle.standardError.write(Data("[ERROR] append(value=\(value)): newNode → \(newNode)\n".utf8))
     }
     
     /// Append a copy of a LinkedListNode to the end of the list.
     ///
     /// - Parameter node: The node containing the value to be appended
     public func append(_ node: Node) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering append(node=\(node))\n".utf8))
         let newNode = node
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting append(value=\(value))\n".utf8))
         if let lastNode = last {
             newNode.previous = lastNode
+			FileHandle.standardError.write(Data("[DEBUG] append(node=\(node)): newNode.previous → \(newNode.previous)\n".utf8))
             lastNode.next = newNode
         } else {
             head = newNode
+			FileHandle.standardError.write(Data("[DEBUG] append(node=\(node)): head → \(head)\n".utf8))
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting append(node=\(node))\n".utf8))
     }
     
     /// Append a copy of a LinkedList to the end of the list.
     ///
     /// - Parameter list: The list to be copied and appended.
     public func append(_ list: LinkedList) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering append(list=\(list))\n".utf8))
         var nodeToCopy = list.head
         while let node = nodeToCopy {
             append(node.value)
@@ -129,8 +139,10 @@ public final class LinkedList<T> {
     ///   - value: The data value to be inserted
     ///   - index: Integer value of the index to be insterted at
     public func insert(_ value: T, at index: Int) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(value=\(value),index=\(index))\n".utf8))
         let newNode = Node(value: value)
         insert(newNode, at: index)
+		FileHandle.standardError.write(Data("[ERROR] insert(value=\(value),index=\(index)): newNode → \(newNode)\n".utf8))
     }
     
     /// Insert a copy of a node at a specific index. Crashes if index is out of bounds (0...self.count)
@@ -139,17 +151,23 @@ public final class LinkedList<T> {
     ///   - node: The node containing the value to be inserted
     ///   - index: Integer value of the index to be inserted at
     public func insert(_ newNode: Node, at index: Int) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(newNode=\(newNode),index=\(index))\n".utf8))
         if index == 0 {
+			FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(value=\(value),index=\(index))\n".utf8))
             newNode.next = head
+			FileHandle.standardError.write(Data("[DEBUG] insert(newNode=\(newNode),index=\(index)): newNode.next → \(newNode.next)\n".utf8))
             head?.previous = newNode
             head = newNode
         } else {
             let prev = node(at: index - 1)
             let next = prev.next
+			FileHandle.standardError.write(Data("[ERROR] insert(newNode=\(newNode),index=\(index)): prev → \(prev)\n".utf8))
             newNode.previous = prev
+			FileHandle.standardError.write(Data("[DEBUG] insert(newNode=\(newNode),index=\(index)): newNode.previous → \(newNode.previous)\n".utf8))
             newNode.next = next
             next?.previous = newNode
             prev.next = newNode
+			FileHandle.standardError.write(Data("[DEBUG] insert(newNode=\(newNode),index=\(index)): prev.next → \(prev.next)\n".utf8))
         }
     }
     
@@ -159,7 +177,9 @@ public final class LinkedList<T> {
     ///   - list: The LinkedList to be copied and inserted
     ///   - index: Integer value of the index to be inserted at
     public func insert(_ list: LinkedList, at index: Int) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(list=\(list),index=\(index))\n".utf8))
         if list.isEmpty { return }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(newNode=\(newNode),index=\(index))\n".utf8))
         
         if index == 0 {
             list.last?.next = head
@@ -167,18 +187,24 @@ public final class LinkedList<T> {
         } else {
             let prev = node(at: index - 1)
             let next = prev.next
+			FileHandle.standardError.write(Data("[ERROR] insert(list=\(list),index=\(index)): prev → \(prev)\n".utf8))
             
             prev.next = list.head
+			FileHandle.standardError.write(Data("[DEBUG] insert(list=\(list),index=\(index)): prev.next → \(prev.next)\n".utf8))
             list.head?.previous = prev
             
             list.last?.next = next
             next?.previous = list.last
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(list=\(list),index=\(index))\n".utf8))
     }
     
     /// Function to remove all nodes/value from the list
     public func removeAll() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering removeAll()\n".utf8))
         head = nil
+		FileHandle.standardError.write(Data("[DEBUG] removeAll(): head → \(head)\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting removeAll()\n".utf8))
     }
     
     /// Function to remove a specific node.
@@ -186,6 +212,7 @@ public final class LinkedList<T> {
     /// - Parameter node: The node to be deleted
     /// - Returns: The data value contained in the deleted node.
     @discardableResult public func remove(node: Node) -> T {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering remove(node=\(node))\n".utf8))
         let prev = node.previous
         let next = node.next
         
@@ -193,19 +220,28 @@ public final class LinkedList<T> {
             prev.next = next
         } else {
             head = next
+			FileHandle.standardError.write(Data("[DEBUG] remove(node=\(node)): head → \(head)\n".utf8))
         }
         next?.previous = prev
         
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting remove(node=\(node))\n".utf8))
         node.previous = nil
+		FileHandle.standardError.write(Data("[DEBUG] remove(node=\(node)): node.previous → \(node.previous)\n".utf8))
         node.next = nil
+		FileHandle.standardError.write(Data("[DEBUG] remove(node=\(node)): node.next → \(node.next)\n".utf8))
         return node.value
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering remove(index=\(index))\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting remove(index=\(index))\n".utf8))
+		FileHandle.standardError.write(Data("[ERROR] remove(index=\(index)): node → \(node)\n".utf8))
     }
     
     /// Function to remove the last node/value in the list. Crashes if the list is empty
     ///
     /// - Returns: The data value contained in the deleted node.
     @discardableResult public func removeLast() -> T {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering removeLast()\n".utf8))
         assert(!isEmpty)
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting removeLast()\n".utf8))
         return remove(node: last!)
     }
     
@@ -238,36 +274,45 @@ extension LinkedList: CustomStringConvertible {
 // MARK: - Extension to add a 'reverse' function to the list
 extension LinkedList {
     public func reverse() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering reverse()\n".utf8))
         var node = head
         while let currentNode = node {
             node = currentNode.next
             swap(&currentNode.next, &currentNode.previous)
             head = currentNode
+			FileHandle.standardError.write(Data("[DEBUG] reverse(): head → \(head)\n".utf8))
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting reverse()\n".utf8))
     }
 }
 
 // MARK: - An extension with an implementation of 'map' & 'filter' functions
 extension LinkedList {
     public func map<U>(transform: (T) -> U) -> LinkedList<U> {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering map(transform=\(transform))\n".utf8))
         let result = LinkedList<U>()
         var node = head
+		FileHandle.standardError.write(Data("[ERROR] map(transform=\(transform)): result → \(result)\n".utf8))
         while let nd = node {
             result.append(transform(nd.value))
             node = nd.next
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting map(transform=\(transform))\n".utf8))
         return result
     }
     
     public func filter(predicate: (T) -> Bool) -> LinkedList<T> {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering filter(predicate=\(predicate))\n".utf8))
         let result = LinkedList<T>()
         var node = head
+		FileHandle.standardError.write(Data("[ERROR] filter(predicate=\(predicate)): result → \(result)\n".utf8))
         while let nd = node {
             if predicate(nd.value) {
                 result.append(nd.value)
             }
             node = nd.next
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting filter(predicate=\(predicate))\n".utf8))
         return result
     }
 }
@@ -326,6 +371,8 @@ extension LinkedList: Collection {
     }
     
     public func index(after idx: Index) -> Index {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering index(idx=\(idx))\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting index(idx=\(idx))\n".utf8))
         return LinkedListIndex<T>(node: idx.node?.next, tag: idx.tag + 1)
     }
 }

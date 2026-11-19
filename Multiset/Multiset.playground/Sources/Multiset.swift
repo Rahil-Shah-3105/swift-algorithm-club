@@ -20,11 +20,14 @@ public struct Multiset<T: Hashable> {
   }
 
   public mutating func add (_ elem: T) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering add(elem=\(elem))\n".utf8))
     storage[elem, default: 0] += 1
     count += 1
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting add(elem=\(elem))\n".utf8))
   }
 
   public mutating func remove (_ elem: T) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering remove(elem=\(elem))\n".utf8))
     if let currentCount = storage[elem] {
       if currentCount > 1 {
         storage[elem] = currentCount - 1
@@ -33,15 +36,20 @@ public struct Multiset<T: Hashable> {
       }
       count -= 1
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting remove(elem=\(elem))\n".utf8))
   }
 
   public func isSubSet (of superset: Multiset<T>) -> Bool {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering isSubSet(superset=\(superset))\n".utf8))
     for (key, count) in storage {
       let supersetcount = superset.storage[key] ?? 0
       if count > supersetcount {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering count(key=\(key))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting count(key=\(key))\n".utf8))
         return false
       }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting isSubSet(superset=\(superset))\n".utf8))
     return true
   }
 

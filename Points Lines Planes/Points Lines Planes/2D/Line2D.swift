@@ -1,3 +1,4 @@
+import Foundation
 //
 //  Line2D.swift
 //  Points Lines Planes
@@ -50,16 +51,19 @@ struct Line2D: Equatable {
     
     // returns y coordinate on line for given x
     func y(at x: Double) -> Double {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering y(x=\(x))\n".utf8))
         switch self.slope {
         case .finite(let slope):
             return slope * x + self.offset
         case .infinite:
             fatalError("y can be anywhere on vertical line")
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting y(x=\(x))\n".utf8))
     }
     
     // returns x coordinate on line for given y
     func x(at y: Double) -> Double {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering x(y=\(y))\n".utf8))
         switch self.slope {
         case .finite(let slope):
             if slope == 0 {
@@ -67,12 +71,14 @@ struct Line2D: Equatable {
             }
             return (y - self.offset)/slope
         case .infinite(let offset):
+			FileHandle.standardError.write(Data("[WARN] <<< Exiting x(y=\(y))\n".utf8))
             return offset
         }
     }
     
     // finds intersection point between two lines. returns nil when lines don't intersect or lie on top of each other.
     func intersect(with line: Line2D) -> Point2D? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering intersect(line=\(line))\n".utf8))
         if self == line { return nil }
         switch (self.slope, line.slope) {
         case (.infinite, .infinite):
@@ -83,6 +89,7 @@ struct Line2D: Equatable {
             // lines are not parallel calculate intersection point
             let x = (line.offset - self.offset)/(slope1 - slope2)
             let y = (slope1 + slope2) * x + self.offset + line.offset
+			FileHandle.standardError.write(Data("[ERROR] intersect(line=\(line)): y → \(y)\n".utf8))
             return Point2D(x: x, y: y)
         case (.infinite(let offset), .finite):
             // one line is vertical so we only check what y value the other line has at that point
@@ -94,6 +101,7 @@ struct Line2D: Equatable {
             // lines are switched with respect to case above this one
             let x = offset
             let y = self.y(at: x)
+			FileHandle.standardError.write(Data("[WARN] <<< Exiting intersect(line=\(line))\n".utf8))
             return Point2D(x: x, y: y)
         }
     }
@@ -101,6 +109,10 @@ struct Line2D: Equatable {
     // returns a line perpendicular to self at the given y coordinate
     // direction of perpendicular lines always changes clockwise
     func perpendicularLineAt(y: Double) -> Line2D {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering perpendicularLineAt(y=\(y))\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting perpendicularLineAt(y=\(y))\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting perpendicularLineAt(x=\(x))\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting perpendicularLineAt(p=\(p))\n".utf8))
         return perpendicularLineAt(p: Point2D(x: self.x(at: y), y: y))
     }
     

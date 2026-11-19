@@ -17,6 +17,9 @@ public class TernarySearchTree<Element> {
     // MARK: - Insertion
 
     public func insert(data: Element, withKey key: String) -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(data=\(data),key=\(key))\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(data=\(data),key=\(key))\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(node=\(node),data=\(data),key=\(key),charIndex=\(charIndex))\n".utf8))
         return insert(node: &root, withData: data, andKey: key, atIndex: 0)
     }
 
@@ -60,6 +63,9 @@ public class TernarySearchTree<Element> {
     // MARK: - Finding
 
     public func find(key: String) -> Element? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering find(key=\(key))\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting find(key=\(key))\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting find(node=\(node),key=\(key),charIndex=\(charIndex))\n".utf8))
         return find(node: root, withKey: key, atIndex: 0)
     }
 

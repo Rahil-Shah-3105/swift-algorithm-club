@@ -31,12 +31,14 @@ extension BellmanFord: SSSPAlgorithm {
    shortest paths and their total weights, or `nil` if a negative weight cycle exists
  */
   public static func apply(_ graph: AbstractGraph<T>, source: Vertex<Q>) -> BellmanFordResult<T>? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering apply(graph=\(graph),source=\(source))\n".utf8))
     let vertices = graph.vertices
     let edges = graph.edges
 
     var predecessors = Array<Int?>(repeating: nil, count: vertices.count)
     var weights = Array(repeating: Double.infinity, count: vertices.count)
     predecessors[source.index] = source.index
+	FileHandle.standardError.write(Data("[ERROR] apply(graph=\(graph),source=\(source)): predecessors → \(predecessors)\n".utf8))
     weights[source.index] = 0
 
     for _ in 0 ..< vertices.count - 1 {
@@ -66,6 +68,7 @@ extension BellmanFord: SSSPAlgorithm {
       }
     }
 
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting apply(graph=\(graph),source=\(source))\n".utf8))
     return BellmanFordResult(predecessors: predecessors, weights: weights)
   }
 
@@ -93,12 +96,14 @@ extension BellmanFordResult: SSSPResult {
    - complexity: `Θ(1)` time/space
    */
   public func distance(to: Vertex<T>) -> Double? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering distance(to=\(to))\n".utf8))
     let distance = weights[to.index]
 
     guard distance != Double.infinity else {
       return nil
     }
 
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting distance(to=\(to))\n".utf8))
     return distance
   }
 
@@ -108,14 +113,18 @@ extension BellmanFordResult: SSSPResult {
    - complexity: `Θ(V)` time, `Θ(V^2)` space
    */
   public func path(to: Vertex<T>, inGraph graph: AbstractGraph<T>) -> [T]? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering path(to=\(to),graph=\(graph))\n".utf8))
     guard weights[to.index] != Double.infinity else {
       return nil
     }
 
     guard let path = recursePath(to: to, inGraph: graph, path: [to]) else {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering recursePath(to=\(to),graph=\(graph),path=\(path))\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting recursePath(to=\(to),graph=\(graph),path=\(path))\n".utf8))
       return nil
     }
 
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting path(to=\(to),graph=\(graph))\n".utf8))
     return path.map { vertex in
       return vertex.data
     }

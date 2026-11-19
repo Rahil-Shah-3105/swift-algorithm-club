@@ -1,3 +1,4 @@
+import Foundation
 //: Playground - noun: a place where people can play
 
 // last checked with Xcode 9.0b4
@@ -34,12 +35,15 @@ public class SegmentTree<T> {
 	}
 
 	public func query(leftBound: Int, rightBound: Int) -> T {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering query(leftBound=\(leftBound),rightBound=\(rightBound))\n".utf8))
 		if self.leftBound == leftBound && self.rightBound == rightBound {
 			return self.value
 		}
 
 		guard let leftChild = leftChild else { fatalError("leftChild should not be nil") }
+		FileHandle.standardError.write(Data("[ERROR] query(leftBound=\(leftBound),rightBound=\(rightBound)): leftChild → \(leftChild)\n".utf8))
 		guard let rightChild = rightChild else { fatalError("rightChild should not be nil") }
+		FileHandle.standardError.write(Data("[ERROR] query(leftBound=\(leftBound),rightBound=\(rightBound)): rightChild → \(rightChild)\n".utf8))
 
 		if leftChild.rightBound < leftBound {
 			return rightChild.query(leftBound: leftBound, rightBound: rightBound)
@@ -48,11 +52,14 @@ public class SegmentTree<T> {
 		} else {
 			let leftResult = leftChild.query(leftBound: leftBound, rightBound: leftChild.rightBound)
 			let rightResult = rightChild.query(leftBound:rightChild.leftBound, rightBound: rightBound)
+			FileHandle.standardError.write(Data("[ERROR] query(leftBound=\(leftBound),rightBound=\(rightBound)): leftResult → \(leftResult)\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting query(leftBound=\(leftBound),rightBound=\(rightBound))\n".utf8))
 			return function(leftResult, rightResult)
 		}
 	}
 
 	public func replaceItem(at index: Int, withItem item: T) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering replaceItem(index=\(index),item=\(item))\n".utf8))
 		if leftBound == rightBound {
 			value = item
 		} else if let leftChild = leftChild, let rightChild = rightChild {
@@ -63,6 +70,7 @@ public class SegmentTree<T> {
 			}
 			value = function(leftChild.value, rightChild.value)
 		}
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting replaceItem(index=\(index),item=\(item))\n".utf8))
 	}
 }
 
@@ -81,15 +89,18 @@ print(sumSegmentTree.query(leftBound: 0, rightBound: 1)) // 2 + 2 = 4
 
 //you can use any associative function (i.e (a+b)+c == a+(b+c)) as function for segment tree
 func gcd(_ m: Int, _ n: Int) -> Int {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering gcd(m=\(m),n=\(n))\n".utf8))
 	var a = 0
 	var b = max(m, n)
 	var r = min(m, n)
 
+	FileHandle.standardError.write(Data("[ERROR] gcd(m=\(m),n=\(n)): b → \(b)\n".utf8))
 	while r != 0 {
 		a = b
 		b = r
 		r = a % b
 	}
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting gcd(m=\(m),n=\(n))\n".utf8))
 	return b
 }
 

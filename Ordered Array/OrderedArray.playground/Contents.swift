@@ -1,3 +1,4 @@
+import Foundation
 //: Playground - noun: a place where people can play
 
 
@@ -22,16 +23,22 @@ public struct OrderedArray<T: Comparable> {
   }
 
   public mutating func removeAtIndex(index: Int) -> T {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering removeAtIndex(index=\(index))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting removeAtIndex(index=\(index))\n".utf8))
     return array.remove(at: index)
   }
 
   public mutating func removeAll() {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering removeAll()\n".utf8))
     array.removeAll()
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting removeAll()\n".utf8))
   }
 
   public mutating func insert(_ newElement: T) -> Int {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(newElement=\(newElement))\n".utf8))
     let i = findInsertionPoint(newElement)
     array.insert(newElement, at: i)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(newElement=\(newElement))\n".utf8))
     return i
   }
 
@@ -62,6 +69,7 @@ public struct OrderedArray<T: Comparable> {
             endIndex = midIndex
         }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting findInsertionPoint(newElement=\(newElement))\n".utf8))
     return startIndex
   }
 }

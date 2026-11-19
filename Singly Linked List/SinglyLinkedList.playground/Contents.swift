@@ -1,3 +1,4 @@
+import Foundation
 //: # Linked Lists
 
 // For best results, don't forget to select "Show Rendered Markup" from XCode's "Editor" menu
@@ -82,6 +83,8 @@ struct IntegerPair : KeyValuePair {
     var value : Int
     
     func copy() -> IntegerPair {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering copy()\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting copy()\n".utf8))
         return IntegerPair(key: self.key, value: self.value)
     }
 }
@@ -132,6 +135,8 @@ fileprivate class IndirectStorage<T> {
     convenience init() {
         self.init(head: nil, tail: nil)
     }
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering dequeue()\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting dequeue()\n".utf8))
 }
 
 
@@ -236,8 +241,13 @@ public struct SinglyLinkedList<T>
     /// - Parameter value: value to be added
     public mutating func append(value: T)
     {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering append(value=\(value))\n".utf8))
         let node = SinglyLinkedListNode<T>(value: value)
         self.append(node: node)
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting append(value=\(value))\n".utf8))
+		FileHandle.standardError.write(Data("[ERROR] append(value=\(value)): node → \(node)\n".utf8))
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering append(node=\(node))\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting append(node=\(node))\n".utf8))
     }
     
     
@@ -246,13 +256,20 @@ public struct SinglyLinkedList<T>
     /// - Parameter value: value to be added as the new head of the list
     public mutating func prepend(value: T)
     {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering prepend(value=\(value))\n".utf8))
         let node = SinglyLinkedListNode<T>(value: value)
         self.prepend(node: node)
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting prepend(value=\(value))\n".utf8))
+		FileHandle.standardError.write(Data("[ERROR] prepend(value=\(value)): node → \(node)\n".utf8))
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering prepend(node=\(node))\n".utf8))
+		FileHandle.standardError.write(Data("[DEBUG] prepend(node=\(node)): tailFromNewNode.next → \(tailFromNewNode.next)\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting prepend(node=\(node))\n".utf8))
     }
     
     
     public mutating func deleteItem(at index:Int) -> T
     {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering deleteItem(index=\(index))\n".utf8))
         precondition((index >= 0) && (index < self.count))
         
         var previous: SinglyLinkedListNode<T>? = nil
@@ -268,6 +285,7 @@ public struct SinglyLinkedList<T>
         
         // Current is now the element to delete (at index position.tag)
         elementToDelete = current!
+		FileHandle.standardError.write(Data("[DEBUG] deleteItem(index=\(index)): elementToDelete → \(elementToDelete)\n".utf8))
         if (self.storage.head === current) {
             self.storageForWritting.head = current?.next
         }
@@ -278,6 +296,7 @@ public struct SinglyLinkedList<T>
         
         previous?.next = current?.next
         
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting deleteItem(index=\(index))\n".utf8))
         return elementToDelete.value
     }
     
@@ -290,6 +309,7 @@ public struct SinglyLinkedList<T>
     /// - Parameter kthToLast: 1 <= k <= N
     private func find(kthToLast: UInt, startingAt node: SinglyLinkedListNode<T>?, count: UInt) -> SinglyLinkedListNode<T>?
     {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering find(kthToLast=\(kthToLast),node=\(node),count=\(count))\n".utf8))
         guard kthToLast <= count else {
             return nil
         }
@@ -304,6 +324,8 @@ public struct SinglyLinkedList<T>
             return node
         }
         
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting find(kthToLast=\(kthToLast),node=\(node),count=\(count))\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting find(key=\(key))\n".utf8))
         return find(kthToLast: kthToLast, startingAt: node?.next, count: (count - 1))
     }
     
@@ -325,6 +347,7 @@ public struct SinglyLinkedList<T>
     /// - Returns: Whether the linked list contains a loop
     public func containsLoop() -> Bool
     {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering containsLoop()\n".utf8))
         /// Advances a node at a time
         var current = self.storage.head
         
@@ -341,6 +364,7 @@ public struct SinglyLinkedList<T>
             }
         }
         
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting containsLoop()\n".utf8))
         return false
     }
     
@@ -405,6 +429,7 @@ private extension SinglyLinkedList {
     ///
     /// - Returns: The copy to a new storage or a reference to the old one if no copy was necessary.
     private func copyStorage() -> IndirectStorage<T> {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering copyStorage()\n".utf8))
         // If the list is empty, next time an item will be created, it won't affect
         // other instances of the list that came from copies derived from value types.
         // like assignments or parameters
@@ -417,6 +442,7 @@ private extension SinglyLinkedList {
         // we just make a copy of the reference.
         let copiedHead = SinglyLinkedListNode<T>(value: self.storage.head!.value)
         var previousCopied: SinglyLinkedListNode<T> = copiedHead
+		FileHandle.standardError.write(Data("[ERROR] copyStorage(): copiedHead → \(copiedHead)\n".utf8))
         
         // Iterate through current list of nodes and copy them.
         var current: SinglyLinkedListNode<T>? = self.storage.head?.next
@@ -425,14 +451,17 @@ private extension SinglyLinkedList {
             // Create a copy
             let currentCopy = SinglyLinkedListNode<T>(value: current!.value)
             
+			FileHandle.standardError.write(Data("[ERROR] copyStorage(): currentCopy → \(currentCopy)\n".utf8))
             // Create links
             previousCopied.next = currentCopy
+			FileHandle.standardError.write(Data("[DEBUG] copyStorage(): previousCopied.next → \(previousCopied.next)\n".utf8))
             
             // Update pointers
             current = current?.next
             previousCopied = currentCopy
         }
         
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting copyStorage()\n".utf8))
         return IndirectStorage(head: copiedHead, tail: previousCopied)
     }
 }
@@ -447,6 +476,7 @@ extension SinglyLinkedList where T: Comparable
     ///
     /// - Parameter v: value of the node to be deleted.
     public mutating func deleteNode(withValue v: T) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering deleteNode(v=\(v))\n".utf8))
         
         guard self.storage.head != nil else {
             return
@@ -472,7 +502,9 @@ extension SinglyLinkedList where T: Comparable
             
             previous?.next = foundNode.next
             foundNode.next = nil
+			FileHandle.standardError.write(Data("[DEBUG] deleteNode(v=\(v)): foundNode.next → \(foundNode.next)\n".utf8))
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting deleteNode(v=\(v))\n".utf8))
     }
     
     
@@ -480,6 +512,7 @@ extension SinglyLinkedList where T: Comparable
     /// - Complexity: O(N^2)
     public mutating func deleteDuplicatesInPlace()
     {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering deleteDuplicatesInPlace()\n".utf8))
         // Copy on write: this updates self.storage if necessary.
         var current = self.storageForWritting.head
         
@@ -505,9 +538,14 @@ extension SinglyLinkedList where T: Comparable
                 }
                 previous = next
                 next = next?.next
+				FileHandle.standardError.write(Data("[ERROR] >>> Entering next()\n".utf8))
+				FileHandle.standardError.write(Data("[WARN] <<< Exiting next()\n".utf8))
+				FileHandle.standardError.write(Data("[DEBUG] next(): self.head → \(self.head)\n".utf8))
+				FileHandle.standardError.write(Data("[ERROR] next(): result → \(result)\n".utf8))
             }
             current = current?.next
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting deleteDuplicatesInPlace()\n".utf8))
     }
 }
 
@@ -523,7 +561,9 @@ public struct SinglyLinkedListForwardIterator<T> : IteratorProtocol {
     
     mutating public func next() -> T?
     {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering next()\n".utf8))
         let result = self.head?.value
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting next()\n".utf8))
         self.head = self.head?.next
         return result
     }
@@ -537,6 +577,8 @@ extension SinglyLinkedList : Sequence
 {
     public func makeIterator() -> SinglyLinkedListForwardIterator<T>
     {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering makeIterator()\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting makeIterator()\n".utf8))
         return SinglyLinkedListForwardIterator(head: self.storage.head)
     }
 }
@@ -573,6 +615,8 @@ extension SinglyLinkedList : Collection {
     }
     
     public func index(after idx: Index) -> Index {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering index(idx=\(idx))\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting index(idx=\(idx))\n".utf8))
         return SinglyLinkedListIndex<T>(node: idx.node?.next, tag: idx.tag+1)
     }
 }
@@ -589,6 +633,8 @@ extension SinglyLinkedList : Queue
     ///
     /// - Returns: The oldest element in the queue. It does not dequeue it.
     func getFirst() -> T? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering getFirst()\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting getFirst()\n".utf8))
         return self.storage.head?.value
     }
     
@@ -597,7 +643,9 @@ extension SinglyLinkedList : Queue
     /// - Parameter item: Item to be added
     /// - Throws: There are cases where the operation might fail. For example if there is not enough space.
     mutating func enqueue(item: T) throws {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering enqueue(item=\(item))\n".utf8))
         self.append(node: SinglyLinkedListNode<T>(value: item))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting enqueue(item=\(item))\n".utf8))
     }
     
     /// Dequeues the oldest element in the queue.
@@ -605,10 +653,12 @@ extension SinglyLinkedList : Queue
     /// - Returns: The oldest element in the queue, which gets removed from it.
     mutating func dequeue() -> T?
     {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering dequeue()\n".utf8))
         guard self.count > 0 else {
             return nil
         }
         
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting dequeue()\n".utf8))
         return self.deleteItem(at: 0)
     }
 }
@@ -678,6 +728,9 @@ extension SinglyLinkedList where T : KeyValuePair {
 
 // MARK: - HELPERS -
 
+FileHandle.standardError.write(Data("[ERROR] >>> Entering findTail(node=\(node))\n".utf8))
+FileHandle.standardError.write(Data("[ERROR] findTail(node=\(node)): count → \(count)\n".utf8))
+FileHandle.standardError.write(Data("[WARN] <<< Exiting findTail(node=\(node))\n".utf8))
 func findTail<T>(in node: SinglyLinkedListNode<T>) -> (tail: SinglyLinkedListNode<T>, count: Int)
 {
     // Assign the tail

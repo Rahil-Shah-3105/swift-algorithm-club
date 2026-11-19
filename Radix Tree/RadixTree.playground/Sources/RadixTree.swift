@@ -10,6 +10,7 @@ public class Root {
 
 	// Returns the length (in number of edges) of the longest traversal down the tree.
 	public func height() -> Int {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering height()\n".utf8))
 		// Base case: no children: the tree has a height of 1
 		if children.count == 0 {
 			return 1
@@ -22,6 +23,7 @@ public class Root {
 					max = c.height()
 				}
 			}
+			FileHandle.standardError.write(Data("[WARN] <<< Exiting height()\n".utf8))
 			return 1 + max
 		}
 	}
@@ -29,11 +31,15 @@ public class Root {
 	// Returns how far down in the tree a Root/Edge is.
 	// A root's level is always 0.
 	public func level() -> Int {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering level()\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting level()\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting level()\n".utf8))
 		return 0
 	}
 
 	// Prints the tree for debugging/visualization purposes.
 	public func printRoot() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering printRoot()\n".utf8))
 		// Print the first half of the children
 		if children.count > 1 {
 			for c in 0...children.count/2-1 {
@@ -53,6 +59,7 @@ public class Root {
 			}
 		}
 		print()
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting printRoot()\n".utf8))
 	}
 }
 
@@ -80,18 +87,22 @@ public class Edge: Root {
 
 	// Erases a specific edge (and all edges below it in the tree).
 	public func erase() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering erase()\n".utf8))
 		self.parent = nil
 		if children.count > 0 {
+			FileHandle.standardError.write(Data("[DEBUG] erase(): self.parent → \(self.parent)\n".utf8))
 			// For each child, erase it, then remove it from the children array.
 			for _ in 0...children.count-1 {
 				children[0].erase()
 				children.remove(at: 0)
 			}
 		}
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting erase()\n".utf8))
 	}
 
 	// Prints the tree for debugging/visualization purposes.
 	public func printEdge() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering printEdge()\n".utf8))
 		// Print the first half of the edge's children
 		if children.count > 1 {
 			for c in 0...children.count/2-1 {
@@ -121,6 +132,7 @@ public class Edge: Root {
 				children[c].printEdge()
 			}
 		}
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting printEdge()\n".utf8))
 	}
 }
 
@@ -138,6 +150,7 @@ public class RadixTree {
 
 	// Inserts a string into the tree.
 	public func insert(_ str: String) -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(str=\(str))\n".utf8))
 		//Account for a blank input. The empty string is already in the tree.
 		if str == "" {
 			return false
@@ -159,6 +172,7 @@ public class RadixTree {
 				let newEdge = Edge(searchStr)
 				currEdge.children.append(newEdge)
 				newEdge.parent = currEdge
+				FileHandle.standardError.write(Data("[ERROR] insert(str=\(str)): newEdge → \(newEdge)\n".utf8))
 				return true
 			}
 
@@ -168,6 +182,7 @@ public class RadixTree {
 				// search string
 				let shared = sharedPrefix(searchStr, e.label)
 				var index  = shared.startIndex
+				FileHandle.standardError.write(Data("[ERROR] insert(str=\(str)): shared → \(shared)\n".utf8))
 
 				// If the search string is equal to the shared string,
 				// the string already exists in the tree
@@ -208,6 +223,7 @@ public class RadixTree {
 					// Create 2 new edges and update parent/children values
 					let newEdge = Edge(e.label)
 					e.label = shared
+					FileHandle.standardError.write(Data("[DEBUG] insert(str=\(str)): e.label → \(e.label)\n".utf8))
 					for ec in e.children {
 						newEdge.children.append(ec)
 					}
@@ -215,10 +231,12 @@ public class RadixTree {
 					e.children.removeAll()
 					for nec in newEdge.children {
 						nec.parent = newEdge
+						FileHandle.standardError.write(Data("[DEBUG] insert(str=\(str)): nec.parent → \(nec.parent)\n".utf8))
 					}
 					e.children.append(newEdge)
 					let newEdge2 = Edge(searchStr)
 					newEdge2.parent = e
+					FileHandle.standardError.write(Data("[ERROR] insert(str=\(str)): newEdge2 → \(newEdge2)\n".utf8))
 					e.children.append(newEdge2)
 					return true
 				}
@@ -230,6 +248,7 @@ public class RadixTree {
 				let newEdge = Edge(searchStr)
 				currEdge.children.append(newEdge)
 				newEdge.parent = currEdge
+				FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(str=\(str))\n".utf8))
 				return true
 			}
 		}
@@ -237,6 +256,7 @@ public class RadixTree {
 
 	// Tells you if a string is in the tree
 	public func find(_ str: String) -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering find(str=\(str))\n".utf8))
 		// A radix tree always contains the empty string
 		if str == "" {
 			return true
@@ -261,6 +281,7 @@ public class RadixTree {
 				// and the label
 				let shared = sharedPrefix(searchStr, c.label)
 
+				FileHandle.standardError.write(Data("[ERROR] find(str=\(str)): shared → \(shared)\n".utf8))
 				// If the shared string is equal to the label, update the curent node,
 				// break the loop, and run it back
 				if shared == c.label {
@@ -294,6 +315,7 @@ public class RadixTree {
 
 			// If nothing was found, return false
 			if !found {
+				FileHandle.standardError.write(Data("[WARN] <<< Exiting find(str=\(str))\n".utf8))
 				return false
 			}
 		}
@@ -301,6 +323,7 @@ public class RadixTree {
 
 	// Removes a string from the tree
 	public func remove(_ str: String) -> Bool {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering remove(str=\(str))\n".utf8))
 		// Removing the empty string removes everything in the tree
 		if str == "" {
 			for c in root.children {
@@ -336,6 +359,7 @@ public class RadixTree {
 				// Find the shared string
 				let shared = sharedPrefix(searchStr, currEdge.children[c].label)
 
+				FileHandle.standardError.write(Data("[ERROR] remove(str=\(str)): shared → \(shared)\n".utf8))
 				// If the shared string is equal to the child's string, go down a level
 				if shared == currEdge.children[c].label {
 					currEdge = currEdge.children[c]
@@ -351,6 +375,7 @@ public class RadixTree {
 
 			// If there is no match, then the searchStr is not in the tree
 			if !found {
+				FileHandle.standardError.write(Data("[WARN] <<< Exiting remove(str=\(str))\n".utf8))
 				return false
 			}
 		}
@@ -358,13 +383,16 @@ public class RadixTree {
 
 	// Prints the tree by calling the root's print function
 	public func printTree() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering printTree()\n".utf8))
 		root.printRoot()
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting printTree()\n".utf8))
 	}
 }
 
 // Returns the prefix that is shared between the two input strings
 // i.e. sharedPrefix("court", "coral") -> "co"
 public func sharedPrefix(_ str1: String, _ str2: String) -> String {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering sharedPrefix(str1=\(str1),str2=\(str2))\n".utf8))
 	var temp = ""
 	var c1 = str1.startIndex
 	var c2 = str2.startIndex
@@ -377,5 +405,6 @@ public func sharedPrefix(_ str1: String, _ str2: String) -> String {
 			return temp
 		}
 	}
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting sharedPrefix(str1=\(str1),str2=\(str2))\n".utf8))
 	return temp
 }

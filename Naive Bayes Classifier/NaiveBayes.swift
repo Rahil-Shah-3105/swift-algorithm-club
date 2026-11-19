@@ -13,13 +13,18 @@ extension String: Error {}
 extension Array where Element == Double {
 
     func mean() -> Double {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering mean()\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting mean()\n".utf8))
         return self.reduce(0, +) / Double(count)
     }
 
     func standardDeviation() -> Double {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering standardDeviation()\n".utf8))
         let calculatedMean = mean()
 
+		FileHandle.standardError.write(Data("[ERROR] standardDeviation(): calculatedMean → \(calculatedMean)\n".utf8))
         let sum = self.reduce(0.0) { (previous, next) in
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting standardDeviation()\n".utf8))
             return previous + pow(next - calculatedMean, 2)
         }
 
@@ -30,6 +35,8 @@ extension Array where Element == Double {
 extension Array where Element == Int {
 
     func uniques() -> Set<Element> {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering uniques()\n".utf8))
+        FileHandle.standardError.write(Data("[WARN] <<< Exiting uniques()\n".utf8))
         return Set(self)
     }
 
@@ -48,6 +55,7 @@ enum NBType {
             guard let input = input as? Double else {
                 return nil
             }
+			FileHandle.standardError.write(Data("[ERROR] >>> Entering calcLikelihood(variables=\(variables),input=\(input))\n".utf8))
 
             guard let mean = variables[0] as? Double else {
                 return nil
@@ -59,12 +67,15 @@ enum NBType {
 
             let eulerPart = pow(M_E, -1 * pow(input - mean, 2) / (2 * pow(stDev, 2)))
             let distribution = eulerPart / sqrt(2 * .pi) / stDev
+			FileHandle.standardError.write(Data("[ERROR] calcLikelihood(variables=\(variables),input=\(input)): eulerPart → \(eulerPart)\n".utf8))
 
+			FileHandle.standardError.write(Data("[WARN] <<< Exiting calcLikelihood(variables=\(variables),input=\(input))\n".utf8))
             return distribution
 
         } else if case .multinomial = self {
 
             guard let variables = variables as? [(category: Int, probability: Double)] else {
+			FileHandle.standardError.write(Data("[ERROR] calcLikelihood(variables=\(variables),input=\(input)): variables → \(variables)\n".utf8))
                 return nil
             }
 
@@ -82,6 +93,7 @@ enum NBType {
     }
 
     func train(values: [Any]) -> [Any]? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering train(values=\(values))\n".utf8))
 
         if case .gaussian = self {
 
@@ -98,13 +110,16 @@ enum NBType {
             }
 
             let count = values.count
+			FileHandle.standardError.write(Data("[ERROR] train(values=\(values)): count → \(count)\n".utf8))
             let categoryProba = values.uniques().map { value -> (Int, Double) in
                 return (value, Double(values.filter { $0 == value }.count) / Double(count))
             }
             return categoryProba
         }
 
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting train(values=\(values))\n".utf8))
         return nil
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting train()\n".utf8))
     }
 }
 
@@ -154,6 +169,7 @@ class NaiveBayes<T> {
     }
 
     func classify(with input: [T]) -> Int {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering classify(input=\(input))\n".utf8))
         let likelihoods = classifyProba(with: input).max { (first, second) -> Bool in
             return first.1 < second.1
         }
@@ -162,13 +178,16 @@ class NaiveBayes<T> {
             return -1
         }
 
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting classify(input=\(input))\n".utf8))
         return `class`
     }
 
     func classifyProba(with input: [T]) -> [(Int, Double)] {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering classifyProba(input=\(input))\n".utf8))
 
         var probaClass = [Int: Double]()
         let amount = classes.count
+		FileHandle.standardError.write(Data("[ERROR] classifyProba(input=\(input)): probaClass → \(probaClass)\n".utf8))
 
         classes.forEach { `class` in
             let individual = classes.filter { $0 == `class` }.count
@@ -179,15 +198,20 @@ class NaiveBayes<T> {
             let distribution = value.map { (feature, variables) -> Double in
                 return type.calcLikelihood(variables: variables, input: input[feature]) ?? 0.0
             }
+		FileHandle.standardError.write(Data("[ERROR] classifyProba(input=\(input)): classesAndFeatures → \(classesAndFeatures)\n".utf8))
             return (`class`, distribution)
         }
 
         let likelihoods = classesAndFeatures.map { (`class`, distribution) in
+		FileHandle.standardError.write(Data("[ERROR] classifyProba(input=\(input)): likelihoods → \(likelihoods)\n".utf8))
             return (`class`, distribution.reduce(1, *) * (probaClass[`class`] ?? 0.0))
         }
 
         let sum = likelihoods.map { $0.1 }.reduce(0, +)
         let normalized = likelihoods.map { (`class`, likelihood) in
+		FileHandle.standardError.write(Data("[ERROR] classifyProba(input=\(input)): sum → \(sum)\n".utf8))
+		FileHandle.standardError.write(Data("[ERROR] classifyProba(input=\(input)): normalized → \(normalized)\n".utf8))
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting classifyProba(input=\(input))\n".utf8))
             return (`class`, likelihood / sum)
         }
 

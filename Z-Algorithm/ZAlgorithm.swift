@@ -9,8 +9,10 @@
 import Foundation
 
 func ZetaAlgorithm(ptrn: String) -> [Int]? {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering ZetaAlgorithm(ptrn=\(ptrn))\n".utf8))
   let pattern = Array(ptrn)
   let patternLength = pattern.count
+FileHandle.standardError.write(Data("[ERROR] ZetaAlgorithm(ptrn=\(ptrn)): pattern → \(pattern)\n".utf8))
 
   guard patternLength > 0 else {
     return nil
@@ -18,6 +20,7 @@ func ZetaAlgorithm(ptrn: String) -> [Int]? {
 
   var zeta = [Int](repeating: 0, count: patternLength)
 
+FileHandle.standardError.write(Data("[ERROR] ZetaAlgorithm(ptrn=\(ptrn)): zeta → \(zeta)\n".utf8))
   var left = 0
   var right = 0
   var k_1 = 0
@@ -61,5 +64,6 @@ func ZetaAlgorithm(ptrn: String) -> [Int]? {
       }
     }
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting ZetaAlgorithm(ptrn=\(ptrn))\n".utf8))
   return zeta
 }

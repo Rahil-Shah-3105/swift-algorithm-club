@@ -1,8 +1,11 @@
+import Foundation
 extension Graph {
   /* Topological sort using Kahn's algorithm. */
   public func topologicalSortKahn() -> [Node] {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering topologicalSortKahn()\n".utf8))
     var nodes = calculateInDegreeOfNodes()
 
+	FileHandle.standardError.write(Data("[ERROR] topologicalSortKahn(): nodes → \(nodes)\n".utf8))
     // Find vertices with no predecessors and puts them into a new list.
     // These are the "leaders". The leaders array eventually becomes the
     // topologically sorted list.
@@ -36,6 +39,7 @@ extension Graph {
       print("Error: graphs with cycles are not allowed")
     }
 
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting topologicalSortKahn()\n".utf8))
     return leaders
   }
 }

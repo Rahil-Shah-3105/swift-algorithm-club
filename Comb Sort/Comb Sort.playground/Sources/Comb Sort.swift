@@ -8,6 +8,7 @@
 import Foundation
 
 public func combSort<T: Comparable>(_ input: [T]) -> [T] {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering combSort(input=\(input))\n".utf8))
     var copy: [T] = input
     var gap = copy.count
     let shrink = 1.3
@@ -26,11 +27,14 @@ public func combSort<T: Comparable>(_ input: [T]) -> [T] {
             index += 1
         }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting combSort(input=\(input))\n".utf8))
     return copy
 }
 
 fileprivate func swap<T: Comparable>(a: inout T, b: inout T) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering swap(a=\(a),b=\(b))\n".utf8))
     let temp = a
     a = b
     b = temp
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting swap(a=\(a),b=\(b))\n".utf8))
 }

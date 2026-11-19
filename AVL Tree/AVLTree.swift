@@ -1,3 +1,4 @@
+import Foundation
 // The MIT License (MIT)
 
 // Copyright (c) 2016 Mike Taghavi (mitghi[at]me.com)
@@ -99,10 +100,14 @@ open class AVLTree<Key: Comparable, Payload> {
 
 extension TreeNode {
   public func minimum() -> TreeNode? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering minimum()\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting minimum()\n".utf8))
     return leftChild?.minimum() ?? self
   }
   
   public func maximum() -> TreeNode? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering maximum()\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting maximum()\n".utf8))
     return rightChild?.maximum() ?? self
   }
 }
@@ -114,6 +119,8 @@ extension AVLTree {
   }
   
   public func search(input: Key) -> Payload? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering search(input=\(input))\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting search(input=\(input))\n".utf8))
     return search(key: input, node: root)?.payload
   }
   
@@ -135,6 +142,7 @@ extension AVLTree {
 
 extension AVLTree {
   public func insert(key: Key, payload: Payload? = nil) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(key=\(key),payload=\(payload))\n".utf8))
     if let root = root {
       insert(input: key, payload: payload, node: root)
     } else {
@@ -144,12 +152,15 @@ extension AVLTree {
   }
   
   private func insert(input: Key, payload: Payload?, node: Node) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(input=\(input),payload=\(payload),node=\(node))\n".utf8))
     if input < node.key {
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(key=\(key),payload=\(payload))\n".utf8))
       if let child = node.leftChild {
         insert(input: input, payload: payload, node: child)
       } else {
         let child = Node(key: input, payload: payload, leftChild: nil, rightChild: nil, parent: node, height: 1)
         node.leftChild = child
+		FileHandle.standardError.write(Data("[ERROR] insert(input=\(input),payload=\(payload),node=\(node)): child → \(child)\n".utf8))
         balance(node: child)
       }
     } else if input != node.key {
@@ -158,9 +169,11 @@ extension AVLTree {
       } else {
         let child = Node(key: input, payload: payload, leftChild: nil, rightChild: nil, parent: node, height: 1)
         node.rightChild = child
+		FileHandle.standardError.write(Data("[DEBUG] insert(input=\(input),payload=\(payload),node=\(node)): node.rightChild → \(node.rightChild)\n".utf8))
         balance(node: child)
       }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(input=\(input),payload=\(payload),node=\(node))\n".utf8))
   }
 }
 
@@ -168,21 +181,26 @@ extension AVLTree {
 
 extension AVLTree {
   fileprivate func updateHeightUpwards(node: Node?) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering updateHeightUpwards(node=\(node))\n".utf8))
     if let node = node {
       let lHeight = node.leftChild?.height ?? 0
       let rHeight = node.rightChild?.height ?? 0
       node.height = max(lHeight, rHeight) + 1
       updateHeightUpwards(node: node.parent)
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting updateHeightUpwards(node=\(node))\n".utf8))
   }
   
   fileprivate func lrDifference(node: Node?) -> Int {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering lrDifference(node=\(node))\n".utf8))
     let lHeight = node?.leftChild?.height ?? 0
     let rHeight = node?.rightChild?.height ?? 0
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting lrDifference(node=\(node))\n".utf8))
     return lHeight - rHeight
   }
   
   fileprivate func balance(node: Node?) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering balance(node=\(node))\n".utf8))
     guard let node = node else {
       return
     }
@@ -193,9 +211,11 @@ extension AVLTree {
     var nodes = [Node?](repeating: nil, count: 3)
     var subtrees = [Node?](repeating: nil, count: 4)
     let nodeParent = node.parent
+	FileHandle.standardError.write(Data("[ERROR] balance(node=\(node)): nodes → \(nodes)\n".utf8))
     
     let lrFactor = lrDifference(node: node)
     if lrFactor > 1 {
+	FileHandle.standardError.write(Data("[ERROR] balance(node=\(node)): lrFactor → \(lrFactor)\n".utf8))
       // left-left or left-right
       if lrDifference(node: node.leftChild) > 0 {
         // left-left
@@ -251,6 +271,7 @@ extension AVLTree {
     
     if node.isRoot {
       root = nodes[2]
+	FileHandle.standardError.write(Data("[WARN] balance(node=\(node)): root → \(root)\n".utf8))
       root?.parent = nil
     } else if node.isLeftChild {
       nodeParent?.leftChild = nodes[2]
@@ -278,6 +299,7 @@ extension AVLTree {
     updateHeightUpwards(node: nodes[1])    // Update height from left
     updateHeightUpwards(node: nodes[0])    // Update height from right
     
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting balance(node=\(node))\n".utf8))
     balance(node: nodes[2]?.parent)
   }
 }
@@ -286,6 +308,7 @@ extension AVLTree {
 
 extension AVLTree {
   fileprivate func display(node: Node?, level: Int) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering display(node=\(node),level=\(level))\n".utf8))
     if let node = node {
       display(node: node.rightChild, level: level + 1)
       print("")
@@ -298,34 +321,43 @@ extension AVLTree {
       print("(\(node.key):\(node.height))", terminator: "")
       display(node: node.leftChild, level: level + 1)
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting display(node=\(node),level=\(level))\n".utf8))
   }
   
   public func display(node: Node) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering display(node=\(node))\n".utf8))
     display(node: node, level: 0)
     print("")
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting display(node=\(node))\n".utf8))
   }
   
   public func inorder(node: Node?) -> String {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering inorder(node=\(node))\n".utf8))
     var output = ""
     if let node = node {
       output = "\(inorder(node: node.leftChild)) \(print("\(node.key) ")) \(inorder(node: node.rightChild))"
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting inorder(node=\(node))\n".utf8))
     return output
   }
   
   public func preorder(node: Node?) -> String {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering preorder(node=\(node))\n".utf8))
     var output = ""
     if let node = node {
       output = "\(preorder(node: node.leftChild)) \(print("\(node.key) ")) \(preorder(node: node.rightChild))"
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting preorder(node=\(node))\n".utf8))
     return output
   }
   
   public func postorder(node: Node?) -> String {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering postorder(node=\(node))\n".utf8))
     var output = ""
     if let node = node {
       output = "\(postorder(node: node.leftChild)) \(print("\(node.key) ")) \(postorder(node: node.rightChild))"
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting postorder(node=\(node))\n".utf8))
     return output
   }
 }
@@ -334,17 +366,22 @@ extension AVLTree {
 
 extension AVLTree {
   public func delete(key: Key) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering delete(key=\(key))\n".utf8))
     if size == 1 {
       root = nil
+	FileHandle.standardError.write(Data("[WARN] delete(key=\(key)): root → \(root)\n".utf8))
       size -= 1
     } else if let node = search(key: key, node: root) {
+	FileHandle.standardError.write(Data("[ERROR] delete(key=\(key)): node → \(node)\n".utf8))
       delete(node: node)
       size -= 1
     }
   }
   
   private func delete(node: Node) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering delete(node=\(node))\n".utf8))
     if node.isLeaf {
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting delete(key=\(key))\n".utf8))
       // Just remove and balance up
       if let parent = node.parent {
         guard node.isLeftChild || node.isRightChild else {
@@ -356,25 +393,31 @@ extension AVLTree {
           parent.leftChild = nil
         } else if node.isRightChild {
           parent.rightChild = nil
+		FileHandle.standardError.write(Data("[DEBUG] delete(node=\(node)): parent.rightChild → \(parent.rightChild)\n".utf8))
         }
         
         balance(node: parent)
       } else {
         // at root
         root = nil
+		FileHandle.standardError.write(Data("[WARN] delete(node=\(node)): root → \(root)\n".utf8))
       }
     } else {
       // Handle stem cases
       if let replacement = node.leftChild?.maximum(), replacement !== node {
         node.key = replacement.key
+		FileHandle.standardError.write(Data("[DEBUG] delete(node=\(node)): node.key → \(node.key)\n".utf8))
         node.payload = replacement.payload
+		FileHandle.standardError.write(Data("[DEBUG] delete(node=\(node)): node.payload → \(node.payload)\n".utf8))
         delete(node: replacement)
       } else if let replacement = node.rightChild?.minimum(), replacement !== node {
+		FileHandle.standardError.write(Data("[ERROR] delete(node=\(node)): replacement → \(replacement)\n".utf8))
         node.key = replacement.key
         node.payload = replacement.payload
         delete(node: replacement)
       }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting delete(node=\(node))\n".utf8))
   }
 }
 
@@ -382,6 +425,7 @@ extension AVLTree {
 
 extension AVLTree {
   public func doInOrder(node: Node?, _ completion: (Node) -> Void) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering doInOrder(node=\(node),completion=\(completion))\n".utf8))
     if let node = node {
       doInOrder(node: node.leftChild) { lnode in
         completion(lnode)
@@ -391,9 +435,11 @@ extension AVLTree {
         completion(rnode)
       }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting doInOrder(node=\(node),completion=\(completion))\n".utf8))
   }
   
   public func doInPreOrder(node: Node?, _ completion: (Node) -> Void) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering doInPreOrder(node=\(node),completion=\(completion))\n".utf8))
     if let node = node {
       completion(node)
       doInPreOrder(node: node.leftChild) { lnode in
@@ -403,9 +449,11 @@ extension AVLTree {
         completion(rnode)
       }
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting doInPreOrder(node=\(node),completion=\(completion))\n".utf8))
   }
   
   public func doInPostOrder(node: Node?, _ completion: (Node) -> Void) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering doInPostOrder(node=\(node),completion=\(completion))\n".utf8))
     if let node = node {
       doInPostOrder(node: node.leftChild) { lnode in
         completion(lnode)
@@ -415,6 +463,7 @@ extension AVLTree {
       }
       completion(node)
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting doInPostOrder(node=\(node),completion=\(completion))\n".utf8))
   }
 }
 

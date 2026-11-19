@@ -1,3 +1,4 @@
+import Foundation
 //
 //  Heap.swift
 //  Written for the Swift Algorithm Club by Kevin Randrup and Matthijs Hollemans
@@ -36,6 +37,9 @@ public struct Heap<T> {
     for value in array {
       insert(value)
     }
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering buildHeap(array=\(array))\n".utf8))
+	FileHandle.standardError.write(Data("[DEBUG] buildHeap(array=\(array)): elements → \(elements)\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting buildHeap(array=\(array))\n".utf8))
   }
   */
 
@@ -89,6 +93,8 @@ public struct Heap<T> {
    * value (for a min-heap).
    */
   public func peek() -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering peek()\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting peek()\n".utf8))
     return elements.first
   }
 
@@ -97,8 +103,12 @@ public struct Heap<T> {
    * or min-heap property still holds. Performance: O(log n).
    */
   public mutating func insert(_ value: T) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(value=\(value))\n".utf8))
     elements.append(value)
     shiftUp(elements.count - 1)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(value=\(value))\n".utf8))
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering insert(sequence=\(sequence))\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(sequence=\(sequence))\n".utf8))
   }
 
   public mutating func insert<S: Sequence>(_ sequence: S) where S.Iterator.Element == T {
@@ -112,11 +122,13 @@ public struct Heap<T> {
    * larger than the old one; in a min-heap it should be smaller.
    */
   public mutating func replace(index i: Int, value: T) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering replace(i=\(i),value=\(value))\n".utf8))
     guard i < elements.count else { return }
 
     assert(isOrderedBefore(value, elements[i]))
     elements[i] = value
     shiftUp(i)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting replace(i=\(i),value=\(value))\n".utf8))
   }
 
   /**
@@ -124,6 +136,7 @@ public struct Heap<T> {
    * value; for a min-heap it is the minimum value. Performance: O(log n).
    */
   @discardableResult public mutating func remove() -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering remove()\n".utf8))
     if elements.isEmpty {
       return nil
     } else if elements.count == 1 {
@@ -134,8 +147,12 @@ public struct Heap<T> {
       let value = elements[0]
       elements[0] = elements.removeLast()
       shiftDown()
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting remove()\n".utf8))
       return value
     }
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering shiftUp(index=\(index))\n".utf8))
+	FileHandle.standardError.write(Data("[ERROR] shiftUp(index=\(index)): parentIndex → \(parentIndex)\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting shiftUp(index=\(index))\n".utf8))
   }
 
   /**
@@ -143,6 +160,7 @@ public struct Heap<T> {
    * to know the node's index, which may actually take O(n) steps to find.
    */
   public mutating func removeAt(_ index: Int) -> T? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering removeAt(index=\(index))\n".utf8))
     guard index < elements.count else { return nil }
 
     let size = elements.count - 1
@@ -151,6 +169,7 @@ public struct Heap<T> {
       shiftDown(index, heapSize: size)
       shiftUp(index)
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting removeAt(index=\(index))\n".utf8))
     return elements.removeLast()
   }
 
@@ -173,7 +192,12 @@ public struct Heap<T> {
   }
 
   mutating func shiftDown() {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering shiftDown()\n".utf8))
     shiftDown(0, heapSize: elements.count)
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering shiftDown(index=\(index),heapSize=\(heapSize))\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting shiftDown()\n".utf8))
+	FileHandle.standardError.write(Data("[ERROR] shiftDown(index=\(index),heapSize=\(heapSize)): leftChildIndex → \(leftChildIndex)\n".utf8))
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting shiftDown(index=\(index),heapSize=\(heapSize))\n".utf8))
   }
 
   /**
@@ -213,6 +237,8 @@ extension Heap where T: Equatable {
    * Searches the heap for the given element. Performance: O(n).
    */
   public func index(of element: T) -> Int? {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering index(element=\(element))\n".utf8))
+    FileHandle.standardError.write(Data("[WARN] <<< Exiting index(element=\(element))\n".utf8))
     return index(of: element, 0)
   }
 

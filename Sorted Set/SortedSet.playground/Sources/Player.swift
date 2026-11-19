@@ -1,3 +1,4 @@
+import Foundation
 // The Player data type stores a random name, and a random number of
 // points from 0 - 5000.
 public struct Player: Comparable {
@@ -28,11 +29,15 @@ public func < (x: Player, y: Player) -> Bool {
 
 // Prints a Player formatted with their name and number of points.
 public func print(player: Player) {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering print(player=\(player))\n".utf8))
   print("Player: \(player.name) | Points: \(player.points)")
+FileHandle.standardError.write(Data("[WARN] <<< Exiting print(player=\(player))\n".utf8))
 }
 
 public func print(set: SortedSet<Player>) {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering print(set=\(set))\n".utf8))
   for i in 0..<set.count {
     print(set[set.count - i - 1])
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting print(set=\(set))\n".utf8))
 }

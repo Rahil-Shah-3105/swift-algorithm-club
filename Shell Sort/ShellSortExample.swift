@@ -9,6 +9,7 @@
 import Foundation
 
 public func shellSort(_ list : inout [Int]) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering shellSort(list=\(list))\n".utf8))
     var sublistCount = list.count / 2
 
     while sublistCount > 0 {
@@ -29,4 +30,5 @@ public func shellSort(_ list : inout [Int]) {
         }
         sublistCount = sublistCount / 2
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting shellSort(list=\(list))\n".utf8))
 }

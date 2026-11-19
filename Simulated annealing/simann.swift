@@ -50,6 +50,7 @@ extension Array where Element: Clonable {
       newArray.append(elem.clone())
     }
     
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting clone()\n".utf8))
     return newArray
   }
 }
@@ -57,6 +58,7 @@ extension Array where Element: Clonable {
 typealias AcceptanceFunc = (Double, Double, Double) -> Double
 
 func SimulatedAnnealing<T: SAObject>(initial: T, temperature: Double, coolingRate: Double, acceptance: AcceptanceFunc) -> T {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering SimulatedAnnealing(initial=\(initial),temperature=\(temperature),coolingRate=\(coolingRate),acceptance=\(acceptance))\n".utf8))
   // Step 1:
   //  Calculate the initial feasible solution based on a random permutation.
   //  Set best and current solutions to initial solution
@@ -66,6 +68,7 @@ func SimulatedAnnealing<T: SAObject>(initial: T, temperature: Double, coolingRat
   currentSolution.shuffle()
   var bestSolution = currentSolution.clone()
 
+FileHandle.standardError.write(Data("[ERROR] SimulatedAnnealing(initial=\(initial),temperature=\(temperature),coolingRate=\(coolingRate),acceptance=\(acceptance)): currentSolution → \(currentSolution)\n".utf8))
   // Step 2:
   //  Repeat while the system is still hot
   //   Randomly modify the current solution by swapping its elements
@@ -91,5 +94,6 @@ func SimulatedAnnealing<T: SAObject>(initial: T, temperature: Double, coolingRat
     temp *= 1-coolingRate
   }
   
+FileHandle.standardError.write(Data("[WARN] <<< Exiting SimulatedAnnealing(initial=\(initial),temperature=\(temperature),coolingRate=\(coolingRate),acceptance=\(acceptance))\n".utf8))
   return bestSolution
 }

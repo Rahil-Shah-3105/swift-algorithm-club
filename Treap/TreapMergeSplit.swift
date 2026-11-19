@@ -25,6 +25,7 @@ THE SOFTWARE.*/
 import Foundation
 public extension Treap {
   internal func split(_ key: Key) -> (left: Treap, right: Treap) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering split(key=\(key))\n".utf8))
     var current = self
     let val: Element
     if let newVal = self.get(key) {
@@ -46,6 +47,7 @@ public extension Treap {
         return (left: .empty, right: .empty)
       }
     default:
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting split(key=\(key))\n".utf8))
       return (left: .empty, right: .empty)
     }
   }
@@ -74,6 +76,7 @@ public extension Treap {
 }
 
 internal func merge<Key: Comparable, Element>(_ left: Treap<Key, Element>, right: Treap<Key, Element>) -> Treap<Key, Element> {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering merge(left=\(left),right=\(right))\n".utf8))
   switch (left, right) {
   case (.empty, _):
     return right
@@ -84,6 +87,7 @@ internal func merge<Key: Comparable, Element>(_ left: Treap<Key, Element>, right
     if leftP < rightP {
       return .node(key: leftKey, val: leftVal, p: leftP, left: leftLeft, right: merge(leftRight, right: right))
     } else {
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting merge(left=\(left),right=\(right))\n".utf8))
       return .node(key: rightKey, val: rightVal, p: rightP, left: merge(rightLeft, right: left), right: rightRight)
     }
   default:
@@ -98,16 +102,20 @@ extension Treap: CustomStringConvertible {
   }
 
   fileprivate static func descHelper(_ treap: Treap<Key, Element>, indent: Int) -> String {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering descHelper(treap=\(treap),indent=\(indent))\n".utf8))
     if case let .node(key, value, priority, left, right) = treap {
       var result = ""
+	FileHandle.standardError.write(Data("[ERROR] descHelper(treap=\(treap),indent=\(indent)): result → \(result)\n".utf8))
       let tabs = String(repeating: "\t", count: indent)
 
+	FileHandle.standardError.write(Data("[ERROR] descHelper(treap=\(treap),indent=\(indent)): tabs → \(tabs)\n".utf8))
       result += descHelper(left, indent: indent + 1)
       result += "\n" + tabs + "\(key), \(value), \(priority)\n"
       result += descHelper(right, indent: indent + 1)
 
       return result
     } else {
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting descHelper(treap=\(treap),indent=\(indent))\n".utf8))
       return ""
     }
   }

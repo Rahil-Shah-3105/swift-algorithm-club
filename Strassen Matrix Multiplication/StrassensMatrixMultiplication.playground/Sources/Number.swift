@@ -35,9 +35,11 @@ extension Float: Number {
 
 extension Array where Element: Number {
   public func dot(_ b: Array<Element>) -> Element {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering dot(b=\(b))\n".utf8))
     let a = self
     assert(a.count == b.count, "Can only take the dot product of arrays of the same length!")
     let c = a.indices.map { a[$0] * b[$0] }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting dot(b=\(b))\n".utf8))
     return c.reduce(Element.zero, { $0 + $1 })
   }
 }

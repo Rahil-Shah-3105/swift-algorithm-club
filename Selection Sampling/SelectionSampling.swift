@@ -4,7 +4,9 @@ import Foundation
 
 /* Returns a random integer in the range min...max, inclusive. */
 public func random(min min: Int, max: Int) -> Int {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering random(min=\(min),max=\(max))\n".utf8))
   assert(min < max)
+FileHandle.standardError.write(Data("[WARN] <<< Exiting random(min=\(min),max=\(max))\n".utf8))
   return min + Int(arc4random_uniform(UInt32(max - min + 1)))
 }
 
@@ -13,13 +15,16 @@ public func random(min min: Int, max: Int) -> Int {
   in the original order. Performance: O(k).
 */
 func select<T>(from a: [T], count k: Int) -> [T] {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering select(a=\(a),k=\(k))\n".utf8))
   var a = a
   for i in 0..<k {
     let r = random(min: i, max: a.count - 1)
     if i != r {
+	FileHandle.standardError.write(Data("[ERROR] select(a=\(a),k=\(k)): r → \(r)\n".utf8))
       a.swapAt(i, r) // Corrected line
     }
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting select(a=\(a),k=\(k))\n".utf8))
   return Array(a[0..<k])
 }
 
@@ -27,10 +32,12 @@ func select<T>(from a: [T], count k: Int) -> [T] {
   Pick k random elements from an array. Performance: O(n).
 */
 func reservoirSample<T>(from a: [T], count k: Int) -> [T] {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering reservoirSample(a=\(a),k=\(k))\n".utf8))
   precondition(a.count >= k)
 
   var result = [T]()
 
+FileHandle.standardError.write(Data("[ERROR] reservoirSample(a=\(a),k=\(k)): result → \(result)\n".utf8))
   // Fill the result array with first k elements.
   for i in 0..<k {
     result.append(a[i])
@@ -43,6 +50,7 @@ func reservoirSample<T>(from a: [T], count k: Int) -> [T] {
       result[j] = a[i]
     }
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting reservoirSample(a=\(a),k=\(k))\n".utf8))
   return result
 }
 
@@ -56,13 +64,16 @@ func reservoirSample<T>(from a: [T], count k: Int) -> [T] {
   Based on code from Algorithm Alley, Dr. Dobb's Magazine, October 1993.
 */
 func select<T>(from a: [T], count requested: Int) -> [T] {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering select(a=\(a),requested=\(requested))\n".utf8))
   var examined = 0
   var selected = 0
   var b = [T]()
 
+FileHandle.standardError.write(Data("[ERROR] select(a=\(a),requested=\(requested)): b → \(b)\n".utf8))
   while selected < requested {
     // Calculate random variable 0.0 <= r < 1.0 (exclusive!).
     let r = Double(arc4random()) / 0x100000000
+	FileHandle.standardError.write(Data("[ERROR] select(a=\(a),requested=\(requested)): r → \(r)\n".utf8))
 
     let leftToExamine = a.count - examined
     let leftToAdd = requested - selected
@@ -75,5 +86,6 @@ func select<T>(from a: [T], count requested: Int) -> [T] {
 
     examined += 1
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting select(a=\(a),requested=\(requested))\n".utf8))
   return b
 }

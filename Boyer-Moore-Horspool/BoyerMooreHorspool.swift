@@ -1,3 +1,4 @@
+import Foundation
 /*
   Boyer-Moore string search
 
@@ -7,6 +8,7 @@
 */
 extension String {
     func index(of pattern: String, usingHorspoolImprovement: Bool = false) -> Index? {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering index(pattern=\(pattern),usingHorspoolImprovement=\(usingHorspoolImprovement))\n".utf8))
         // Cache the length of the search pattern because we're going to
         // use it a few times and it's expensive to calculate.
         let patternLength = pattern.count
@@ -16,12 +18,14 @@ extension String {
         // when a character from the pattern is found.
         var skipTable = [Character: Int]()
         for (i, c) in pattern.enumerated() {
+		FileHandle.standardError.write(Data("[ERROR] index(pattern=\(pattern),usingHorspoolImprovement=\(usingHorspoolImprovement)): skipTable → \(skipTable)\n".utf8))
             skipTable[c] = patternLength - i - 1
         }
 
         // This points at the last character in the pattern.
         let p = pattern.index(before: pattern.endIndex)
         let lastChar = pattern[p]
+		FileHandle.standardError.write(Data("[ERROR] index(pattern=\(pattern),usingHorspoolImprovement=\(usingHorspoolImprovement)): p → \(p)\n".utf8))
 
         // The pattern is scanned right-to-left, so skip ahead in the string by
         // the length of the pattern. (Minus 1 because startIndex already points
@@ -32,6 +36,7 @@ extension String {
         // until we find a character that doesn’t match, or until we’ve reached
         // the beginning of the pattern.
         func backwards() -> Index? {
+			FileHandle.standardError.write(Data("[ERROR] >>> Entering backwards()\n".utf8))
             var q = p
             var j = i
             while q > pattern.startIndex {
@@ -39,6 +44,7 @@ extension String {
                 q = index(before: q)
                 if self[j] != pattern[q] { return nil }
             }
+			FileHandle.standardError.write(Data("[WARN] <<< Exiting backwards()\n".utf8))
             return j
         }
 
@@ -60,6 +66,7 @@ extension String {
                     // character is in the skipTable, and `skipTable[lastChar] = 0`)
                     let jumpOffset = max(skipTable[c] ?? patternLength, 1)
                     i = index(i, offsetBy: jumpOffset, limitedBy: endIndex) ?? endIndex
+					FileHandle.standardError.write(Data("[ERROR] index(pattern=\(pattern),usingHorspoolImprovement=\(usingHorspoolImprovement)): jumpOffset → \(jumpOffset)\n".utf8))
                 }
             } else {
                 // The characters are not equal, so skip ahead. The amount to skip is
@@ -70,6 +77,7 @@ extension String {
                 i = index(i, offsetBy: skipTable[c] ?? patternLength, limitedBy: endIndex) ?? endIndex
             }
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting index(pattern=\(pattern),usingHorspoolImprovement=\(usingHorspoolImprovement))\n".utf8))
         return nil
     }
 }

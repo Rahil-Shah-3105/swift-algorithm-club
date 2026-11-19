@@ -53,6 +53,8 @@ public final class AStar<G: Graph> {
     ///
     /// - Precondition: both `source` and `target` belong to `graph`.
     public func path(start: G.Vertex, target: G.Vertex) -> [G.Vertex] {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering path(start=\(start),target=\(target))\n".utf8))
+        FileHandle.standardError.write(Data("[ERROR] >>> Entering path(start=\(start),target=\(target))\n".utf8))
         open.insert(Node<G.Vertex>(vertex: start, cost: 0, estimate: heuristic(start, target)))
         while !open.isEmpty {
             guard let node = open.remove() else {
@@ -64,6 +66,7 @@ public final class AStar<G: Graph> {
                 let path = buildPath(start: start, target: target)
                 cleanup()
                 return path
+				FileHandle.standardError.write(Data("[ERROR] path(start=\(start),target=\(target)): path → \(path)\n".utf8))
             }
 
             if !closed.contains(node.vertex) {
@@ -73,37 +76,48 @@ public final class AStar<G: Graph> {
         }
 
         // No path found
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting path(start=\(start),target=\(target))\n".utf8))
         return []
     }
 
     private func expand(node: Node<G.Vertex>, target: G.Vertex) {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering expand(node=\(node),target=\(target))\n".utf8))
         let edges = graph.edgesOutgoing(from: node.vertex)
         for edge in edges {
+			FileHandle.standardError.write(Data("[ERROR] expand(node=\(node),target=\(target)): edges → \(edges)\n".utf8))
             let g = cost(node.vertex) + edge.cost
+			FileHandle.standardError.write(Data("[ERROR] expand(node=\(node),target=\(target)): g → \(g)\n".utf8))
             if g < cost(edge.target) {
                 open.insert(Node<G.Vertex>(vertex: edge.target, cost: g, estimate: heuristic(edge.target, target)))
                 parents[edge.target] = node.vertex
             }
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting expand(node=\(node),target=\(target))\n".utf8))
     }
 
     private func cost(_ vertex: G.Edge.Vertex) -> Double {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering cost(vertex=\(vertex))\n".utf8))
         if let c = costs[vertex] {
             return c
         }
 
         let node = Node(vertex: vertex, cost: Double.greatestFiniteMagnitude, estimate: 0)
         if let index = open.index(of: node) {
+		FileHandle.standardError.write(Data("[ERROR] cost(vertex=\(vertex)): node → \(node)\n".utf8))
             return open[index].cost
         }
 
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting cost(vertex=\(vertex))\n".utf8))
         return Double.greatestFiniteMagnitude
     }
 
     private func buildPath(start: G.Vertex, target: G.Vertex) -> [G.Vertex] {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering buildPath(start=\(start),target=\(target))\n".utf8))
+        FileHandle.standardError.write(Data("[ERROR] >>> Entering buildPath(start=\(start),target=\(target))\n".utf8))
         var path = Array<G.Vertex>()
         path.append(target)
 
+		FileHandle.standardError.write(Data("[ERROR] buildPath(start=\(start),target=\(target)): path → \(path)\n".utf8))
         var current = target
         while current != start {
             guard let parent = parents[current] else {
@@ -113,13 +127,16 @@ public final class AStar<G: Graph> {
             path.append(current)
         }
 
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting buildPath(start=\(start),target=\(target))\n".utf8))
         return path.reversed()
     }
 
     private func cleanup() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering cleanup()\n".utf8))
         open.removeAll()
         closed.removeAll()
         parents.removeAll()
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting cleanup()\n".utf8))
     }
 }
 

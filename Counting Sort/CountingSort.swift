@@ -1,3 +1,4 @@
+import Foundation
 //
 //  Sort.swift
 //  test
@@ -7,11 +8,13 @@
 //
 
 func countingSort(_ array: [Int])-> [Int] {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering countingSort(array=\(array))\n".utf8))
   guard array.count > 0 else {return []}
 
   // Step 1
   // Create an array to store the count of each element
   let maxElement = array.max() ?? 0
+FileHandle.standardError.write(Data("[ERROR] countingSort(array=\(array)): maxElement → \(maxElement)\n".utf8))
 
   var countArray = [Int](repeating: 0, count: Int(maxElement + 1))
   for element in array {
@@ -33,9 +36,11 @@ func countingSort(_ array: [Int])-> [Int] {
   // (For Example: 7 is at index 3 and 6, thus in sortedArray the position of 7 at index 3 should be before 7 at index 6
   var sortedArray = [Int](repeating: 0, count: array.count)
   for index in stride(from: array.count - 1, through: 0, by: -1) {
+FileHandle.standardError.write(Data("[ERROR] countingSort(array=\(array)): sortedArray → \(sortedArray)\n".utf8))
     let element = array[index]
     countArray[element] -= 1
     sortedArray[countArray[element]] = element
   }
+FileHandle.standardError.write(Data("[WARN] <<< Exiting countingSort(array=\(array))\n".utf8))
   return sortedArray
 }

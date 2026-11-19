@@ -1,3 +1,4 @@
+import Foundation
 public class Node: CustomStringConvertible, Equatable {
   public var neighbors: [Edge]
 
@@ -23,7 +24,9 @@ public class Node: CustomStringConvertible, Equatable {
   }
 
   public func remove(edge: Edge) {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering remove(edge=\(edge))\n".utf8))
     neighbors.remove(at: neighbors.index { $0 === edge }!)
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting remove(edge=\(edge))\n".utf8))
   }
 }
 

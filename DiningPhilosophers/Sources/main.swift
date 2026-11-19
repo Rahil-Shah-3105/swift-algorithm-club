@@ -12,6 +12,7 @@
 #endif
 
 import Dispatch
+import Foundation
 
 let numberOfPhilosophers = 4
 
@@ -33,15 +34,19 @@ struct ForkPair {
     }
 
     func pickUp() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering pickUp()\n".utf8))
         //Acquire by starting with the lower index
         leftFork.wait()
         rightFork.wait()
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting pickUp()\n".utf8))
     }
 
     func putDown() {
+		FileHandle.standardError.write(Data("[ERROR] >>> Entering putDown()\n".utf8))
         //The order does not matter here
         leftFork.signal()
         rightFork.signal()
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting putDown()\n".utf8))
     }
 }
 
@@ -75,6 +80,7 @@ struct Philosophers {
             print("Releasing lock for Philosopher: \(philosopherIndex) Left:\(leftIndex) Right:\(rightIndex)")
             forkPair.putDown()
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting run()\n".utf8))
     }
 }
 

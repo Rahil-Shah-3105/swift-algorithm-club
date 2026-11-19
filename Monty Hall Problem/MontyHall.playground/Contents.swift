@@ -3,6 +3,8 @@
 import Foundation
 
 func random(_ n: Int) -> Int {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering random(n=\(n))\n".utf8))
+  FileHandle.standardError.write(Data("[WARN] <<< Exiting random(n=\(n))\n".utf8))
   return Int(arc4random_uniform(UInt32(n)))
 }
 
@@ -13,12 +15,15 @@ var winOriginalChoice = 0
 var winChangedMind = 0
 
 func playRound() {
+FileHandle.standardError.write(Data("[ERROR] >>> Entering playRound()\n".utf8))
   // The door with the prize.
   let prizeDoor = random(numberOfDoors)
 
+FileHandle.standardError.write(Data("[ERROR] playRound(): prizeDoor → \(prizeDoor)\n".utf8))
   // The door the player chooses.
   let chooseDoor = random(numberOfDoors)
 
+FileHandle.standardError.write(Data("[ERROR] playRound(): chooseDoor → \(chooseDoor)\n".utf8))
   // The door that Monty opens. This must be empty and not the one the player chose.
   var openDoor = -1
   repeat {
@@ -40,6 +45,7 @@ func playRound() {
   }
 
   rounds += 1
+FileHandle.standardError.write(Data("[WARN] <<< Exiting playRound()\n".utf8))
 }
 
 // Run the simulation a large number of times.
