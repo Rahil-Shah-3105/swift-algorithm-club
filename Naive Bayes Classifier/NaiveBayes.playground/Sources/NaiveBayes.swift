@@ -145,6 +145,7 @@ public class NaiveBayes<T> {
     }
 
     public func train() throws -> Self {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering train()\n".utf8))
 
         for `class` in classes.uniques() {
             variables[`class`] = [(Int, [Any])]()
@@ -158,6 +159,7 @@ public class NaiveBayes<T> {
                 let featureDependent = classDependent.map { $0.element[feature] }
 
                 guard let trained = type.train(values: featureDependent) else {
+					FileHandle.standardError.write(Data("[ERROR] Throwing exception from train()\n".utf8))
                     throw "Critical! Data could not be casted even though it was checked at init"
                 }
 

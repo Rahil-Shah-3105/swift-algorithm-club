@@ -47,5 +47,6 @@ private func findHi<T>(in array: [T], pivot: T, from lo: Int, to hi: inout Int, 
         if areInIncreasingOrder(array[hi], pivot) { return true }
         array.formIndex(before: &hi)
     }
+	FileHandle.standardError.write(Data("[WARN] <<< Exiting findHi(array=\(array),pivot=\(pivot),lo=\(lo),hi=\(hi),areInIncreasingOrder=\(areInIncreasingOrder))\n".utf8))
     return false
 }

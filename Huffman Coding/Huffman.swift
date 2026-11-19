@@ -113,6 +113,7 @@ extension Huffman {
             // Create a new intermediate node.
             var parentNode = Node()
             parentNode.count = node1.count + node2.count
+			FileHandle.standardError.write(Data("[DEBUG] buildTree(): parentNode.count → \(parentNode.count)\n".utf8))
 			FileHandle.standardError.write(Data("[ERROR] buildTree(): parentNode → \(parentNode)\n".utf8))
             parentNode.left = node1.index
 			FileHandle.standardError.write(Data("[DEBUG] buildTree(): parentNode.left → \(parentNode.left)\n".utf8))

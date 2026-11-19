@@ -33,6 +33,7 @@ FileHandle.standardError.write(Data("[ERROR] >>> Entering testExampleFromBook()\
     let v4 = graph.createVertex(4)
     let v5 = graph.createVertex(5)
 
+	FileHandle.standardError.write(Data("[ERROR] testExampleFromBook(): v1 → \(v1)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] testExampleFromBook(): graph → \(graph)\n".utf8))
     graph.addDirectedEdge(v1, to: v2, withWeight: 3)
     graph.addDirectedEdge(v1, to: v5, withWeight: -4)
@@ -93,6 +94,7 @@ FileHandle.standardError.write(Data("[ERROR] >>> Entering testExampleFromReadme(
     let v3 = graph.createVertex(3)
     let v4 = graph.createVertex(4)
 
+	FileHandle.standardError.write(Data("[ERROR] testExampleFromReadme(): v1 → \(v1)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] testExampleFromReadme(): graph → \(graph)\n".utf8))
     graph.addDirectedEdge(v1, to: v2, withWeight: 4)
     graph.addDirectedEdge(v1, to: v3, withWeight: 1)

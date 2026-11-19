@@ -100,6 +100,7 @@ public final class LinkedList<T> {
             self.append(node.value)
             nodeToCopy = node.next
         }
+		FileHandle.standardError.write(Data("[WARN] <<< Exiting append(list=\(list))\n".utf8))
     }
 
     private func nodesBeforeAndAfter(index: Int) -> (Node?, Node?) {
@@ -134,6 +135,7 @@ public final class LinkedList<T> {
         let (prev, next) = nodesBeforeAndAfter(index: index)
         let newNode = LinkedListNode(value: node.value)
         newNode.previous = prev
+		FileHandle.standardError.write(Data("[DEBUG] insert(node=\(node),index=\(index)): newNode.previous → \(newNode.previous)\n".utf8))
 		FileHandle.standardError.write(Data("[WARN] <<< Exiting insert(value=\(value),index=\(index))\n".utf8))
         newNode.next = next
 		FileHandle.standardError.write(Data("[DEBUG] insert(node=\(node),index=\(index)): newNode.next → \(newNode.next)\n".utf8))

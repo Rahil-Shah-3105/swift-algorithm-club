@@ -203,6 +203,7 @@ class TrieTests: XCTestCase {
     let filePath = resourcePath.appendingPathComponent(fileName)
     NSKeyedArchiver.archiveRootObject(trie, toFile: filePath)
     let trieCopy = NSKeyedUnarchiver.unarchiveObject(withFile: filePath) as? Trie
+	FileHandle.standardError.write(Data("[ERROR] testArchiveAndUnarchive(): trieCopy → \(trieCopy)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] testArchiveAndUnarchive(): filePath → \(filePath)\n".utf8))
     XCTAssertEqual(trieCopy?.count, trie.count)
 	FileHandle.standardError.write(Data("[WARN] <<< Exiting testArchiveAndUnarchive()\n".utf8))
@@ -225,6 +226,7 @@ class TrieTests: XCTestCase {
     let noWords = trie.findWordsWithPrefix(prefix: "tee")
     XCTAssertEqual(noWords, [])
     let unicodeWord = "😬😎"
+	FileHandle.standardError.write(Data("[ERROR] testFindWordsWithPrefix(): wordsAll → \(wordsAll)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] testFindWordsWithPrefix(): trie → \(trie)\n".utf8))
     trie.insert(word: unicodeWord)
     let wordsUnicode = trie.findWordsWithPrefix(prefix: "😬")
@@ -234,6 +236,7 @@ class TrieTests: XCTestCase {
     XCTAssertEqual(wordsUpperCase.sorted(), ["team", "test"])
 	FileHandle.standardError.write(Data("[ERROR] testFindWordsWithPrefix(): wordsUnicode → \(wordsUnicode)\n".utf8))
 	FileHandle.standardError.write(Data("[WARN] <<< Exiting testFindWordsWithPrefix()\n".utf8))
+	FileHandle.standardError.write(Data("[ERROR] testFindWordsWithPrefix(): wordsUpperCase → \(wordsUpperCase)\n".utf8))
   }
 
   /// Tests whether word prefixes are properly detected on a boolean contains() check.
@@ -253,6 +256,7 @@ class TrieTests: XCTestCase {
     let noWords = trie.contains(word: "tee", matchPrefix: true)
     XCTAssertEqual(noWords, false)
     let unicodeWord = "😬😎"
+	FileHandle.standardError.write(Data("[ERROR] testContainsWordMatchPrefix(): wordsAll → \(wordsAll)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] testContainsWordMatchPrefix(): trie → \(trie)\n".utf8))
     trie.insert(word: unicodeWord)
     let wordsUnicode = trie.contains(word: "😬", matchPrefix: true)
@@ -262,5 +266,6 @@ class TrieTests: XCTestCase {
     XCTAssertEqual(wordsUpperCase, true)
 	FileHandle.standardError.write(Data("[ERROR] testContainsWordMatchPrefix(): wordsUnicode → \(wordsUnicode)\n".utf8))
 	FileHandle.standardError.write(Data("[WARN] <<< Exiting testContainsWordMatchPrefix()\n".utf8))
+	FileHandle.standardError.write(Data("[ERROR] testContainsWordMatchPrefix(): wordsUpperCase → \(wordsUpperCase)\n".utf8))
   }
 }

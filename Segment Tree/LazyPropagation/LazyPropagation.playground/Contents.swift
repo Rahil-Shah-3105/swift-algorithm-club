@@ -33,6 +33,7 @@ public class LazySegmentTree {
         lson.value += lazyValue * (round - (round >> 1))
         rson.value += lazyValue * (round >> 1)
         lazyValue = 0
+		FileHandle.standardError.write(Data("[DEBUG] pushDown(round=\(round),lson=\(lson),rson=\(rson)): lazyValue → \(lazyValue)\n".utf8))
 		FileHandle.standardError.write(Data("[WARN] <<< Exiting pushDown(round=\(round),lson=\(lson),rson=\(rson))\n".utf8))
     }
     

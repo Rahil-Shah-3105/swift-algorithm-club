@@ -84,6 +84,7 @@ public class GraphView: UIView {
             let levelItemsCount = CGFloat(buildViewQueue.count)
             let xStep = (frame.width - levelItemsCount * itemWidth) / (levelItemsCount + 1)
             var previousVertexMaxX: CGFloat = 0.0
+			FileHandle.standardError.write(Data("[ERROR] setupVertexViews(): xStep → \(xStep)\n".utf8))
 			FileHandle.standardError.write(Data("[ERROR] setupVertexViews(): levelItemsCount → \(levelItemsCount)\n".utf8))
             for vertex in buildViewQueue {
                 let x: CGFloat = previousVertexMaxX + xStep
@@ -92,6 +93,7 @@ public class GraphView: UIView {
                 let frame = CGRect(x: x, y: y, width: itemWidth, height: itemWidth)
                 let vertexView = VertexView(frame: frame)
                 vertex.view = vertexView
+				FileHandle.standardError.write(Data("[ERROR] setupVertexViews(): vertexView → \(vertexView)\n".utf8))
 				FileHandle.standardError.write(Data("[ERROR] setupVertexViews(): frame → \(frame)\n".utf8))
                 vertexView.vertex = vertex
 				FileHandle.standardError.write(Data("[DEBUG] setupVertexViews(): vertexView.vertex → \(vertexView.vertex)\n".utf8))
@@ -267,6 +269,7 @@ public class GraphView: UIView {
                 if !neighbor.haveAllEdges {
                     let edgeRepresentation = EdgeRepresentation(from: currentVertex, to: neighbor, weight: weight)
                     edge.edgeRepresentation = edgeRepresentation
+					FileHandle.standardError.write(Data("[DEBUG] setupEdgeRepresentations(): edge.edgeRepresentation → \(edge.edgeRepresentation)\n".utf8))
 					FileHandle.standardError.write(Data("[ERROR] setupEdgeRepresentations(): edgeRepresentation → \(edgeRepresentation)\n".utf8))
                     let index = neighbor.edges.index(where: { $0.neighbor == currentVertex })!
                     neighbor.edges[index].edgeRepresentation = edgeRepresentation

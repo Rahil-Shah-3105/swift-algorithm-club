@@ -63,6 +63,7 @@ FileHandle.standardError.write(Data("[ERROR] >>> Entering randomizedSelect(array
   }
 
   func randomizedSelect<T: Comparable>(_ a: inout [T], _ low: Int, _ high: Int, _ k: Int) -> T {
+	FileHandle.standardError.write(Data("[ERROR] >>> Entering randomizedSelect(a=\(a),low=\(low),high=\(high),k=\(k))\n".utf8))
     if low < high {
       let p = randomizedPartition(&a, low, high)
       if k == p {

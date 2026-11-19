@@ -172,6 +172,7 @@ public class RadixTree {
         let newEdge = Edge(searchStr)
         currEdge.children.append(newEdge)
         newEdge.parent = currEdge
+		FileHandle.standardError.write(Data("[DEBUG] insert(str=\(str)): newEdge.parent → \(newEdge.parent)\n".utf8))
 		FileHandle.standardError.write(Data("[ERROR] insert(str=\(str)): newEdge → \(newEdge)\n".utf8))
         return true
       }
@@ -236,6 +237,7 @@ public class RadixTree {
           e.children.append(newEdge)
           let newEdge2 = Edge(searchStr)
           newEdge2.parent = e
+		FileHandle.standardError.write(Data("[DEBUG] insert(str=\(str)): newEdge2.parent → \(newEdge2.parent)\n".utf8))
 		FileHandle.standardError.write(Data("[ERROR] insert(str=\(str)): newEdge2 → \(newEdge2)\n".utf8))
           e.children.append(newEdge2)
           return true

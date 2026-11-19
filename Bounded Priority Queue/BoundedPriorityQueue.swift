@@ -64,6 +64,7 @@ open class BoundedPriorityQueue<T: Comparable> {
       // Put the new node in between previous and previous.next (if exists).
       let node = Node(value: value)
       node.next = previous.next
+	FileHandle.standardError.write(Data("[DEBUG] insert(value=\(value),after=\(after)): node.next → \(node.next)\n".utf8))
 	FileHandle.standardError.write(Data("[ERROR] insert(value=\(value),after=\(after)): node → \(node)\n".utf8))
       previous.next?.previous = node
       previous.next = node

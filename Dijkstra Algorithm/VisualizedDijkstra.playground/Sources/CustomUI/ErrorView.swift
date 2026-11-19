@@ -22,6 +22,7 @@ public class ErrorView: UIView {
         let labelFrame = CGRect(x: 10, y: 10, width: frame.width - 20, height: frame.height - 20)
         label = UILabel(frame: labelFrame)
         label.numberOfLines = 0
+		FileHandle.standardError.write(Data("[DEBUG] commonInit(): label → \(label)\n".utf8))
 		FileHandle.standardError.write(Data("[ERROR] commonInit(): labelFrame → \(labelFrame)\n".utf8))
         label.adjustsFontSizeToFitWidth = true
 		FileHandle.standardError.write(Data("[DEBUG] commonInit(): label.adjustsFontSizeToFitWidth → \(label.adjustsFontSizeToFitWidth)\n".utf8))
